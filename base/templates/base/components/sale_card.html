@@ -1,0 +1,69 @@
+{% load static %}
+
+<div
+  class="py-2 px-4 w-full bg-white hover:bg-gray-100 {% if obj.status == 'cancelled' %} text-gray-400 {% else %} text-gray-600 {% endif %} text-xs xl:text-sm flex justify-between items-center lg:grid lg:grid-cols-7 rounded-full border hover:shadow-lg transition duration-200 ease-in"
+>
+  <h3 class="font-bold text-black">Cmd N°-{{obj.id}}</h3>
+  <p>{{obj.client.get_full_name}}</p>
+  <p>{{obj.timestamp.date}}</p>
+  <p>{{obj.timestamp.time}}</p>
+  <p>{{obj.amount}} CFA</p>
+
+  {% include 'store/components/order_status.html' %}
+  <!--  -->
+
+  <div class="w-fit text-end relative text-gray-700">
+    <button
+      type="button"
+      class="bg-white hover:text-teal-700 px-3 py-1 rounded-full"
+      name="sentry"
+      aria-expanded="false"
+      aria-haspopup="true"
+      onclick="toggleDropdown(this,'{{obj.id}}')"
+    >
+      <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+    </button>
+
+    <div
+      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+      role="status menu"
+      aria-orientation="vertical"
+      aria-labelledby="status-menu-button"
+      tabindex="-1"
+      id="actionMenu{{obj.id}}"
+    >
+      <a
+        hx-get="{% url 'dash_order' obj.id %}"
+        hx-target="#dashbase"
+        hx-swap="outerHTML"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-gray-200 rounded-full w-full text-center cursor-pointer"
+        ><i class="text-sm fa-solid fa-eye mr-2"></i>
+        Voir
+      </a>
+      <!--  -->
+      {% if obj.status == 'pending' %}
+      <a
+        hx-post="{% url 'manage_order' obj.id 'process'  %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-yellow-200 rounded-full w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-check mr-2"></i>
+        Traiter
+      </a>
+      <!--  -->
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDropdown(e, obj_id) {
+    activeMenu = document.getElementById(`actionMenu${obj_id}`);
+    e.name === `sentry`
+      ? ((e.name = "close"), activeMenu.classList.remove("hidden"))
+      : ((e.name = `sentry`), activeMenu.classList.add("hidden"));
+  }
+
+  window.addEventListener("mouseup", function (event) {
+    activeMenu.classList.add("hidden");
+  });
+</script>

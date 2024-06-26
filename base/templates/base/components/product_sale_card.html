@@ -1,0 +1,42 @@
+{% load static %}
+
+<div
+  onclick="update_cart('{{ obj.product.id }}', 'add_item')"
+  class="cursor-pointer relative w-full h-fit bg-white flex justify-between rounded-xl border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
+>
+  {% if obj.product.image %}
+  <img
+    src="{{ obj.product.image.url }}"
+    alt="{{ obj.product.name }}"
+    class="w-24 h-24 object-contain object-center"
+  />
+  {% else %}
+  <img
+    src="{% static 'imgs/icon-w.png' %}"
+    alt="image"
+    class="w-24 h-24 object-contain"
+  />
+  {% endif %} 
+  <!--  -->
+  {% if obj.product.is_new %}
+  <span
+    class="absolute top-2 left-2 bg-red-600 rounded-md px-2 py-1 text-white text-[0.5rem]"
+  >
+    New
+  </span>
+  {% endif %}
+
+  <article
+    class="p-2 w-full h-100 flex flex-col justify-center gap-1 bg-gray-50 text-sm"
+  >
+    <h3 class="font-bold text-black text-sm">{{obj.product.name}}</h3>
+    <span class="text-xs">{{obj.product.brand}}</span>
+    {% if obj.is_promoted %}
+    <p>{{obj.promo_price}} CFA</p>
+    {% else %}
+    <p>{{obj.price}} CFA</p>
+    {% endif %}
+  </article>
+</div>
+<!-- Hidden CSRF token input -->
+<input type="hidden" id="csrf_token" value="{{ csrf_token }}" />

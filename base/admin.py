@@ -1,0 +1,22 @@
+from django.contrib import admin
+from .models import *
+
+admin.site.register(Store)
+admin.site.register(Cashdesk)
+admin.site.register(Category)
+admin.site.register(Family)
+admin.site.register(Product)
+admin.site.register(ProductStock)
+admin.site.register(Client)
+admin.site.register(Supplier)
+admin.site.register(Sale)
+admin.site.register(SaleItem)
+admin.site.register(ProductPurchase)
+admin.site.register(PurchaseItem)
+admin.site.register(ServicePurchase)
+admin.site.register(StockInput)
+admin.site.register(StockInputItem)
+admin.site.register(StockOutput)
+admin.site.register(StockOutputItem)
+admin.site.register(Inventory)
+admin.site.register(InventoryItem)

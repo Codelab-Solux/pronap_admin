@@ -1,0 +1,87 @@
+{% load static %}
+
+<div
+  class="py-2 px-4 w-full bg-white hover:bg-gray-100 text-xs xl:text-sm flex justify-between items-center gap-4 lg:grid lg:grid-cols-6 rounded-xl border hover:shadow-lg transition duration-200 ease-in"
+>
+  {% if obj.image %}
+  <img
+    src="{{ obj.image.url }}"
+    alt="{{ obj.name }}"
+    class="w-7 h-7 object-cover rounded-lg"
+  />
+  {% else %}
+  <img
+    src="{% static 'imgs/logo.png' %}"
+    alt="image"
+    class="w-7 h-7 object-cover rounded-lg"
+  />
+  {% endif %}
+
+  <h3 class="font-bold text-black">{{obj.name}}</h3>
+
+  <p>{{obj.description}}</p>
+
+  <p>{{obj.subcategories.count}} sous-categories</p>
+
+  <p>{{obj.products.count}} produits</p>
+
+  <div
+    class="w-fit flex gap-3 justify-end items-end text-end relative text-gray-700"
+  >
+    <button
+      onclick="toggleAccordion('c_{{obj.id}}')"
+      class="px-3 py-2 flex items-center hover:text-black hover:bg-gray-300 rounded-lg w-fit text-xs cursor-pointer transition duration-300 ease-in"
+    >
+      <i id="c_{{obj.id}}_caret" class="fa-solid fa-caret-down"></i>
+    </button>
+    <button
+      type="button"
+      class="hover:text-black bg-white hover:text-green-700 px-3 py-1 rounded-lg"
+      name="sentry"
+      aria-expanded="false"
+      aria-haspopup="true"
+      onclick="toggleMenu(this,'menu_c_{{obj.id}}')"
+    >
+      <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+    </button>
+
+    <div
+      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+      role="status menu"
+      aria-orientation="vertical"
+      aria-labelledby="status-menu-button"
+      tabindex="-1"
+      id="menu_c_{{obj.id}}"
+    >
+      <!--  -->
+
+      <button
+        onclick="hide_dialogs()"
+        hx-target="#basic_dialog"
+        hx-get="{% url 'edit_category' obj.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-yellow-200 rounded-lg w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+        Modifier
+      </button>
+
+      <button
+        hx-confirm="Voulez vous vraiment suprimmer ceci?"
+        hx-delete="{% url 'delete_base_object' obj.id 'Category' %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-trash mr-2"></i>
+        Supprimer
+      </button>
+
+      <!--  -->
+    </div>
+  </div>
+</div>
+
+<div
+  id="c_{{obj.id}}"
+  class="accordion hidden bg-green-900 text-white rounded-xl p-2 lg:p-4"
+>
+  Details are here
+</div>

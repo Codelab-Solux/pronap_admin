@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.8"
+      integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/f601cf3e61.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'notifier.js' %}" defer="true"></script>
+    <script src="{% static 'main.js' %}" defer="true"></script>
+    <script src="{% static 'cart.js' %}" defer="true"></script>
+    <link href="{% static 'styles.css' %}" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins"
+    />
+    <link
+      rel="shortcut icon"
+      href="{% static 'imgs/logo.png' %}"
+      type="image/x-icon"
+    />
+
+    <style>
+      body {
+        font-family: "Saira", sans-serif;
+      }
+    </style>
+    <title>{{title}}</title>
+  </head>
+  <body
+    hx-boost="true"
+    hx-headers='{"X-CSRFToken" : "{{ csrf_token }}"}'
+    class="flex flex-row bg-white text-gray-700 max-w-full mx-auto"
+  >
+    {% include 'sidebar.html' %}
+
+    <div
+      class="w-full ml-[60px] md:ml-[80px] xl:ml-[300px] min-h-screen overflow-auto"
+    >
+      <div
+        class="relative p-4 md:p-6 lg:p-8 w-full max-w-[1350px] mx-auto min-h-screen flex flex-col"
+      >
+        <!-- snacbar -->
+        <div
+          id="snackbar"
+          class="fixed top-[-100px] right-4 p-4 rounded-xl w-80 flex items-center justify-between transition-transform duration-500"
+        >
+          <span id="snackbar-message"></span>
+          <button onclick="hideSnackbar()">x</button>
+        </div>
+        <!-- main content area -->
+        <section id="dashbase">{% block content %} {% endblock %}</section>
+      </div>
+    </div>
+    <!--  -->
+    {% include 'modal.html' %}
+    <!--  -->
+  </body>
+
+  <!--  -->
+  {{ request.user.id|json_script:"user_id" }}
+
+  <style>
+    #snackbar.success {
+      background-color: #38a169;
+      color: white;
+    } /* Green for success */
+    #snackbar.denial {
+      background-color: #e53e3e;
+      color: white;
+    } /* Red for denial */
+    #snackbar.alert {
+      background-color: #d69e2e;
+      color: white;
+    } /* Yellow for alert */
+    #snackbar.info {
+      background-color: #3182ce;
+      color: white;
+    } /* Blue for info */
+
+    #snackbar {
+      transform: translateY(-100%);
+      z-index: 1000;
+    }
+
+    #snackbar.show {
+      transform: translateY(0);
+    }
+
+    .transition-transform {
+      transition: transform 0.5s;
+    }
+  </style>
+
+  <script>
+    htmx.onLoad(function (content) {
+      scripts.init(content);
+    });
+
+    // show and hide snackbar
+    function showSnackbar(message, type) {
+      const snackbar = document.getElementById("snackbar");
+      const snackbarMessage = document.getElementById("snackbar-message");
+
+      snackbarMessage.textContent = message;
+      snackbar.className = `fixed top-4 right-4 p-4 rounded-xl w-80 flex items-center justify-between transition-transform duration-500 ${type} show`;
+
+      setTimeout(hideSnackbar, 3000);
+    }
+
+    function hideSnackbar() {
+      const snackbar = document.getElementById("snackbar");
+      snackbar.classList.remove("show");
+      setTimeout(() => {
+        snackbar.style.top = "-100px";
+      }, 500);
+    }
+
+
+    // Snackbar logic------------------------------------------------------------
+    document.addEventListener("htmx:configRequest", function (event) {
+      // If necessary, you can configure htmx request headers here
+    });
+
+    document.addEventListener("htmx:afterOnLoad", function (event) {
+      if (event.detail.xhr.status === 403) {
+        showSnackbar("Access denied!", "denial");
+      } else if (event.detail.xhr.status === 404) {
+        showSnackbar("Resource missing!", "info");
+      } else if (event.detail.xhr.status === 204) {
+        showSnackbar("Operation successful!", "success");
+      } else if (event.detail.xhr.status === 500) {
+        showSnackbar("Server error occurred!", "alert");
+      }
+    });
+
+    document.addEventListener("access-denied", function () {
+      showSnackbar("Access denied!", "denial");
+    });
+
+    document.addEventListener("server-error", function () {
+      showSnackbar("Error encountered!", "alert");
+    });
+
+    document.addEventListener("resource-error", function () {
+      showSnackbar("Error encountered!", "info");
+    });
+
+    document.addEventListener("db_changed", function () {
+      showSnackbar("Database updated successfully.", "success");
+    });
+  </script>
+</html>

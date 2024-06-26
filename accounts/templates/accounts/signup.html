@@ -1,0 +1,33 @@
+{% extends 'main_plain.html' %} {% load static %} {% block content %}
+
+<section
+  class="bg-white p-4 lg:p-6 w-full max-w-5xl rounded-3xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8"
+>
+  <i class="fa-solid fa-user-plus text-teal-700 text-9xl mx-auto"></i>
+
+  <div
+    class="bg-gray-100 rounded-2xl p-6 flex-col h-fit w-full max-w-md shadow-md"
+  >
+    <h1 class="mb-4 text-black text-3xl font-bold">Inscription</h1>
+    <form class="w-full text-sm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %} {% for field in form %}
+      <div>
+        <h3 class="mb-1">{{field.label}}</h3>
+        {{field}}
+      </div>
+      {% endfor %}
+      <div class="flex justify-between items-center gap-2">
+        <input
+          class="mt-2 px-8 py-2 bg-teal-700 hover:bg-teal-900 text-sm text-white rounded-full cursor-pointer"
+          type="submit"
+          value="S'inscrire"
+        />
+        <p class="login-wrapper-footer-text mt-2">
+          Vous avez déjà un compte?
+          <a href="{% url 'login' %}" class="text-yellow-500">Cliquez ici</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.8"
+      integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/f601cf3e61.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'cart.js' %}" defer="true"></script>
+    <script src="{% static 'main.js' %}" defer="true"></script>
+    <link href="{% static 'styles.css' %}" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"> -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Helvetica:wght@400;700&display=swap"
+    />
+    <link rel="shortcut icon" href="{% static 'imgs/logo.png' %}" type="image/x-icon">
+
+    <style>
+      body {
+        /* font-family: 'Noto Sans', sans-serif; */
+        font-family: "Helvetica", sans-serif;
+        /* font-family: 'Roboto', sans-serif; */
+      }
+    </style>
+    {% if title %}
+    <title>Distroplace - {{title}}</title>
+    {% else %}
+    <title>Distroplace</title>
+    {% endif %}
+  </head>
+  <body
+    hx-boost="true"
+    hx-headers='{"X-CSRFToken" : "{{ csrf_token }}"}'
+    class="flex flex-col bg-gray-100"
+  >
+    {% csrf_token %}
+    <!--  -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!--  -->
+    <div id="base" class="min-h-screen flex flex-col justify-center items-center">
+      {% block content %} {% endblock %}
+    </div>
+    <!--  -->
+    <script>
+      var current_date = new Date().getFullYear();
+      document.getElementById("date").innerHTML = current_date;
+
+      htmx.onLoad(function (content) {
+        scripts.init(content);
+      });
+    </script>
+  </body>
+</html>

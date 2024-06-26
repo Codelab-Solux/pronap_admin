@@ -1,0 +1,113 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
+  <form
+    hx-post="{{ request.path }}"
+    action=""
+    class="w-full max-w-3xl mx-auto p-4 bg-lime-200 rounded-xl flex flex-col gap-3 text-sm"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div>
+        <h3 class="mb-1">{{form.name.label}}</h3>
+        {{form.name}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.brand.label}}</h3>
+        {{form.brand}}
+      </div>
+      <div>
+        <div class="mb-1 flex justify-between items-center gap-3">
+          <h3>{{form.category.label}}</h3>
+          <button
+            onclick="hide_dialogs()"
+            hx-target="#basic_dialog"
+            hx-get="{% url 'create_category' %}"
+            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded-md w-fit text-center cursor-pointer"
+          >
+            <i class="text-sm fa-solid fa-plus"></i>
+          </button>
+        </div>
+        {{form.category}}
+      </div>
+      <div>
+        <div class="mb-1 flex justify-between items-center gap-3">
+          <h3>{{form.family.label}}</h3>
+          <button
+            onclick="hide_dialogs()"
+            hx-target="#basic_dialog"
+            hx-get="{% url 'create_family' %}"
+            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded-md w-fit text-center cursor-pointer"
+          >
+            <i class="text-sm fa-solid fa-plus"></i>
+          </button>
+        </div>
+        {{form.family}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.unit.label}}</h3>
+        {{form.unit}}
+      </div>
+
+      <div>
+        <h3 class="mb-1">{{form.image.label}}</h3>
+        {{form.image}}
+      </div>
+    </div>
+    <div>
+      <h3 class="mb-1">{{form.description.label}}</h3>
+      {{form.description}}
+    </div>
+
+    <div class="flex flex-row-reverse gap-2 items-end text-xs">
+      <button
+        class="px-4 py-2 bg-green-700 hover:bg-green-900 text-white rounded-md"
+        type="submit"
+      >
+        {% if not curr_obj %} Ajouter {% else %} Enregistrer {% endif %}
+      </button>
+      <button
+        onclick="close_modal()"
+        type="button"
+        class="modal_closer px-4 py-2 bg-white text-black hover:bg-red-300 rounded-md"
+      >
+        Annuler
+      </button>
+    </div>
+  </form>
+</div>
+{% if not curr_obj %}
+<script>
+  $(document).ready(function () {
+    // Add a placeholder option to the select element
+    $(".input_selector").children().first().remove();
+    $(".input_selector").prepend(
+      '<option value="" disabled selected></option>'
+    );
+  });
+
+  $(document).ready(function () {
+    $("#id_category").change(function () {
+      var url = "{% url 'load_families' %}";
+      var categoryId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          category: categoryId,
+        },
+        success: function (data) {
+          $("#id_family").html("");
+          $.each(data, function (key, value) {
+            $("#id_family").append(
+              '<option value="' + value.id + '">' + value.name + "</option>"
+            );
+          });
+        },
+      });
+    });
+  });
+</script>
+{% endif %}

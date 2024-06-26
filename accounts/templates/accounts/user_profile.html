@@ -1,0 +1,162 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="p-8 w-full max-w-7xl mx-auto flex flex-col justify-between gap-6">
+  <div class="flex justify-between">
+    <div
+      class="bg-teal-900 py-2 px-4 rounded-full flex items-center text-white gap-4"
+    >
+      <a
+        id="back-button"
+        class="px-2 py-1 font-bold hover:bg-yellow-200 hover:text-black rounded-full transition-all duration-300"
+        href="#"
+        >&larr;</a
+      >
+      Retourner
+    </div>
+    <span
+      class="flex items-center gap-4 py-2 px-4 rounded-full bg-yellow-200 text-black"
+      ><i class="fa-solid fa-user"></i> Mon profil</span
+    >
+  </div>
+  <!--  -->
+  <div class="w-full grid md:grid-cols-2 gap-4">
+    <div
+      class="p-3 w-full bg-teal-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
+    >
+      {% if not curr_obj.image %}
+      <img
+        class="h-40 w-40 bg-white rounded-full object-cover"
+        src="{% static 'imgs/anon.png' %}"
+        alt="image"
+      />
+      {% else %}
+      <img
+        class="h-40 w-40 bg-white rounded-full object-cover"
+        src="{{curr_obj.image.url}}"
+        alt="image"
+      />
+      {% endif %}
+      <article class="text-gray-700 grid gap-1 w-full">
+        <h4 class="text-black text-2xl font-bold">
+          {{curr_obj.last_name}} {{curr_obj.first_name}}
+        </h4>
+        <span class="text-teal-700">@{{curr_obj.username}}</span>
+
+        <p>
+          <i class="fa-solid fa-venus-mars text-gray-800 mr-3"></i> Sexe :
+          <span class="text-black"> {{curr_obj.get_sex_display|title}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de telephone :
+          <span class="text-black"> {{curr_obj.phone}} </span>
+        </p>
+  
+        <div class="w-full bg-teal-900 text-white p-4 rounded-xl flex flex-col gap-2">
+          <p>
+            <i class="fa-solid fa-map-location-dot text-teal-200 text-gray-800 mr-3"></i>Quartier de
+            livraison :
+            <span class="font-bold"> {{shipping_info.district}} </span>
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot text-teal-200 text-gray-800 mr-3"></i>Address
+            de livraison :
+            <span class="font-bold"> {{shipping_info.address}} </span>
+          </p>
+          <p>
+            <i class="fa-solid fa-phone text-teal-200 text-gray-800 mr-3"></i>Numero de
+            livraison :
+            <span class="font-bold"> {{shipping_info.phone}} </span>
+          </p>
+        </div>
+      </article>
+    </div>
+    <img
+      class="h-full w-full bg-white rounded-2xl object-cover"
+      src="{% static 'imgs/banner_2.webp' %}"
+      alt="image"
+    />
+  </div>
+
+  <section class="flex flex-col gap-4">
+    <!--------------------------------------- menu tabs buttons --------------------------------------->
+    <div
+      class="flex justify-between gap-2 text-xs tabbar h-fit w-full max-w-80 lg:max-w-[500px] p-2 bg-teal-900 rounded-full"
+    >
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-teal-900 hover:text-white rounded-full w-full"
+        onclick="openTab(event, 'cart')"
+        id="defaultTab"
+      >
+        <i class="fa-solid fa-shopping-cart"></i>
+        <span class="ml-2">Panier</span>
+      </button>
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-teal-900 hover:text-white rounded-full w-full"
+        onclick="openTab(event, 'orders')"
+      >
+        <i class="fa-solid fa-dolly"></i>
+        <span class="ml-2">Commandes</span>
+      </button>
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-teal-900 hover:text-white rounded-full w-full"
+        onclick="openTab(event, 'deliveries')"
+      >
+        <i class="fa-solid fa-truck"></i>
+        <span class="ml-2">Livraisons</span>
+      </button>
+    </div>
+
+    <div id="cart" class="tabcontent w-full flex flex-col gap-2">
+      <div
+        hx-get="{% url 'cart_resume' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+
+    <div id="orders" class="tabcontent w-full flex flex-col gap-2">
+      <div
+        hx-get="{% url 'orders_resume' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+
+    <div id="deliveries" class="tabcontent w-full flex flex-col gap-2">
+      <div
+        hx-get="{% url 'deliveries_resume' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+  </section>
+</div>
+
+<script>
+  document
+    .getElementById("back-button")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default anchor behavior
+      window.history.go(-1); // Go back two pages
+    });
+
+  //  tabs control ----------------------------------------------------------------------------------------------------
+  document.getElementById("defaultTab").click();
+  function openTab(event, tabName) {
+    var i, tabcontent, tabBtn;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabBtn = document.getElementsByClassName("tabBtn");
+    for (i = 0; i < tabBtn.length; i++) {
+      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+    var minitabs = document.getElementsByClassName("minitabcontent");
+    if (minitabs.length != 0) {
+      minitabs = tabcontent.children;
+    }
+  }
+</script>
+{% endblock %}

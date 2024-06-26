@@ -1,0 +1,25 @@
+{% if not inventory_products %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-scroll text-green-700 text-9xl"></i>
+  <span>Aucun produit trouvé dans cet inventaire</span>
+</div>
+{% else %}
+<div class="flex flex-col gap-1">
+  <div
+    class="w-full max-w-[1350px] rounded-lg primary_color p-2 grid grid-cols-7 items-center gap-4 text-sm text-white"
+  >
+    <span>Article</span>
+    <span>Categorie</span>
+    <span>Famille</span>
+    <span>Quantité théorique</span>
+    <span>Quantité physique</span>
+    <span>Différence d’inventaire</span>
+    <span class="mx-auto">Actions</span>
+  </div>
+  {% for obj in inventory_products %}
+  <!--  -->
+  {% include 'base/components/product_list_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

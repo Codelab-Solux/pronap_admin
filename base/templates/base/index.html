@@ -1,0 +1,164 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+
+<div class="grid gap-8 mb-8">
+  <div
+    class="p-6 bg-orange-200 shadow-sm rounded-xl flex flex-col md:flex-row gap-8 justify-between items-center"
+  >
+    <article class="w-5/7 max-w-[800px]">
+      <h1 class="text-black text-3xl lg:text-7xl font-bold">Pronap Admin</h1>
+      <p class="mt-4">
+        Pronap Admin, la platforme interne de gestion de Pronap Store.
+        Application de vente et de gestion qui permet de vendre, suivre et contrôler le stock dans les boutiques
+        Pronap.
+      </p>
+    </article>
+    <img
+      class="h-32 mx-auto xl:mx-0 xl:mr-2"
+      src="{% static 'imgs/logo.png' %}"
+      alt="logo"
+    />
+  </div>
+
+  <section class="flex flex-col md:grid grid-cols-2 gap-4 lg:grid-cols-3">
+    <a
+      href="{% url 'home' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-home text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Accueil</h3>
+      </div>
+      <p>
+      </p>
+    </a>
+    <a
+      href="{% url 'home' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-store text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Boutiques</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'products' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-boxes-packing text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Produits</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'stock' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-cubes-stacked text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Stock</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'sale_point' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-cash-register text-green-700"
+        ></i>
+
+        <h3 class="font-bold text-black text-md">Point de ventes</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'sales' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-tags text-green-700"
+        ></i>
+
+        <h3 class="font-bold text-black text-md">Ventes</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'finances' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-coins text-green-700"
+        ></i>
+
+        <h3 class="font-bold text-black text-md">Finances</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'purchases' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid  fa-money-check-dollar text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Achats</h3>
+      </div>
+      <p>
+
+      </p>
+    </a>
+    <a
+      href="{% url 'parameters' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-gears text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Paramètres</h3>
+      </div>
+      <p></p>
+    </a>
+    <!-- <a
+      href="{% url 'home' %}"
+      class="p-6 w-full bg-white flex flex-col items-center gap-2 rounded-lg border hover:shadow-lg hover:border-green-700"
+    >
+      <div class="flex items-center gap-2 w-full">
+        <i
+          class="fa-solid fa-users text-green-700"
+        ></i>
+        <h3 class="font-bold text-black text-md">Entités</h3>
+      </div>
+      <p></p>
+    </a> -->
+  </section>
+</div>
+
+{% endblock %}

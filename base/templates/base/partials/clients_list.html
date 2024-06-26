@@ -1,0 +1,14 @@
+{% if not clients %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-users text-cyan-700 text-9xl"></i>
+  <span>Aucun client trouvé</span>
+</div>
+{% else %}
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  {% for obj in clients %}
+  <!--  -->
+  {% include 'base/components/client_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

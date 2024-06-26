@@ -1,0 +1,164 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
+  <div class="flex items-center gap-2">
+    <a
+      id="back-button"
+      class="inline-block px-3 py-2 text-white bg-cyan-700 hover:bg-cyan-900 hover:text-black rounded-lg transition-all duration-300"
+      href="#"
+      >&larr;</a
+    >
+    <h3 class="bg-cyan-700 rounded-lg text-white py-2 px-4">
+      Ajouter ou modifier un produit
+      <i class="fa-solid fa-box ml-2"></i>
+    </h3>
+  </div>
+
+  <form
+    method="POST"
+    class="w-full max-w-3xl mx-auto p-4 bg-lime-200 rounded-xl flex flex-col gap-3 text-sm"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div>
+        <h3 class="mb-1">{{form.name.label}}</h3>
+        {{form.name}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.brand.label}}</h3>
+        {{form.brand}}
+      </div>
+            <div>
+        <div class="mb-1 flex justify-between items-center gap-3">
+          <h3>{{form.category.label}}</h3>
+          <button
+            onclick="hide_dialogs()"
+            hx-target="#basic_dialog"
+            hx-get="{% url 'create_category' %}"
+            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded-md w-fit text-center cursor-pointer"
+          >
+            <i class="text-sm fa-solid fa-plus"></i>
+          </button>
+        </div>
+        {{form.category}}
+      </div>
+      <div>
+        <div class="mb-1 flex justify-between items-center gap-3">
+          <h3>{{form.family.label}}</h3>
+          <button
+            onclick="hide_dialogs()"
+            hx-target="#basic_dialog"
+            hx-get="{% url 'create_family' %}"
+            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded-md w-fit text-center cursor-pointer"
+          >
+            <i class="text-sm fa-solid fa-plus"></i>
+          </button>
+        </div>
+        {{form.family}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.unit.label}}</h3>
+        {{form.unit}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.quantity.label}}</h3>
+        {{form.quantity}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.price.label}}</h3>
+        {{form.price}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.promo_price.label}}</h3>
+        {{form.promo_price}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.production_date.label}}</h3>
+        {{form.production_date}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.expiration_date.label}}</h3>
+        {{form.expiration_date}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.supplier.label}}</h3>
+        {{form.supplier}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.main_image.label}}</h3>
+        {{form.main_image}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.is_promoted.label}}</h3>
+        {{form.is_promoted}}
+      </div>
+      <div>
+        <h3 class="mb-1">{{form.is_new.label}}</h3>
+        {{form.is_new}}
+      </div>
+    </div>
+    <div>
+      <h3 class="mb-1">{{form.description.label}}</h3>
+      {{form.description}}
+    </div>
+
+    <div class="flex flex-row-reverse gap-2 items-end text-xs">
+      <button
+        class="px-4 py-2 bg-cyan-700 hover:bg-cyan-900 text-white rounded-md"
+        type="submit"
+      >
+        {% if not curr_obj %} Ajouter {% else %} Enregistrer {% endif %}
+      </button>
+      <button
+        onclick="close_modal()"
+        type="button"
+        class="modal_closer px-4 py-2 bg-white text-black hover:bg-red-300 rounded-md"
+      >
+        Annuler
+      </button>
+    </div>
+  </form>
+</div>
+{% if not curr_obj %}
+<script>
+  $(document).ready(function () {
+    // Add a placeholder option to the select element
+    $(".input_selector").children().first().remove();
+    $(".input_selector").prepend(
+      '<option value="" disabled selected></option>'
+    );
+  });
+
+  document
+    .getElementById("back-button")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default anchor behavior
+      window.history.go(-1); // Go back two pages
+    });
+
+  $(document).ready(function () {
+    $("#id_category").change(function () {
+      var url = "{% url 'load_families' %}";
+      var categoryId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          category: categoryId,
+        },
+        success: function (data) {
+          $("#id_family").html("");
+          $.each(data, function (key, value) {
+            $("#id_family").append(
+              '<option value="' + value.id + '">' + value.name + "</option>"
+            );
+          });
+        },
+      });
+    });
+  });
+</script>
+{% endif %} {% endblock %}

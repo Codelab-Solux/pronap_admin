@@ -1,0 +1,31 @@
+<div class="my-8 w-full flex justify-center items-center gap-2 not-italic z-10">
+  {% if objects.has_previous %}
+  <a
+    href="?page=1"
+    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    >Première</a
+  >
+  <a
+    href="?page={{ objects.previous_page_number }}"
+    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    >{{ objects.previous_page_number }}</a
+  >
+  {% endif %}
+  <!--  -->
+  <span class="text-sm">
+    Page {{ objects.number }} sur {{objects.paginator.num_pages}}
+  </span>
+  <!--  -->
+  {% if objects.has_next %}
+  <a
+    href="?page={{ objects.next_page_number }}"
+    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    >{{ objects.next_page_number }}</a
+  >
+  <a
+    href="?page={{ objects.paginator.num_pages }}"
+    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    >Dernière</a
+  >
+  {% endif %}
+</div>

@@ -1,0 +1,185 @@
+<div
+  class="border border-orange-300 p-3 bg-orange-100 w-full md:max-w-[350px] md:text-xs xl:text-md h-fit rounded-xl flex flex-col gap-3"
+>
+  <div
+    id="my_cart"
+    class="bg-white border border-orange-400 h-80 rounded-lg overflow-y-auto"
+  >
+    {% if cart_count == 0 %}
+    <div class="flex flex-col items-center gap-2 my-20 mx-auto">
+      <i class="fa-solid fa-shopping-cart text-teal-900 text-9xl"></i>
+      <span>Votre panier est vide</span>
+    </div>
+    {% else %}
+    <!--  -->
+    {% for item in cart_items %}
+    <p class="p-2 border-b border-orange-400 flex justify-between">
+      <span class="flex gap-3"
+        ><b>{{item.quantity}}</b>{{item.product.name}}</span
+      >
+      <span class="text-black">{{item.product.price}}</span>
+    </p>
+    {% endfor %} {% endif %}
+  </div>
+
+  <!-- totals display -->
+  <div
+    class="bg-orange-200 border border-orange-400 flex flex-col px-2 text-sm text-gray-500 rounded-lg"
+  >
+    <p class="py-1 flex justify-between items-center">
+      Total à payer <span class="text-black font-bold mr-2">37250 XOF</span>
+    </p>
+    <p
+      class="py-1 flex justify-between items-center border-y border-orange-400"
+    >
+      Total Réglé
+      <input
+        id="paid"
+        class="text-right text-green-700 rounded-md py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
+        type="text"
+        placeholder="0 XOF"
+      />
+    </p>
+    <p class="py-1 flex justify-between items-center">
+      Reliquat
+      <span id="balance" class="text-black font-bold mr-2">0 XOF</span>
+    </p>
+  </div>
+
+  <!-- keypad -->
+  <div
+    class="bg-green-600 p-2 rounded-xl flex flex-col gap-2 text-xs text-black"
+  >
+    <div class="grid grid-cols-3 gap-2">
+      <button
+        value="7"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        7
+      </button>
+      <button
+        value="8"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        8
+      </button>
+      <button
+        value="9"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        9
+      </button>
+      <button
+        value="4"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        4
+      </button>
+      <button
+        value="5"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        5
+      </button>
+      <button
+        value="6"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        6
+      </button>
+      <button
+        value="1"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        1
+      </button>
+      <button
+        value="2"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        2
+      </button>
+      <button
+        value="3"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        3
+      </button>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <button
+        value="0"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+      >
+        0
+      </button>
+      <button
+        id="clear_btn"
+        class="bg-green-700 p-2 w-full text-white text-center rounded-md hover:bg-green-900"
+      >
+        <i class="fa-solid fa-delete-left"></i>
+      </button>
+    </div>
+    <div class="w-full flex gap-2 p-3 bg-green-700 rounded-xl">
+      <button
+        id="cancel_btn"
+        class="bg-gray-200 p-2 w-1/2 text-center rounded-md border-2 hover:border-red-700 hover:bg-red-100 hover:text-red-600"
+      >
+        Annuler
+      </button>
+      <button
+        id="validate_btn"
+        class="bg-orange-100 p-2 w-full text-center rounded-md hover:bg-orange-300"
+      >
+        Valider
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Get reference to the input field
+  const paid = document.getElementById("paid");
+  const balance = document.getElementById("balance");
+  const total = 37250;
+
+  balance.textContent = `- ${total} XOF`;
+
+  // Add event listener to keypad buttons
+  const keypadButtons = document.querySelectorAll(".number-btn");
+  keypadButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      paid.value += button.value;
+      updateBalance();
+    });
+  });
+
+  function updateBalance() {
+    const paidValue = parseFloat(paid.value) || 0; // Convert input value to float, default to 0 if empty or NaN
+    const newBalance = paidValue - total;
+    balance.textContent = `${newBalance} XOF`;
+  }
+
+  // Add event listener to input field for manual input
+  paid.addEventListener("input", updateBalance);
+
+  // Function to handle delete button click
+  const deleteButton = document.getElementById("clear_btn");
+  deleteButton.addEventListener("click", () => {
+    paid.value = paid.value.slice(0, -1);
+    updateBalance();
+  });
+
+  // Function to handle cancel button click
+  const cancelButton = document.getElementById("cancel_btn");
+  cancelButton.addEventListener("click", () => {
+    paid.value = "";
+    updateBalance();
+  });
+
+  // Function to handle confirm button click
+  const confirmButton = document.getElementById("validate_btn");
+  confirmButton.addEventListener("click", () => {
+    console.log("Amount paid:", paid.value);
+  });
+</script>

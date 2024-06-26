@@ -1,0 +1,14 @@
+{% if not categories %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-shapes text-green-700 text-9xl"></i>
+  <span>Aucune catégorie trouvée</span>
+</div>
+{% else %}
+<div class="flex flex-col gap-2">
+  {% for obj in categories %}
+  <!--  -->
+  {% include 'base/components/category_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

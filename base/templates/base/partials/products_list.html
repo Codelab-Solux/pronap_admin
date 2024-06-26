@@ -1,0 +1,25 @@
+{% if not products %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-cubes text-green-700 text-9xl"></i>
+  <span>Aucun produit trouvé</span>
+</div>
+{% else %}
+<div class="flex flex-col gap-1">
+  <div
+    class="w-full max-w-[1350px] rounded-lg primary_color p-2 grid grid-cols-7 items-center gap-4 text-sm text-white"
+  >
+    <span>Image</span>
+    <span>Article</span>
+    <span>Marque</span>
+    <span>Unité de mesure</span>
+    <span>Catégorie</span>
+    <span>Famille</span>
+    <span class="mx-auto">Actions</span>
+  </div>
+  {% for obj in products %}
+  <!--  -->
+  {% include 'base/components/product_list_card.html' %}
+  <!--  -->
+  {% endfor %}
+</div>
+{% endif %}

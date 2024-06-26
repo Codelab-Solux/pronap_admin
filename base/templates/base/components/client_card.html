@@ -1,0 +1,29 @@
+{% load static %}
+<!--  -->
+<a href="{% url 'user_details' obj.id %}">
+  <div
+    class="px-4 py-1 h-full relative flex items-center gap-2 border bg-white hover:shadow-md rounded-xl overflow-hidden"
+  >
+      {% if not obj.profile.image %}
+      <img
+        class="h-16 w-16 rounded-full object-cover"
+        src="{% static 'imgs/anon.png' %}"
+        alt="image"
+      />
+      {% else %}
+      <img
+        class="h-16 w-16 rounded-full object-cover"
+        src="{{obj.profile.image.url}}"
+        alt="image"
+      />
+      {% endif %}
+
+    <article class="w-full flex flex-col gap-1 text-left">
+      <h4 class="text-black font-bold">{{obj.full_name}}</h4>
+      <p class="rounded-md flex gap-2 items-center text-black text-xs">
+        {{obj.get_sex_display}}
+      </p>
+    </article>
+  </div>
+</a>
+

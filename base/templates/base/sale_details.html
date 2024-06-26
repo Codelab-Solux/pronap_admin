@@ -1,0 +1,80 @@
+{% load static %}
+<div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-6">
+  <div class="flex justify-between">
+    <div
+      class="bg-teal-900 py-2 px-4 rounded-full flex items-center text-white gap-4"
+    >
+      <a
+        href="{% url 'dash_orders' %}"
+        class="inline-block px-2 py-1 font-bold hover:bg-yellow-300 hover:text-black rounded-full transition-all duration-300"
+        >&larr;</a
+      >
+      Retourner
+    </div>
+    <span
+      class="flex items-center gap-4 py-2 px-4 rounded-full bg-yellow-200 text-black"
+      ><i class="fa-solid fa-dolly"></i>
+      <!--  -->
+      Commande N° : 000{{ curr_obj.id }}</span
+    >
+  </div>
+
+  <div class="flex gap-4">
+    <!-- cart details -->
+    <div class="overflow-x-auto w-full overflow-y-hidden rounded-xl">
+      <table id="items_table" class="w-full text-left db-table">
+        <thead
+          class="bg-teal-900 border border-teal-900 bg-teal-900 text-white"
+        >
+          <tr>
+            <th class="px-3 py-4 text-sm">Image</th>
+            <th class="px-3 py-4 text-sm">Article</th>
+            <th class="px-3 py-4 text-sm">Prix</th>
+            <th class="px-3 py-4 text-sm text-center">Quantité</th>
+            <th class="px-3 py-4 text-sm">Total</th>
+          </tr>
+        </thead>
+
+        <tbody class="border">
+          {% for obj in order_items %}
+          <tr
+            class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-300"
+          >
+            <td class="px-3 py-1">
+              {% if obj.product.image %}
+              <img
+                class="h-10 text-gray-200"
+                src="{{obj.product.image.url}}"
+                alt="item image"
+              />
+              {% else %}
+              <img
+                class="h-10 text-gray-200"
+                src="{% static 'imgs/logo-g.png' %}"
+                alt="image"
+              />
+              {% endif %}
+            </td>
+            <td class="px-3 py-1">{{obj.product.name}}</td>
+            {% if obj.product.is_promoted %}
+            <td class="px-3 py-1">{{obj.product.promo_price}}</td>
+            {% else %}
+            <td class="px-3 py-1">{{ obj.product.price }}</td>
+            {% endif %}
+            <td class="px-3 py-1 text-center">{{ obj.quantity }}</td>
+            <td class="px-3 py-1">{{ obj.price }} Cfa</td>
+          </tr>
+          <input type="hidden" id="csrf_token" value="{{ csrf_token }}" />
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- order info -->
+    <div
+      class="w-full max-w-60 xl:max-w-80"
+      hx-get="{% url 'order_info' curr_obj.id %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
+  </div>
+</div>

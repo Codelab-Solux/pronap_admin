@@ -1,0 +1,55 @@
+{% extends 'main_plain.html' %} {% block content %}
+<section
+  class="bg-white p-4 lg:p-6 w-full max-w-5xl rounded-3xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8"
+>
+  <i
+    class="fa-solid fa-arrow-right-to-bracket text-green-900 text-9xl mx-auto"
+  ></i>
+
+  <div
+    class="bg-gray-100 rounded-2xl p-6 flex-col h-fit w-full max-w-md shadow-md"
+  >
+    <h1 class="mb-4 text-black text-3xl font-bold">Connexion</h1>
+    <form method="POST" class="w-full text-sm">
+      {% csrf_token %}
+      <div class="flex flex-col mb-2">
+        <label for="username">Email</label>
+        <input
+          type="email"
+          name="username"
+          class="px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-orange-400 w-full"
+          placeholder="Email"
+          required
+        />
+      </div>
+      <div class="flex flex-col mb-4">
+        <label for="password">Mots de passe</label>
+        <input
+          type="password"
+          name="password"
+          class="px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-orange-400 w-full"
+          placeholder="Mots de passe"
+          required
+        />
+      </div>
+      <!-- redirects to intended page -->
+      {% if request.GET.next %}
+      <input type="hidden" name="next" value="{{request.GET.next}}" />
+      {% endif %}
+      <div class="flex justify-between items-center gap-2">
+        <input
+          type="submit"
+          value="Se connecter"
+          class="mt-2 px-8 py-2 primary_color text-sm text-white rounded-full cursor-pointer"
+        />
+        <p class="mt-2">
+          Mots de pass oublié?
+          <a href="{% url 'signup' %}" class="text-orange-500 hover:underline"
+            >Cliquez ici</a
+          >
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+*.log
+*.pot
+*.pyc
+.env
+.conf
+.docx
+*.json
+venv/
+__pycache__

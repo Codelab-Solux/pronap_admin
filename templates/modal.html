@@ -1,0 +1,85 @@
+{% load static %}
+<!-----------------------------------------------------  modal ------------------------------------------------------>
+<div id="modal" class="z-50 hidden pl-[60px] lg:pl-[80px] xl:pl-[300px]">
+  <div
+    id="basic_dialog"
+    class="m-auto dialog w-full max-w-[600px] rounded-xl"
+    hx-target="this"
+  >
+  </div>
+</div>
+
+<style>
+  /* The Modal (background) */
+  #modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+  }
+
+  /* Modal dialog */
+  .dialog {
+    display: none;
+    background-color: #fefefe; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    margin: 7% auto;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+</style>
+<!--  -->
+<script>
+  // Get the modal
+  var modal = document.getElementById("modal");
+  var dialogs = document.getElementsByClassName("dialog");
+
+  // Response targeting #dialog => show the modal
+  htmx.on("htmx:afterSwap", (e) => {
+    let active_dialog = document.getElementById(e.detail.target.id);
+    console.log(active_dialog.id);
+    modal.style.display = "block";
+    active_dialog.style.display = "block";
+    document.style.display = "fixed";
+  });
+
+  // Empty response targeting #dialog => hide the modal
+  htmx.on("htmx:beforeSwap", (e) => {
+    let active_dialog = document.getElementById(e.detail.target.id);
+    if (active_dialog.id && !e.detail.xhr.response) {
+      console.log(active_dialog.id);
+      active_dialog.style.display = "none";
+      modal.style.display = "none";
+      e.detail.shouldSwap = false;
+    }
+  });
+
+  // the elements that open the modal
+  var modal_openers = document.getElementsByClassName("modal_opener");
+
+  // elements that close the modal
+  var modal_closers = document.getElementsByClassName("modal_closer");
+
+  function hide_dialogs() {
+    for (let element of dialogs) {
+      element.style.display = "none";
+    }
+  }
+  // close the modal
+  function close_modal() {
+    hide_dialogs();
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      hide_dialogs();
+      modal.style.display = "none";
+    }
+  };
+</script>

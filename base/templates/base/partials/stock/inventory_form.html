@@ -1,0 +1,102 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
+  <div class="flex items-center gap-2">
+    <a
+      id="back-button"
+      class="inline-block px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+      href="#"
+      >&larr;</a
+    >
+    <h3 class="bg-green-700 rounded-lg text-white py-2 px-4">
+      Nouvel Inventaire
+      <i class="fa-solid fa-arrow-down ml-2"></i>
+    </h3>
+  </div>
+
+  <!-- dashboard/partials/stock_form.html -->
+  <form method="post" class="flex flex-col gap-2">
+    {% csrf_token %}
+    <h2
+      class="px-4 py-2 bg-green-700 rounded-lg mb-4 text-center text-sm text-white"
+    >
+      {{ form_title }}
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+      <div class="grid">
+
+        <div>
+          <h3 class="mb-1">{{ form.Supervisor.label }}</h3>
+          {{ form.Supervisor }}
+        </div>
+      </div>
+      <div>
+        <h3 class="mb-1">{{ form.date.label }}</h3>
+        {{ form.date }}
+      </div>
+    </div>
+
+    <div>
+      {{ formset.management_form }}
+      <div id="formset-container" class="p-3 bg-orange-100 rounded-xl grid gap-2 text-sm">
+        {% for form in formset %}
+        <div class="formset-form flex gap-4">
+          {% for field in form %}
+          <div>
+            <h3 class="mb-1">{{ field.label }}</h3>
+            {{ field }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="formset_actions" class="flex justify-between items-center">
+      <button
+        class="px-4 py-2 bg-green-700 text-white hover:bg-green-900 rounded-md"
+        type="submit"
+      >
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const formsetContainer = document.getElementById("formset-container");
+  const addButton = document.createElement("button");
+  document.addEventListener("DOMContentLoaded", function () {
+    addButton.type = "button";
+    addButton.textContent = "Ajouter un autre produit";
+    addButton.classList.add(
+      "px-4",
+      "py-2",
+      "bg-orange-200",
+      "text-black",
+      "hover:bg-orange-300",
+      "rounded-md",
+      "mt-2"
+    );
+    formsetContainer.appendChild(addButton);
+
+    addButton.addEventListener("click", function () {
+      const newForm = formsetContainer
+        .querySelector(".formset-form")
+        .cloneNode(true);
+      const formCount = document.getElementById(
+        "id_product_stocks-TOTAL_FORMS"
+      );
+      const currentFormCount = parseInt(formCount.value);
+      formCount.value = currentFormCount + 1;
+      newForm.innerHTML = newForm.innerHTML.replace(
+        /product_stocks-\d+/g,
+        `product_stocks-${currentFormCount}`
+      );
+      formsetContainer.insertBefore(newForm, addButton);
+    });
+  });
+
+</script>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% load static %}
+
+<div
+  class="mb-1 py-2 px-4 w-full bg-white hover:bg-gray-100 text-xs xl:text-sm  grid grid-cols-7 items-center gap-4 rounded-xl border hover:shadow-lg transition duration-200 ease-in"
+>
+  {% if obj.image %}
+  <img
+    src="{{ obj.image.url }}"
+    alt="{{ obj.name }}"
+    class="w-8 h-8 object-contain rounded-full"
+  />
+  {% else %}
+  <img
+    src="{% static 'imgs/logo.png' %}"
+    alt="image"
+    class="w-8 h-8 object-contain rounded-full"
+  />
+  {% endif %}
+  <!--  -->
+  <h3 class="font-bold text-black">{{obj.name}}</h3>
+  <span class="text-orange-600"> {{obj.brand}} </span>
+  <span> {{obj.get_unit_display}} </span>
+  <span> {{obj.category}} </span>
+  <span> {{obj.family}} </span>
+
+  <div
+    class="w-fit mx-auto flex gap-3 justify-end items-end text-end relative text-gray-700"
+  >
+    <button
+      type="button"
+      class="bg-white hover:text-teal-500 px-3 py-1 rounded-lg"
+      name="sentry"
+      aria-expanded="false"
+      aria-haspopup="true"
+      onclick="toggleDropdown(this,'{{obj.id}}')"
+    >
+      <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+    </button>
+
+    <div
+      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+      role="status menu"
+      aria-orientation="vertical"
+      aria-labelledby="status-menu-button"
+      tabindex="-1"
+      id="actionMenu{{obj.id}}"
+    >
+      <!--  -->
+      <a
+        hx-target="#basic_dialog"
+        hx-get="{% url 'product_details' obj.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-gray-200 rounded-lg w-full text-center cursor-pointer"
+        ><i class="fa-solid fa-window-restore text-sm  mr-2"></i>
+        Aperçu
+      </a>
+
+      <a
+        hx-boost="false"
+        href="{% url 'product_details' obj.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+        ><i class="text-sm fa-solid fa-expand mr-2"></i>
+        Détails
+      </a>
+      <a
+        onclick="hide_dialogs()"
+        hx-target="#basic_dialog"
+        hx-get="{% url 'edit_product' obj.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-yellow-200 rounded-lg w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+        Modifier
+      </a>
+
+      <button
+        hx-confirm="Voulez vous vraiment suprimmer ceci?"
+        hx-delete="{% url 'delete_base_object' obj.id 'Category' %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-trash mr-2"></i>
+        Supprimer
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleDropdown(e, obj_id) {
+    activeMenu = document.getElementById(`actionMenu${obj_id}`);
+    e.name === `sentry`
+      ? ((e.name = "close"), activeMenu.classList.remove("hidden"))
+      : ((e.name = `sentry`), activeMenu.classList.add("hidden"));
+  }
+
+  window.addEventListener("mouseup", function (event) {
+    activeMenu.classList.add("hidden");
+  });
+</script>
