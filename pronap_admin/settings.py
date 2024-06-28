@@ -26,7 +26,7 @@ ALLOWED_HOSTS = [
 CORS_ALLOWED_ORIGINS = [
     "https://administration23wer21.pronap.store",
     "https://www.administration23wer21.pronap.store",
-    '6http://62.72.19.182',
+    'http://62.72.19.182',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
