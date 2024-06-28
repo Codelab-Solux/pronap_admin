@@ -26,15 +26,13 @@ ALLOWED_HOSTS = [ "*",
 CORS_ALLOWED_ORIGINS = [
     # "https://administration23wer21.pronap.store",
     # "https://www.administration23wer21.pronap.store",
-    'http://62.72.19.182:8040/',
-    'http://127.0.0.1:8000/',
+    'http://62.72.19.182:8040',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     # "https://administration23wer21.pronap.store",
     # "https://www.administration23wer21.pronap.store",
-    'http://62.72.19.182:8040/',
-    'http://127.0.0.1:8000/',
+    'http://62.72.19.182:8040',
 ]
 
 
@@ -62,10 +60,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Place WhiteNoise here
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
