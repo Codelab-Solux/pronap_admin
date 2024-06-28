@@ -15,23 +15,13 @@ SECRET_KEY = 'django-insecure-3$$v4pm96x49eyovw7ja2c%+4_a!m9zrs6c(&e8ij8dopa#s3t
 DEBUG = True
 
 
-ALLOWED_HOSTS = [ "*",
-    # 'administration23wer21.pronap.store',
-    # 'www.administration23wer21.pronap.store',
-    # 'localhost',
-    # '127.0.0.1',
-    # '62.72.19.182',
-]
+ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOWED_ORIGINS = [
-    # "https://administration23wer21.pronap.store",
-    # "https://www.administration23wer21.pronap.store",
     'http://62.72.19.182:8040',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    # "https://administration23wer21.pronap.store",
-    # "https://www.administration23wer21.pronap.store",
     'http://62.72.19.182:8040',
 ]
 
