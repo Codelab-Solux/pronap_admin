@@ -758,18 +758,17 @@ def supplier_details(req, pk):
         return redirect('home')
 
     curr_obj = Supplier.objects.get(id=pk)
-    available_products = Product.objects.filter(
-        supplier=curr_obj).order_by('-name')
-    received_products = Product.objects.filter(
-        supplier=curr_obj).order_by('-name')
-    returned_products = Product.objects.filter(
-        supplier=curr_obj).order_by('-name')
+    available_products = ProductStock.objects.filter(
+        supplier=curr_obj).order_by('product__name')
+    received_products = ProductStock.objects.filter(
+        supplier=curr_obj).order_by('product__name')
+    returned_products = ProductStock.objects.filter(
+        supplier=curr_obj).order_by('product__name')
     context = {
         "suppliers": "active",
         'title': 'Fournisseur',
         'curr_obj': curr_obj,
         'available_products': available_products,
-
         'received_products': received_products,
         'returned_products': returned_products,
     }

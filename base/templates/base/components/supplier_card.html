@@ -37,7 +37,7 @@
 
     <button
       type="button"
-      class="hover:text-black bg-white hover:text-teal-700 px-3 py-1 rounded-full"
+      class="hover:text-black bg-white hover:text-green-700 px-3 py-1 rounded-full"
       name="sentry"
       aria-expanded="false"
       aria-haspopup="true"
@@ -58,7 +58,7 @@
       <a
         hx-boost="false"
         href="{% url 'supplier_details' obj.id %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-teal-200 rounded-full w-full text-center cursor-pointer"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
         ><i class="text-sm fa-solid fa-expand mr-2"></i>
         Détails
       </a>
@@ -67,7 +67,7 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'edit_supplier' obj.id %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-yellow-200 rounded-full w-full text-center cursor-pointer"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
         Modifier
@@ -78,7 +78,7 @@
         hx-target="#basic_dialog"
         hx-delete="{% url 'delete_base_object' obj.id 'Supplier' %}"
         hx-confirm="Voulez vous vraiment suprimmer ceci?"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-full w-full text-center cursor-pointer"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-trash mr-2"></i>
         Supprimer
@@ -91,7 +91,7 @@
 
 <div
   id="c_{{obj.id}}"
-  class="accordion hidden bg-teal-900 text-white rounded-xl p-2 lg:p-4"
+  class="accordion hidden bg-green-900 text-white rounded-xl p-2 lg:p-4"
 >
   Details are here
 </div>

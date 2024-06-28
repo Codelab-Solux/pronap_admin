@@ -1,0 +1,38 @@
+{% load static %}
+
+<div class="grid gap-4">
+  <div class="flex flex-col gap-4">
+    <div class="bg-white w-full h-full rounded-3xl overflow-hidden">
+      {% if not curr_obj.image %}
+      <img
+        src="{% static 'imgs/icon-w.png' %}"
+        alt="image"
+        class="w-40 h-40 object-contain"
+      />
+      {% else %}
+      <img
+        src="{{curr_obj.image.url}}"
+        alt="{{curr_obj.name}}"
+        class="w-full h-full object-contain"
+      />
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="p-4 bg-orange-200 rounded-xl w-full flex flex-col gap-2">
+    <h2 class="text-4xl font-bold text-black">{{curr_obj.product.name}}</h2>
+    <p>Catégorie : <b> {{ curr_obj.product.category }}</b></p>
+    <p>Famille : <b> {{ curr_obj.product.family }}</b></p>
+    <p>Quantité en stock : <b> {{curr_obj.quantity }}</b></p>
+    <p>Unité de mesure : <b> {{curr_obj.product.get_unit_display }}</b></p>
+    <p>
+      Prix unitaire :
+      <b>
+        {{curr_obj.price }} Cfa /
+      </b>
+      {{curr_obj.product.get_unit_display }} 
+    </p>
+    <p>Lot N° : <b> {{curr_obj.lot }}</b></p>
+    <p>Fournisseur : <b> {{curr_obj.supplier.name }}</b></p>
+  </div>
+</div>
