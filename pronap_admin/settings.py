@@ -20,19 +20,19 @@ ALLOWED_HOSTS = [
     'www.administration23wer21.pronap.store',
     'localhost',
     '127.0.0.1',
-    '*',
+    '62.72.19.182',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://administration23wer21.pronap.store",
     "https://www.administration23wer21.pronap.store",
-    '*',
+    '6http://62.72.19.182',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://administration23wer21.pronap.store",
     "https://www.administration23wer21.pronap.store",
-    '*',
+    'http://62.72.19.182',
 ]
 
 
