@@ -11,7 +11,7 @@
   />
   {% else %}
   <img
-    src="{% static 'imgs/logo-g.png' %}"
+    src="{% static 'imgs/icon-w.png' %}"
     alt="image"
     class="w-7 h-7 object-cover rounded-full"
   />
@@ -76,7 +76,7 @@
       <button
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
-        hx-delete="{% url 'delete_store_object' obj.id 'Supplier' %}"
+        hx-delete="{% url 'delete_base_object' obj.id 'Supplier' %}"
         hx-confirm="Voulez vous vraiment suprimmer ceci?"
         class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-full w-full text-center cursor-pointer"
       >

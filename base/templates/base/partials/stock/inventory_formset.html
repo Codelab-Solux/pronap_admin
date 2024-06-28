@@ -1,0 +1,90 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<form method="post" class="flex flex-col gap-2">
+  {% csrf_token %}
+
+  <div>
+    {{ formset.management_form }}
+    <div
+      id="formset-container"
+      class="w-full p-2 bg-green-200 rounded-xl grid gap-2 text-sm"
+    >
+      {% for form in formset %}
+      <div class="formset-form w-full flex gap-2">
+        <div>
+          <h3 class="mb-1">{{ form.product_stock.label }}</h3>
+          {{ form.product_stock }}
+        </div>
+        <div>
+          <h3 class="mb-1">{{ form.quantity_expected.label }}</h3>
+          {{ form.quantity_expected }}
+        </div>
+        <div>
+          <h3 class="mb-1">{{ form.quantity_found.label }}</h3>
+          {{ form.quantity_found }}
+        </div>
+        <div class="w-full max-w-2xl">
+          <h3 class="mb-1">{{ form.comment.label }}</h3>
+          {{ form.comment }}
+        </div>
+      </div>
+      {% endfor %}
+
+      <button
+        class="px-4 py-2 bg-orange-200 text-black text-sm hover:bg-orange-300 rounded-md"
+        type="submit"
+      >
+        Ajouter un produit
+      </button>
+    </div>
+  </div>
+  <div id="formset_actions" class="flex flex-row-reverse gap-3 items-center">
+    <button
+      class="px-4 py-2 bg-green-700 text-white text-sm hover:bg-green-900 rounded-md"
+      type="submit"
+    >
+      Enregistrer
+    </button>
+    <button
+      class="px-4 py-2 bg-red-700 text-white text-sm rounded-md"
+      type="submit"
+    >
+      Anuller
+    </button>
+  </div>
+</form>
+
+<script>
+  const formsetContainer = document.getElementById("formset-container");
+  const addButton = document.createElement("button");
+  document.addEventListener("DOMContentLoaded", function () {
+    addButton.type = "button";
+    addButton.textContent = "Ajouter un autre produit";
+    addButton.classList.add(
+      "px-4",
+      "py-2",
+      "bg-orange-200",
+      "text-black",
+      "hover:bg-orange-300",
+      "rounded-md",
+      "mt-2"
+    );
+    formsetContainer.appendChild(addButton);
+
+    addButton.addEventListener("click", function () {
+      const newForm = formsetContainer
+        .querySelector(".formset-form")
+        .cloneNode(true);
+      const formCount = document.getElementById(
+        "id_product_stocks-TOTAL_FORMS"
+      );
+      const currentFormCount = parseInt(formCount.value);
+      formCount.value = currentFormCount + 1;
+      newForm.innerHTML = newForm.innerHTML.replace(
+        /product_stocks-\d+/g,
+        `product_stocks-${currentFormCount}`
+      );
+      formsetContainer.insertBefore(newForm, addButton);
+    });
+  });
+</script>

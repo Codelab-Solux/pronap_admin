@@ -95,7 +95,6 @@
           <th class="px-3 py-4 text-sm">Caisse</th>
           <th class="px-3 py-4 text-sm">Audit</th>
           <th class="px-3 py-4 text-sm">Montant</th>
-          <th class="px-3 py-4 text-sm">Remise</th>
           <th class="px-3 py-4 text-sm">Actions</th>
         </tr>
       </thead>
@@ -112,7 +111,6 @@
           <td class="px-3 py-1">{{obj.cashdesk.name}}</td>
           <td class="px-3 py-1">{{obj.get_audit_display}}</td>
           <td class="px-3 py-1">{{obj.total}} Cfa</td>
-          <td class="px-3 py-1">{{obj.discount}} Cfa</td>
           <td class="px-3 py-1 relative">
             <div
               class="w-fit flex gap-3 justify-end items-end text-end text-gray-700"
@@ -177,5 +175,9 @@
       event.preventDefault(); // Prevent the default anchor behavior
       window.history.go(-1); // Go back two pages
     });
+
+    window.addEventListener("mouseup", function (event) {
+  activeMenu.classList.add("hidden");
+});
 </script>
 {% endblock %}

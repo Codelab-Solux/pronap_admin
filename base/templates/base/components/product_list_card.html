@@ -28,7 +28,7 @@
   >
     <button
       type="button"
-      class="bg-white hover:text-teal-500 px-3 py-1 rounded-lg"
+      class="bg-white hover:text-teal-500 px-3 py-1 rounded-full"
       name="sentry"
       aria-expanded="false"
       aria-haspopup="true"
@@ -45,14 +45,6 @@
       tabindex="-1"
       id="actionMenu{{obj.id}}"
     >
-      <!--  -->
-      <a
-        hx-target="#basic_dialog"
-        hx-get="{% url 'product_details' obj.id %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-gray-200 rounded-lg w-full text-center cursor-pointer"
-        ><i class="fa-solid fa-window-restore text-sm  mr-2"></i>
-        Aperçu
-      </a>
 
       <a
         hx-boost="false"
@@ -73,7 +65,7 @@
 
       <button
         hx-confirm="Voulez vous vraiment suprimmer ceci?"
-        hx-delete="{% url 'delete_base_object' obj.id 'Category' %}"
+        hx-delete="{% url 'delete_base_object' obj.id 'Product' %}"
         class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-trash mr-2"></i>

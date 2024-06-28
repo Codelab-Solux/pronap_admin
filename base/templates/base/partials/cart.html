@@ -1,163 +1,164 @@
 <div
-  class="border border-lime-300 p-3 bg-lime-100 md:text-xs xl:text-md h-fit rounded-xl flex flex-col gap-3"
+  class="h-full border border-lime-300 p-3 bg-lime-100 md:text-xs xl:text-md h-100 rounded-xl flex flex-col gap-3"
 >
+  {% if cart_count == 0 %}
   <div
-    class="bg-white border border-lime-400 h-80 rounded-lg overflow-y-auto"
+    class="h-full flex flex-col justify-center items-center gap-3 bg-white border border-lime-400 rounded-lg"
   >
-    {% if cart_count == 0 %}
-    <div class="flex flex-col items-center gap-2 my-20 mx-auto">
-      <i class="fa-solid fa-shopping-cart text-green-700 text-9xl"></i>
-      <span>Le panier est vide</span>
-    </div>
-    {% else %}
-    <!--  -->
-    {% for item in cart_items %}
-    <article class="p-2 border-b border-lime-400 flex justify-between">
-      <span class="flex gap-3">{{item.product.product.name}}</span>
-      <div class="flex gap-2 text-xs">
-        <button
-          onclick="update_cart('{{ item.product.id }}', 'add_item')"
-          class=""
+    <i class="fa-solid fa-shopping-cart text-green-700 text-9xl"></i>
+    <span>Le panier est vide</span>
+  </div>
+  {% else %}
+  <div class="h-full flex flex-col rounded-lg gap-3">
+    <div
+      class="h-full bg-white border border-lime-400 h-80 rounded-lg overflow-y-auto"
+    >
+      {% for item in cart_items %}
+      <article class="p-2 border-b border-lime-400 flex justify-between">
+        <span class="flex gap-3">{{item.product.product.name}}</span>
+        <div class="flex gap-2 text-xs">
+          <button
+            onclick="update_cart('{{ item.product.id }}', 'add_item')"
+            class=""
+          >
+            <i class="fa-solid fa-plus text-green-700"></i>
+          </button>
+          <b>x {{item.quantity}}</b>
+          <button
+            onclick="update_cart('{{ item.product.id }}', 'remove_item')"
+            class=""
+          >
+            <i class="fa-solid fa-minus text-lime-400"></i>
+          </button>
+        </div>
+        <span class="text-black">{{item.total_price}}</span>
+        <span class="text-black"
+          >{{item.product.price}}/{{item.product.product.unit}}</span
         >
-          <i class="fa-solid fa-plus text-green-700"></i>
+        <button
+          onclick="update_cart('{{ item.product.id }}', 'clear_item')"
+          class="p-[0.05em]"
+        >
+          <i class="fa-solid fa-trash text-red-600"></i>
         </button>
-        <b>x {{item.quantity}}</b>
+      </article>
+      {% endfor %}
+    </div>
+    <!-- totals display -->
+    <div
+      class="bg-lime-200 border border-lime-400 flex flex-col px-2 text-sm text-gray-500 rounded-lg"
+    >
+      <div class="py-1 flex justify-between items-center">
+        Total à payer
+        <span class="text-black font-bold mr-2">{{cart_total}} XOF</span>
+      </div>
+      <p
+        class="py-1 flex justify-between items-center border-y border-lime-400"
+      >
+        Total Réglé
+        <input
+          id="paid"
+          class="text-right text-green-700 rounded-md py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
+          type="text"
+          placeholder="0 XOF"
+        />
+      </p>
+      <p class="py-1 flex justify-between items-center">
+        Reliquat
+        <span id="balance" class="text-black font-bold mr-2">0 XOF</span>
+      </p>
+    </div>
+    <!-- keypad -->
+    <div
+      class="bg-green-600 p-2 rounded-xl flex flex-col gap-2 text-xs text-black"
+    >
+      <div class="grid grid-cols-3 gap-2">
         <button
-          onclick="update_cart('{{ item.product.id }}', 'remove_item')"
-          class=""
+          value="7"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
         >
-          <i class="fa-solid fa-minus text-lime-400"></i>
+          7
+        </button>
+        <button
+          value="8"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          8
+        </button>
+        <button
+          value="9"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          9
+        </button>
+        <button
+          value="4"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          4
+        </button>
+        <button
+          value="5"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          5
+        </button>
+        <button
+          value="6"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          6
+        </button>
+        <button
+          value="1"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          1
+        </button>
+        <button
+          value="2"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          2
+        </button>
+        <button
+          value="3"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          3
         </button>
       </div>
-      <span class="text-black">{{item.total_price}}</span>
-      <span class="text-black"
-        >{{item.product.price}}/{{item.product.product.unit}}</span
-      >
-      <button
-        onclick="update_cart('{{ item.product.id }}', 'clear_item')"
-        class="p-[0.05em]"
-      >
-        <i class="fa-solid fa-trash text-red-600"></i>
-      </button>
-    </article>
-    {% endfor %} {% endif %}
-  </div>
-
-  <!-- totals display -->
-
-  <div
-    class="bg-lime-200 border border-lime-400 flex flex-col px-2 text-sm text-gray-500 rounded-lg"
-  >
-    <div class="py-1 flex justify-between items-center">
-      Total à payer
-      <span class="text-black font-bold mr-2">{{cart_total}} XOF</span>
-    </div>
-    <p
-      class="py-1 flex justify-between items-center border-y border-lime-400"
-    >
-      Total Réglé
-      <input
-        id="paid"
-        class="text-right text-green-700 rounded-md py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
-        type="text"
-        placeholder="0 XOF"
-      />
-    </p>
-    <p class="py-1 flex justify-between items-center">
-      Reliquat
-      <span id="balance" class="text-black font-bold mr-2">0 XOF</span>
-    </p>
-  </div>
-
-  <!-- keypad -->
-  <div
-    class="bg-green-600 p-2 rounded-xl flex flex-col gap-2 text-xs text-black"
-  >
-    <div class="grid grid-cols-3 gap-2">
-      <button
-        value="7"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        7
-      </button>
-      <button
-        value="8"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        8
-      </button>
-      <button
-        value="9"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        9
-      </button>
-      <button
-        value="4"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        4
-      </button>
-      <button
-        value="5"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        5
-      </button>
-      <button
-        value="6"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        6
-      </button>
-      <button
-        value="1"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        1
-      </button>
-      <button
-        value="2"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        2
-      </button>
-      <button
-        value="3"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        3
-      </button>
-    </div>
-    <div class="grid grid-cols-2 gap-2">
-      <button
-        value="0"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
-      >
-        0
-      </button>
-      <button
-        id="clear_btn"
-        class="bg-green-700 p-2 w-full text-white text-center rounded-md hover:bg-green-900"
-      >
-        <i class="fa-solid fa-delete-left"></i>
-      </button>
-    </div>
-    <div class="w-full flex gap-2 p-3 bg-green-700 rounded-xl">
-      <button
-        id="cancel_btn"
-        class="bg-gray-200 p-2 w-1/2 text-center rounded-md border-2 hover:border-red-700 hover:bg-red-100 hover:text-red-600"
-      >
-        Annuler
-      </button>
-      <a
-        href="{% url 'checkout' %}"
-        class="bg-lime-200 p-2 w-full text-center rounded-md hover:bg-lime-400"
-      >
-        Valider
-    </a>
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          value="0"
+          class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        >
+          0
+        </button>
+        <button
+          id="clear_btn"
+          class="bg-green-700 p-2 w-full text-white text-center rounded-md hover:bg-green-900"
+        >
+          <i class="fa-solid fa-delete-left"></i>
+        </button>
+      </div>
+      <div class="w-full flex gap-2 p-3 bg-green-700 rounded-xl">
+        <button
+          id="cancel_btn"
+          class="bg-gray-200 p-2 w-1/2 text-center rounded-md border-2 hover:border-red-700 hover:bg-red-100 hover:text-red-600"
+        >
+          Annuler
+        </button>
+        <a
+          href="{% url 'checkout' %}"
+          class="bg-lime-200 p-2 w-full text-center rounded-md hover:bg-lime-400"
+        >
+          Valider
+        </a>
+      </div>
     </div>
   </div>
+  {% endif %}
 </div>
 
 <script>
@@ -200,7 +201,6 @@
       paid.value = "";
       updateBalance();
     });
-
   }
 
   document.addEventListener("htmx:afterSettle", function (event) {

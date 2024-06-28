@@ -55,15 +55,13 @@
     </div>
 
     <div id="inputs" class="tabcontent w-full flex flex-col gap-2">
-      <div class="w-full flex justify-between items-center mb-4">
-        <a
-          href="{% url 'create_stock_input' %}"
-          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
-        >
-          Nouvelle entrée
-          <i class="text-sm fa-solid fa-plus ml-2"></i>
-        </a>
-      </div>
+      <a
+        href="{% url 'create_stock_input' %}"
+        class="mb-4 px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+      >
+        Nouvelle entrée
+        <i class="text-sm fa-solid fa-plus ml-2"></i>
+      </a>
       <div
         class="stock_inputs"
         hx-get="{% url 'stock_inputs' %}"
@@ -73,15 +71,13 @@
     </div>
 
     <div id="outputs" class="tabcontent w-full flex flex-col gap-2">
-      <div class="w-full flex justify-between items-center mb-4">
-        <a
-          href="{% url 'create_stock_output' %}"
-          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
-        >
-          Nouvelle sortie
-          <i class="text-sm fa-solid fa-plus ml-2"></i>
-        </a>
-      </div>
+      <a
+        href="{% url 'create_stock_output' %}"
+        class="mb-4 px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+      >
+        Nouvelle sortie
+        <i class="text-sm fa-solid fa-plus ml-2"></i>
+      </a>
       <div
         class="stock_outputs"
         hx-get="{% url 'stock_outputs' %}"
@@ -91,15 +87,15 @@
     </div>
 
     <div id="inventory" class="tabcontent w-full flex flex-col gap-2">
-      <div class="w-full flex justify-between items-center mb-4">
-        <a
-          href="{% url 'create_inventory' %}"
-          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
-        >
-          Nouvel inventaire
-          <i class="text-sm fa-solid fa-plus ml-2"></i>
-        </a>
-      </div>
+      <button
+        onclick="hide_dialogs()"
+        hx-target="#basic_dialog"
+        hx-get="{% url 'create_inventory' %}"
+        class="mb-4 px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+      >
+        Nouvelle inventaire
+        <i class="text-sm fa-solid fa-plus ml-2"></i>
+      </button>
       <div
         class="stock_inventories"
         hx-get="{% url 'stock_inventories' %}"

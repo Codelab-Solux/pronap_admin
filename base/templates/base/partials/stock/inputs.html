@@ -67,18 +67,19 @@
             type="button"
             class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
             name="sentry"
-            onclick="toggleMenu(this,'menu_{{obj.id}}')"
+            onclick="toggleMenu(this,'inp_{{obj.id}}')"
           >
             <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
           </button>
 
           <div
             class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
-            id="menu_{{obj.id}}"
+            id="inp_{{obj.id}}"
           >
             <!--  -->
             <a
-              href="{% url 'sale_details' obj.id %}"
+              hx-boost="false"
+              href="{% url 'input_details' obj.id %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails

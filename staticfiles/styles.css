@@ -1,0 +1,103 @@
+/* scrollbar---------------------------------------------------------------------------------------------------- */
+/* ::-webkit-scrollbar {
+  width: 0.25em;
+  height: 0.25em;
+} */
+
+::-webkit-scrollbar-track {
+  border-radius: 100vw;
+  margin-block: 0.2em;
+}
+::-webkit-scrollbar-thumb {
+  border: 0.2em solid #f3e8ff;
+  border-radius: 100vw;
+  margin-block: 0.2em;
+}
+
+.smoothen{
+  transition-property: all;
+transition-duration: 200ms;
+transition-timing-function: cubic-bezier(0.4, 0, 0.3, 1);
+
+}
+
+/* ul and li ---------------------------------------------------------------------------------------------------- */
+ul {
+  list-style: none;
+}
+li {
+  text-decoration: none;
+  text-emphasis: none;
+}
+
+/* tables---------------------------------------------------------------------------------------------------- */
+.db-table {
+  border-collapse: collapse;
+}
+
+.db-table tbody tr:nth-of-type(even) {
+  background-color: #f1f1f1;
+}
+
+.active {
+  background: #FDBA74;
+  color: black;
+}
+
+.primary_color {
+  background: #14532D;
+  /* color: white; */
+}
+
+.secondary_color {
+  background: #FDBA74;
+  color: black;
+}
+
+.text-secondary {
+  color: #FDBA74;
+}
+
+.msg_out {
+  background: #f3e8ff;
+  color: black;
+}
+
+.msg_in {
+  background: #14532D;
+  color: white;
+}
+
+/* tabs---------------------------------------------------------------------------------------------------- */
+
+.tabbar button.active {
+  background-color: #14532D;
+  color: white;
+}
+
+.tabcontent,
+.minitabcontent {
+  height: inherit;
+  /* display: none; */
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* z-indexer---------------------------------------------------------------------------------------------------- */
+
+.underlay {
+  z-index: -1;
+}
+
+.overlay {
+  z-index: 100;
+}

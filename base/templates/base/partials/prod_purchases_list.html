@@ -16,7 +16,6 @@
       <th class="px-3 py-4 text-sm">Moyen</th>
       <th class="px-3 py-4 text-sm">Status</th>
       <th class="px-3 py-4 text-sm">Montant</th>
-      <th class="px-3 py-4 text-sm">Remise</th>
       <th class="px-3 py-4 text-sm">Actions</th>
     </tr>
   </thead>
@@ -26,15 +25,14 @@
     <tr
       class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
     >
-      <td class="px-3 py-1">Pro-000-{{obj.id}}</td>
+      <td class="px-3 py-1">Prod-000-{{obj.id}}</td>
       <td class="px-3 py-1">{{obj.store.name}}</td>
       <td class="px-3 py-1">{{obj.supplier.name}}</td>
-      <td class="px-3 py-1">{{obj.cashdesk.get_cashdesk_type_display}}</td>
+      <td class="px-3 py-1">{{obj.cashdesk.name}}</td>
       <td class="px-3 py-1">{{obj.label}}</td>
       <td class="px-3 py-1">{{obj.get_payment_option_display}}</td>
       <td class="px-3 py-1">{{obj.get_payment_status_display}}</td>
       <td class="px-3 py-1">{{obj.total}} Cfa</td>
-      <td class="px-3 py-1">{{obj.discount}}</td>
       <td class="px-3 py-1 relative">
         <div
           class="w-fit flex gap-3 justify-end items-end text-end text-gray-700"
@@ -54,15 +52,25 @@
           >
             <!--  -->
             <a
-              href="{% url 'sale_details' obj.id %}"
+              hx-boost="false"
+              href="{% url 'prod_purchase_details' obj.id %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
             </a>
 
+            <a
+              onclick="hide_dialogs()"
+              hx-target="#basic_dialog"
+              hx-get="{% url 'edit_prod_purchase' obj.id %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              ><i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+              Modifier
+            </a>
+
             <button
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
-              hx-delete="{% url 'delete_base_object' obj.id 'Sale' %}"
+              hx-delete="{% url 'delete_base_object' obj.id 'ProductPurchase' %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>
@@ -76,4 +84,10 @@
   </tbody>
 </table>
 <!-- </div> -->
+
+<script>
+    window.addEventListener("mouseup", function (event) {
+    activeMenu.classList.add("hidden");
+  });
+</script>
 {% endif %}

@@ -18,10 +18,10 @@
       />
       {% endif %}
 
-    <article class="w-full flex flex-col gap-1 text-left">
-      <h4 class="text-black font-bold">{{obj.full_name}}</h4>
-      <p class="rounded-md flex gap-2 items-center text-black text-xs">
-        {{obj.get_sex_display}}
+    <article class="p-2 w-full flex flex-col gap-1 text-left">
+      <h4 class="text-black font-bold">{{obj.name}}</h4>
+      <p class="text-xs">
+        {{obj.get_entity_type_display}} ({{obj.get_sex_display}})
       </p>
     </article>
   </div>

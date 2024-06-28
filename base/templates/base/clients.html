@@ -1,24 +1,18 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
   <div class="flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <a
-        id="back-button"
-        class="inline-block px-3 py-2 text-white bg-cyan-700 hover:bg-cyan-900 rounded-lg transition-all duration-300"
-        href="#"
-        >&larr;</a
-      >
-      <h3 class="bg-cyan-700 rounded-lg text-white py-2 px-4">
-        Clients
-        <i class="fa-solid fa-users ml-2"></i>
-      </h3>
-    </div>
+    <a
+      id="back-button"
+      class="inline-block px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+      href="#"
+      >&larr;</a
+    >
 
     <form
       id="filter"
       hx-post="{% url 'filter_products' %}"
       hx-target=".products_list"
-      class="p-1 w-fit border-2 border-cyan-700 rounded-xl flex justify-between items-center gap-1 text-sm xl:text-sm"
+      class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
     >
       {% csrf_token %}
       <!-- name field -->
@@ -26,14 +20,14 @@
         hx-post="{% url 'filter_products' %}"
         hx-target=".products_list"
         hx-trigger="keyup changed delay:500ms"
-        placeholder="Article"
+        placeholder="Nom et prenoms"
         name="full_name"
         type="text"
-        class="px-3 py-2 rounded-md bg-gray-100 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+        class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
       />
       <select
         name="sex"
-        class="hidden sm:flex px-3 py-2 rounded-md bg-gray-100 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+        class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
       >
         <option value="" selected="true" disabled="disabled">Sexe</option>
         <option value="feminin">Masculin</option>
@@ -42,7 +36,7 @@
       </select>
 
       <button
-        class="px-3 py-2 bg-cyan-700 hover:bg-cyan-900 text-white rounded-lg transition duration-200 ease-in"
+        class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
         type="submit"
       >
         <i class="fa-solid fa-filter"></i>
@@ -57,7 +51,7 @@
     </form>
 
     <a
-      href="{% url 'add_product' %}"
+      href="{% url 'create_client' %}"
       class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
     >
       Ajouter un client

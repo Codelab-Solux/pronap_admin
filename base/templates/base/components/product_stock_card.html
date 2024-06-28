@@ -60,8 +60,8 @@
       <!--  -->
       <a
         hx-target="#basic_dialog"
-        hx-get="{% url 'product_details' obj.product.id %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-full w-full text-center cursor-pointer"
+        hx-get="{% url 'prod_stock_details' obj.product.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
         ><i class="text-sm fa-solid fa-expand mr-2"></i>
         Détails
       </a>
@@ -70,7 +70,7 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'edit_product_stock' obj.product.id %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-full w-full text-center cursor-pointer"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
         Modifier
@@ -79,7 +79,7 @@
       <button
         hx-confirm="Voulez vous vraiment suprimmer ceci?"
         hx-delete="{% url 'delete_base_object' obj.product.id 'ProductStock' %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-full w-full text-center cursor-pointer"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-trash mr-2"></i>
         Supprimer

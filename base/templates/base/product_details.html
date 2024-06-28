@@ -4,16 +4,12 @@
   class="p-8 bg-green-100 rounded-3xl h-full w-full max-w-7xl mx-auto flex flex-col justify-between gap-6"
 >
   <div class="flex justify-between">
-    <div
-      class="bg-green-700 p-2 rounded-lg flex justify-between items-center text-white gap-4"
-    >
       <a
-        class="inline-block px-2 py-1 font-bold hover:bg-orange-300 hover:text-black rounded-lg transition-all duration-300"
-        href="{% url 'products' %}"
+        id="back-button"
+        class="inline-block px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+        href="#"
         >&larr;</a
       >
-      Retourner
-    </div>
     <span
       class="flex items-center gap-4 py-2 px-4 rounded-lg bg-orange-300 text-black"
       ><i class="fa-solid fa-copyright"></i>Marque : {{ curr_obj.brand }}</span
@@ -25,9 +21,9 @@
       <div class="bg-white w-full h-full rounded-3xl overflow-hidden">
         {% if not curr_obj.image %}
         <img
-          src="{% static 'imgs/logo-g.png' %}"
+          src="{% static 'imgs/icon-w.png' %}"
           alt="image"
-          class="w-full h-full object-contain"
+          class="w-40 h-40 object-contain"
         />
         {% else %}
         <img
@@ -41,30 +37,18 @@
 
     <div class="w-full flex flex-col gap-2">
       <h2 class="text-4xl font-bold text-black">{{curr_obj.name}}</h2>
-      <h4>{{curr_obj.quantity}} en stock</h4>
-      {% if curr_obj.is_promoted %}
-      <div class="flex gap-4">
-        <p class="text-gray-400">
-          <i class="fa-solid fa-tag mr-2"></i>
-          <span class="line-through">{{ curr_obj.price }} CFA</span>
-        </p>
-        <p class="text-orange-500 text-lg font-bold">
-          <i class="fa-solid fa-tags text-orange-400 mr-2"></i>
-          {{curr_obj.promo_price}} CFA
-        </p>
-      </div>
-      {% else %}
-      <p class="text-green-700 text-lg font-bold">
-        <i class="fa-solid fa-tag text-green-700 mr-2"></i>
-        {{curr_obj.price}} CFA
-      </p>
-      {% endif %}
-      <p><b>Description : </b> {{curr_obj.description }}</p>
-      <a
-        href="{% url 'edit_product' curr_obj.id %}"
+      <p>Catégorie : <b> {{curr_obj.category }}</b></p>
+      <p>Catégorie : <b> {{curr_obj.category }}</b></p>
+      <p>Famille : <b> {{curr_obj.family }}</b></p>
+      <p>Unité de mesure : <b> {{curr_obj.get_unit_display }}</b></p>
+      <!-- <p><b>Description : </b> {{curr_obj.description }}</p> -->
+      <button
+      onclick="closeModal()"
+      hx-target="#basic_dialog"
+        hx-get="{% url 'edit_product' curr_obj.id %}"
         class="w-fit bg-green-700 hover:bg-green-900 text-white px-6 py-2 rounded-lg transition duration-200 ease-in"
         >Modifier <i class="fa-solid fa-pen-to-square ml-4"></i
-      ></a>
+      ></button>
     </div>
   </div>
 </div>

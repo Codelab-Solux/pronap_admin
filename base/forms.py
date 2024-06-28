@@ -181,7 +181,7 @@ class ProductPurchaseForm(forms.ModelForm):
     class Meta:
         model = ProductPurchase
         fields = '__all__'
-        exclude = ('audit', 'timestamp')
+        exclude = ('audit', 'timestamp', 'product_stocks')
 
         labels = {
             'store': 'Boutique',
@@ -267,15 +267,15 @@ InventoryFormSet = inlineformset_factory(
 
     labels={
         'product_stock': 'Produit',
-        'quantity_expected': 'Quantité theorique',
-        'quantity_found': 'Quantité physique',
+        'quantity_expected': 'Qté theorique',
+        'quantity_found': 'Qté physique',
         'comment': 'Commentaire',
     },
     widgets={
         'product_stock': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-        'quantity_expected': forms.NumberInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-        'quantity_found': forms.NumberInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-        'comment': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+        'quantity_expected': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+        'quantity_found': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+        'comment': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
     }
 )

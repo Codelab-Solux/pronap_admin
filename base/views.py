@@ -12,6 +12,7 @@ from .forms import *
 from .views import *
 from .cart import Cart
 
+logger = logging.getLogger(__name__) 
 
 @login_required(login_url='login')
 def home(req):
@@ -154,6 +155,20 @@ def products_stock(req):
         'products': products,
     }
     return render(req, 'base/partials/products_stock.html', context)
+
+
+@login_required(login_url='login')
+def prod_stock_details(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    curr_obj = get_object_or_404(ProductStock, id=pk)
+    context = {
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/partials/prod_stock_details.html', context)
 
 
 @login_required(login_url='login')
@@ -320,18 +335,21 @@ def checkout(req):
         # new_sale = Sale(client=client, items=cart_count, total=cart_total)
         new_sale = Sale(seller=user, items=cart_count, total=cart_total)
         new_sale.save()
-        redirect('sales')
-        # messages.success(req, 'Nouvelle vente éffectuée!')
 
         for item in cart_items:
-            if 'product_stock' not in item or 'quantity' not in item:
-                logger.error(f'Missing keys in cart item: {item}')
-                messages.error(
-                    req, 'Error processing your cart items. Please try again.')
-                return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+            # if 'product_stock' not in item or 'quantity' not in item:
+            #     logger.error(f'Missing keys in cart item: {item}')
+            #     messages.error(
+            #         req, 'Error processing your cart items. Please try again.')
+            #     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
-            product_stock = item['product_stock']
+            product_stock = item['product']
             quantity = item['quantity']
+
+            print(product_stock.product.name)
+            print(quantity)
+
+
 
             new_sale_item = SaleItem(
                 sale=new_sale,
@@ -341,6 +359,7 @@ def checkout(req):
             new_sale_item.save()
 
         cart.clear_cart()
+        messages.success(req, 'Nouvelle vente éffectuée!')
         return redirect('sales')
     else:
         messages.info(req, "Access denied: Your cart is empty.")
@@ -429,7 +448,7 @@ def sale_details(req, pk):
     curr_obj = Sale.objects.get(id=pk)
     sale_items = SaleItem.objects.filter(sale=curr_obj)
     context = {
-        "sale_details": "active",
+        "sales": "active",
         'title': 'sale Details',
         'curr_obj': curr_obj,
         'sale_items': sale_items,
@@ -447,7 +466,7 @@ def edit_sale(req, pk):
     curr_obj = Sale.objects.get(id=pk)
     sale_items = SaleItem.objects.filter(sale=curr_obj)
     context = {
-        "sale_details": "active",
+        "sales": "active",
         'title': 'sale Details',
         'curr_obj': curr_obj,
         'sale_items': sale_items,
@@ -511,6 +530,18 @@ def purchases(req):
     return render(req, 'base/purchases.html', context)
 
 
+def prod_purchase_details(req, pk):
+    curr_obj = get_object_or_404(ProductPurchase, id=pk)
+    purchase_items = PurchaseItem.objects.filter(purchase=curr_obj)
+    context = {
+        "purchases": "active",
+        'title': "Details d'Achat",
+        'curr_obj': curr_obj,
+        'purchase_items': purchase_items,
+    }
+    return render(req, 'base/partials/prod_purchase_details.html', context)
+
+
 def create_prod_purchase(req):
     user = req.user
     if not user.is_staff:
@@ -528,6 +559,23 @@ def create_prod_purchase(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvel achat de produit'})
 
 
+@login_required(login_url='login')
+def edit_prod_purchase(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    curr_obj = get_object_or_404(ProductPurchase, id=pk)
+
+    form = ProductPurchaseForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = ProductPurchaseForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'form': form, 'form_title': 'Modifier cet achat de produit'})
 
 def prod_purchases_list(req):
     purchases = ProductPurchase.objects.all()
@@ -538,7 +586,7 @@ def prod_purchases_list(req):
     }
     return render(req, 'base/partials/prod_purchases_list.html', context)
 
-
+# ----------------------------------------
 @login_required(login_url='login')
 def create_serv_purchase(req):
     user = req.user
@@ -556,6 +604,17 @@ def create_serv_purchase(req):
     else:
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvel achat de service'})
 
+
+def serv_purchase_details(req, pk):
+    curr_obj = get_object_or_404(ServicePurchase, id=pk)
+    context = {
+        "purchases": "active",
+        'title': "Details d'Achat",
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/partials/serv_purchase_details.html', context)
+
+
 @login_required(login_url='login')
 def edit_service_purchase(req, pk):
     user = req.user
@@ -570,11 +629,9 @@ def edit_service_purchase(req, pk):
         form = ServicePurchaseForm(req.POST, instance=curr_obj)
         if form.is_valid():
             form.save()
-        messages.success = 'Nouvel achat de service ajouté'
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'form.html', context={'form': form, 'form_title': 'Modifier cet achat de service'})
-
 
 def serv_purchases_list(req):
     purchases = ServicePurchase.objects.all()
@@ -584,7 +641,6 @@ def serv_purchases_list(req):
         'purchases': purchases,
     }
     return render(req, 'base/partials/serv_purchases_list.html', context)
-
 
 # ------------------------------------------------- Clients-------------------------------------------------
 @login_required(login_url='login')
@@ -631,7 +687,7 @@ def create_client(req):
 # ------------------------------------------------- Staff -------------------------------------------------
 @login_required(login_url='login')
 def staff_list(req):
-    staff = CustomUser.objects.filter(role__id__gt=1, is_staff=True)
+    staff = CustomUser.objects.filter(is_staff=True)
     context = {
         'staff': staff,
     }
@@ -640,11 +696,11 @@ def staff_list(req):
 
 @login_required(login_url='login')
 def staff_grid(req):
-    staff = CustomUser.objects.filter(role__id__gt=1, is_staff=True)
+    personel = CustomUser.objects.filter(is_staff=True)
     context = {
         "staff": "active",
-        'title': 'Staff',
-        "staff": staff,
+        'title': 'Personnel',
+        "personel": personel,
     }
     return render(req, 'base/partials/staff_grid.html', context)
 
@@ -925,7 +981,20 @@ def stock_inputs(req):
     return render(req, 'base/partials/stock/inputs.html', context)
 
 
-logger = logging.getLogger(__name__)
+def input_details(req,pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    curr_obj = get_object_or_404(StockInput, id=pk)
+    context = {
+        "stock": "active",
+        'title': "Details d'Entrée",
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/partials/stock/input_details.html', context)
+
+
 
 def create_stock_input(req):
     user = req.user
@@ -967,6 +1036,8 @@ def create_stock_input(req):
     return render(req, 'base/partials/stock/stock_form.html', context)
 
 
+
+
 def stock_outputs(req):
     outputs = StockOutput.objects.all().order_by('-timestamp')
     purchases = StockOutput.objects.filter( type='sale').order_by('-timestamp')
@@ -985,6 +1056,20 @@ def stock_outputs(req):
     }
 
     return render(req, 'base/partials/stock/outputs.html', context)
+
+
+def output_details(req,pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    curr_obj = get_object_or_404(StockOutput, id=pk)
+    context = {
+        "stock": "active",
+        'title': "Details d'Entrée",
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/partials/stock/output_details.html', context)
 
 
 def create_stock_output(req):
@@ -1027,7 +1112,6 @@ def create_stock_output(req):
     return render(req, 'base/partials/stock/stock_form.html', context)
 
 
-
 def stock_inventories(req):
     inventories = Inventory.objects.all().order_by('-date')
     context = {
@@ -1036,42 +1120,84 @@ def stock_inventories(req):
     return render(req, 'base/partials/stock/inventories.html', context)
 
 
+def inventory_details(req,pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    curr_obj = get_object_or_404(Inventory, id=pk)
+    context = {
+        "stock": "active",
+        'title': 'Inventaire',
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/partials/stock/inventory_details.html', context)
+
+
+@login_required(login_url='login')
 def create_inventory(req):
     user = req.user
     if not user.is_staff:
         messages.info(req, "Access denied!!!")
         return redirect('home')
 
+    form = InventoryForm()
     if req.method == 'POST':
         form = InventoryForm(req.POST)
-        form.instance.initiator = user
-        # # formset = InventoryFormSet(req.POST)
-        
-        if form.is_valid():  #and formset.is_valid():
-            new_inventory = form.save(commit=False)
-            new_inventory.initiator = user
-            new_inventory.save()
-            # formset.instance = new_inventory
-            # formset.save()
-            messages.success(req, 'Nouveau produits inventaire ajoutés')
-            return redirect('stock')
-        else:
-            if not form.is_valid():
-                logger.error(f"InventoryForm errors: {form.errors}")
-            # if not formset.is_valid():
-                # # logger.error(f"InventoryFormSet errors: {formset.errors}")
-            messages.error(req, 'There were errors in the form. Please correct them and try again.')
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
-        form = InventoryForm()
-        # # formset = InventoryFormSet()
+        return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle inventaire'})
+
+
+@login_required(login_url='login')
+def edit_inventory(req,pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    curr_obj = get_object_or_404(Inventory, id=pk)
+
+    form = InventoryForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = InventoryForm(req.POST, instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'form': form, 'form_title': "Modifier l'inventaire", 'curr_obj':curr_obj})
+
+
+@login_required(login_url='login')
+def populate_inventory(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
     
+    inventory = get_object_or_404(Inventory, id=pk)
+
+    if inventory and  req.method == 'POST':
+        formset = InventoryFormSet(req.POST)
+
+        if formset.is_valid():
+            formset.instance.inventory = inventory
+            formset.save()
+            messages.success(req, "Inventory updated successfully!")
+            return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+        else:
+            messages.error(req, "Form submission failed. Please correct the errors and try again.")
+            return HttpResponse(status=404, headers={'HX-Trigger': 'db_changed'})
+    else:
+        formset = InventoryFormSet()
+
     context = {
         'title': 'Products Inventory',
-        'form': form,
-        # # 'formset': formset,
-        'form_title': 'Faire un inventaire'
+        'formset': formset,
+        'form_title': "Ajouter un produit à cet inventaire"
     }
-    return render(req, 'base/partials/stock/inventory_form.html', context)
+    return render(req, 'base/partials/stock/inventory_formset.html', context)
 
 
 # ------------------------------------------------- Finances -------------------------------------------------
