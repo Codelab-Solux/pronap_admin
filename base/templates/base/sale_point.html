@@ -57,6 +57,13 @@
         >
           <i class="fa-solid fa-filter"></i>
         </button>
+        <button
+          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded-lg transition duration-200 ease-in"
+          hx-on:click="clearForm('filter')"
+          type="submit"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
       </form>
     </div>
     <!--  -->
@@ -101,7 +108,7 @@
       </div>
     </div>
     <!-- cart -->
-    <div id="cart" class="w-full h-full lg:max-w-[350px]">
+    <div id="cart" class="w-full h-full lg:max-w-[300px] 2xl:max-w-[350px]">
       {% include 'base/partials/cart.html' %}
     </div>
   </section>

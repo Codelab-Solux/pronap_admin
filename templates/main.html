@@ -56,7 +56,7 @@
       class="w-full ml-[60px] md:ml-[80px] xl:ml-[300px] min-h-screen overflow-auto"
     >
       <div
-        class="relative p-4 md:p-6 lg:p-8 w-full max-w-[1350px] mx-auto min-h-screen flex flex-col"
+        class="relative p-4 w-full max-w-[1350px] mx-auto min-h-screen flex flex-col"
       >
         <!-- snacbar -->
         <div
@@ -114,9 +114,37 @@
     htmx.onLoad(function (content) {
       scripts.init(content);
     });
-    
 
-    // show and hide snackbar
+    //  go back one page ----------------------------------------------------------------------------------------------------
+    backBtn = document.getElementById("back-button");
+
+    backBtn.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default anchor behavior
+      window.history.go(-1); // Go back two pages
+    });
+
+    //  tabbar navigator ----------------------------------------------------------------------------------------------------
+    document.getElementById("defaultTab").click();
+    function openTab(event, tabName) {
+      var i, tabcontent, tabBtn;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tabBtn = document.getElementsByClassName("tabBtn");
+      for (i = 0; i < tabBtn.length; i++) {
+        tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+      var minitabs = document.getElementsByClassName("minitabcontent");
+      if (minitabs.length != 0) {
+        minitabs = tabcontent.children;
+      }
+    }
+
+    //  show and hide snackbar ----------------------------------------------------------------------------------------------------
+
     function showSnackbar(message, type) {
       const snackbar = document.getElementById("snackbar");
       const snackbarMessage = document.getElementById("snackbar-message");
@@ -135,8 +163,7 @@
       }, 500);
     }
 
-
-    // Snackbar logic------------------------------------------------------------
+    // Snackbar logic-------------------------------------------------
     document.addEventListener("htmx:configRequest", function (event) {
       // If necessary, you can configure htmx request headers here
     });

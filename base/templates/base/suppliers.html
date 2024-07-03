@@ -9,14 +9,14 @@
     >
     <form
       id="filter"
-      hx-post="{% url 'filter_products' %}"
+      hx-post="{% url 'filter_suppliers' %}"
       hx-target=".suppliers_list"
       class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
     >
       {% csrf_token %}
       <section class="w-full flex justify-between items-center gap-1 text-xs">
         <input
-          hx-post="{% url 'filter_products' %}"
+          hx-post="{% url 'filter_suppliers' %}"
           hx-target=".suppliers_list"
           hx-trigger="keyup changed delay:500ms"
           placeholder="Nom"
@@ -25,7 +25,7 @@
           class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
         />
         <input
-          hx-post="{% url 'filter_products' %}"
+          hx-post="{% url 'filter_suppliers' %}"
           hx-target=".suppliers_list"
           hx-trigger="keyup changed delay:500ms"
           placeholder="Telephone"
@@ -34,7 +34,7 @@
           class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
         />
         <input
-          hx-post="{% url 'filter_products' %}"
+          hx-post="{% url 'filter_suppliers' %}"
           hx-target=".suppliers_list"
           hx-trigger="keyup changed delay:500ms"
           placeholder="email"

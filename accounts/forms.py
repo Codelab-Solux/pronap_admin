@@ -7,8 +7,8 @@ class SignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(SignupForm, self).__init__(*args, **kwargs)
-        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"
-        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"
+        self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+        self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
         self.fields['password1'].label = "Mot de pass"
         self.fields['password2'].label = "Confirmez votre mot de pass"
 
@@ -26,9 +26,9 @@ class SignupForm(UserCreationForm):
             'last_name': 'Nom',
         }
         widgets = {
-            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"}),
-            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"}),
-            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"}),
-            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-full border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-teal-400 w-full"}),
+            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
         }

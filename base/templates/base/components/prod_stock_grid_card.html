@@ -4,15 +4,15 @@
   class="relative w-full h-full bg-white flex flex-col justify-between rounded-xl border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
 >
   <!-- <a class="w-full min-h-40" href="{% url 'product_details' obj.id %}"> -->
-  {% if obj.image %}
+  {% if obj.product.image %}
   <img
-    src="{{ obj.image.url }}"
-    alt="{{ obj.name }}"
+    src="{{ obj.product.image.url }}"
+    alt="{{ obj.product.name }}"
     class="w-full h-40 object-cover"
   />
   {% else %}
   <img
-    src="{% static 'imgs/logo-g.png' %}"
+    src="{% static 'imgs/icon-w.png' %}"
     alt="image"
     class="w-full h-40 object-cover"
   />
@@ -61,7 +61,7 @@
       <button
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
-        hx-get="{% url 'edit_product_stock' obj.id %}"
+        hx-get="{% url 'edit_prod_stock' obj.id %}"
         class="px-3 py-1 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
@@ -83,7 +83,7 @@
     </div>
   </div>
 
-  <article class="p-2 h-full flex flex-col gap-2 bg-gray-100 text-sm">
+  <article class="p-2 h-fit flex flex-col gap-2 bg-gray-100 text-sm">
     <h3 class="font-bold text-black text-sm">{{obj.product.name}}</h3>
     {% if obj.is_promoted %}
     <p>

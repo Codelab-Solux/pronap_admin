@@ -10,15 +10,15 @@
 
     <form
       id="filter"
-      hx-post="{% url 'filter_products' %}"
-      hx-target=".products_list"
+      hx-post="{% url 'filter_clients' %}"
+      hx-target=".clients_list"
       class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
     >
       {% csrf_token %}
       <!-- name field -->
       <input
-        hx-post="{% url 'filter_products' %}"
-        hx-target=".products_list"
+        hx-post="{% url 'filter_clients' %}"
+        hx-target=".clients_list"
         hx-trigger="keyup changed delay:500ms"
         placeholder="Nom et prenoms"
         name="full_name"
@@ -33,6 +33,14 @@
         <option value="feminin">Masculin</option>
         <option value="masculin">Féminin</option>
         <option value="neutral">Neutre</option>
+      </select>
+      <select
+        name="entity_type"
+        class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+      >
+        <option value="" selected="true" disabled="disabled">Type</option>
+        <option value="person">Personne</option>
+        <option value="company">Compagnie</option>
       </select>
 
       <button
@@ -51,7 +59,8 @@
     </form>
 
     <a
-      href="{% url 'create_client' %}"
+      hx-target="#basic_dialog"
+      hx-get="{% url 'create_client' %}"
       class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
     >
       Ajouter un client

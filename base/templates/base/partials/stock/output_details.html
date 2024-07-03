@@ -30,16 +30,8 @@
   
     <div class="w-full flex flex-col gap-2">
       <h2 class="text-4xl font-bold text-black">{{curr_obj.date}}</h2>
-  
-      <button
-        hx-swap="outerHTML"
-  
-        hx-get="{% url 'populate_inventory' curr_obj.id %}"
-        class="w-fit bg-green-200 hover:bg-green-300 text- px-6 py-2 rounded-lg transition duration-200 ease-in"
-        >Ajouter des produits à cette sortie
-        <i class="fa-solid fa-plus ml-4"></i
-      ></button>
-      <!-- <div id="formset" class="w-full"></div> -->
+
+      {% include 'base/partials/stock/output_formset.html' %}
     </div>
   </div>
   

@@ -27,25 +27,65 @@
       >
       {% endif %}
     </div>
-  
+
     <div class="w-full flex flex-col gap-2">
       <h2 class="text-4xl font-bold text-black">{{curr_obj.date}}</h2>
-  
-      <button
-        hx-swap="outerHTML"
-  
-        hx-get="{% url 'populate_inventory' curr_obj.id %}"
-        class="w-fit bg-green-200 hover:bg-green-300 text- px-6 py-2 rounded-lg transition duration-200 ease-in"
-        >Ajouter des produits à cet inventaire
-        <i class="fa-solid fa-plus ml-4"></i
-      ></button>
-      <!-- <div id="formset" class="w-full"></div> -->
+
+      {% include 'base/partials/stock/inventory_formset.html' %}
+
     </div>
   </div>
-  
-  <div>
+
+  <div class="flex flex-col gap-3">
     <b>Liste des produits</b>
-  
+
+    <table id="items_table" class="w-full text-left db-table">
+      <thead class="bg-green-700 border border-green-900 text-white">
+        <tr>
+          <th class="px-3 py-4 text-sm">Image</th>
+          <th class="px-3 py-4 text-sm">Article</th>
+          <th class="px-3 py-4 text-sm">Quantité théorique</th>
+          <th class="px-3 py-4 text-sm">Quantité physique</th>
+          <th class="px-3 py-4 text-sm">Commentaire</th>
+        </tr>
+      </thead>
+
+      <tbody class="border">
+        {% for obj in inventory_items %}
+        <tr
+          class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-300"
+        >
+          <td class="px-3 py-1">
+            {% if obj.product_stock.product.image %}
+            <img
+              class="h-7 text-gray-200"
+              src="{{obj.product_stock.product.image.url}}"
+              alt="item image"
+            />
+            {% else %}
+            <img
+              class="h-7 text-gray-200"
+              src="{% static 'imgs/logo.png' %}"
+              alt="image"
+            />
+            {% endif %}
+          </td>
+          <td class="px-3 py-1">{{obj.product_stock.product.name}}</td>
+          <td class="px-3 py-1">
+            {{ obj.quantity_expected }}
+            <!--  -->
+            {{ obj.product_stock.product.get_unit_display }}
+          </td>
+          <td class="px-3 py-1">
+            {{ obj.quantity_found }}
+            <!--  -->
+            {{ obj.product_stock.product.get_unit_display }}
+          </td>
+          <td class="px-3 py-1">{{ obj.comment }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}

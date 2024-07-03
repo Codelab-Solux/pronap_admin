@@ -1,29 +1,85 @@
 {% load static %}
-<!--  -->
-<a href="{% url 'user_details' obj.id %}">
+
+<div
+  class="py-2 px-4 w-full bg-white hover:bg-gray-100 text-xs xl:text-sm flex justify-between items-center gap-4 lg:grid lg:grid-cols-6 rounded-xl border hover:shadow-lg transition duration-200 ease-in"
+>
+  {% if obj.image %}
+  <img
+    src="{{ obj.image.url }}"
+    alt="{{ obj.name }}"
+    class="w-7 h-7 object-cover rounded-full"
+  />
+  {% else %}
+  <img
+    src="{% static 'imgs/icon-w.png' %}"
+    alt="image"
+    class="w-7 h-7 object-cover rounded-full"
+  />
+  {% endif %}
+
+  <h3 class="font-bold text-black">{{obj.name}}</h3>
+
+  <p>{{obj.get_entity_type_display}} ({{obj.get_sex_display}})</p>
+
+  <p>{{obj.email}}</p>
+
+  <p>{{obj.phone}}</p>
+
   <div
-    class="px-4 py-1 h-full relative flex items-center gap-2 border bg-white hover:shadow-md rounded-xl overflow-hidden"
+    class="w-fit flex gap-3 justify-end items-end text-end relative text-gray-700"
   >
-      {% if not obj.profile.image %}
-      <img
-        class="h-16 w-16 rounded-full object-cover"
-        src="{% static 'imgs/anon.png' %}"
-        alt="image"
-      />
-      {% else %}
-      <img
-        class="h-16 w-16 rounded-full object-cover"
-        src="{{obj.profile.image.url}}"
-        alt="image"
-      />
-      {% endif %}
 
-    <article class="p-2 w-full flex flex-col gap-1 text-left">
-      <h4 class="text-black font-bold">{{obj.name}}</h4>
-      <p class="text-xs">
-        {{obj.get_entity_type_display}} ({{obj.get_sex_display}})
-      </p>
-    </article>
+
+    <button
+      type="button"
+      class="hover:text-black bg-white hover:text-green-700 px-3 py-1 rounded-full"
+      name="sentry"
+      aria-expanded="false"
+      aria-haspopup="true"
+      onclick="toggleMenu(this,'menu_{{obj.id}}')"
+    >
+      <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+    </button>
+
+    <div
+      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+      role="status menu"
+      aria-orientation="vertical"
+      aria-labelledby="status-menu-button"
+      tabindex="-1"
+      id="menu_{{obj.id}}"
+    >
+      <!--  -->
+      <a
+        hx-boost="false"
+        href="{% url 'client_details' obj.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+        ><i class="text-sm fa-solid fa-expand mr-2"></i>
+        Détails
+      </a>
+
+      <button
+        onclick="hide_dialogs()"
+        hx-target="#basic_dialog"
+        hx-get="{% url 'edit_client' obj.id %}"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+        Modifier
+      </button>
+
+      <button
+        onclick="hide_dialogs()"
+        hx-target="#basidialog"
+        hx-delete="{% url 'delete_base_object' obj.id 'Client' %}"
+        hx-confirm="Voulez vous vraiment suprimmer ceci?"
+        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+      >
+        <i class="text-sm fa-solid fa-trash mr-2"></i>
+        Supprimer
+      </button>
+
+      <!--  -->
+    </div>
   </div>
-</a>
-
+</div>

@@ -1,5 +1,5 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-6">
+<div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
   <a
     id="back-button"
     class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
@@ -45,9 +45,7 @@
       </article>
     </div>
 
-    <div
-      class="h-full bg-orange-200 mb-4 p-4 rounded-2xl text-base grid gap-4"
-    >
+    <div class="h-full bg-orange-200 mb-4 p-4 rounded-2xl text-base grid gap-4">
       <span>En stock : <b>{{ available_products|length }}</b></span>
       <span>En rupture : <b>{{ returned|length }}</b></span>
       <span>Vendus : <b>{{ sold|length }}</b></span>
@@ -56,21 +54,67 @@
   </div>
 
   <section class="flex flex-col gap-4">
-    <!--------------------------------------- menu tabs buttons --------------------------------------->
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg">Liste des produits</h3>
+      <form
+        id="filter"
+        hx-post="{% url 'filter_transactions' %}"
+        hx-target=".transactions_list"
+        class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
+      >
+        {% csrf_token %}
+        <section class="w-full flex justify-between items-center gap-1 text-xs">
+          <!-- transaction amount margin -->
+          <input
+            hx-post="{% url 'filter_transactions' %}"
+            hx-target=".transactions_list"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Prix min"
+            name="min_amount"
+            type="number"
+            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          />
+          <input
+            hx-post="{% url 'filter_transactions' %}"
+            hx-target=".transactions_list"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Prix max"
+            name="max_amount"
+            type="number"
+            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          />
+          <select
+            name="is_promoted"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              En promotion
+            </option>
+            <option value="debit">Oui</option>
+            <option value="credit">Non</option>
+          </select>
+        </section>
+
+        <button
+          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
+          type="submit"
+        >
+          <i class="fa-solid fa-filter"></i>
+        </button>
+        <button
+          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded-lg transition duration-200 ease-in"
+          hx-on:click="clearForm('filter')"
+          type="submit"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </form>
+    </div>
 
     {% if not available_products %}
     <div class="flex flex-col items-center gap-2 my-20 mx-auto">
       <i class="fa-solid fa-box-open text-green-900 text-9xl"></i>
       <span>Aucun produit trouvé</span>
-      <a
-        href="{% url 'available_products' %}"
-        class="bg-yellow-100 rounded-full py-2 px-4 flex items-center gap-4 group"
-        >Parcourir le catalogue
-        <span
-          class="bg-yellow-400 rounded-full py-2 px-3 group-hover:bg-green-900 group-hover:text-white"
-          >&rarr;</span
-        ></a
-      >
     </div>
     {% else %}
     <div
@@ -78,7 +122,7 @@
     >
       {% for obj in available_products %}
       <!--  -->
-      {% include 'base/components/product_grid_card.html' %}
+      {% include 'base/components/prod_stock_grid_card.html' %}
       <!--  -->
       {% endfor %}
     </div>

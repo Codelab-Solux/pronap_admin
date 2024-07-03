@@ -1,11 +1,5 @@
 from .models import *
 from .forms import *
-from django.contrib import messages
-from django.apps import apps
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.views.decorators.http import require_http_methods
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path, register_converter
 from .views import *
 from utils import HashIdConverter
@@ -14,6 +8,11 @@ register_converter(HashIdConverter, "hashid")
 
 urlpatterns = [
     path('', home, name='home'),
+    path('stores/', stores, name='stores'),
+    path('stores/list/', stores_list, name='stores_list'),
+    path('stores/create/', create_store, name='create_store'),
+    path('stores/<hashid:pk>/', store_details, name='store_details'),
+    path('stores/<hashid:pk>/edit/', edit_store, name='edit_store'),
     path('products/', products, name='products'),
     path('products/create/', create_product, name='create_product'),
     path('products/list/', products_list, name='products_list'),
@@ -21,19 +20,19 @@ urlpatterns = [
     path('products/filter/', filter_products, name='filter_products'),
     path('products/<hashid:pk>/', product_details, name='product_details'),
     path('products/<hashid:pk>/edit/', edit_product, name='edit_product'),
-    path('stock/products/', products_stock, name='products_stock'),
-    path('stock/products/create/', create_product_stock, name='create_product_stock'),
-    path('stock/products/filter/', filter_products_stock, name='filter_products_stock'),
+    path('stock/products/', prod_stock_list, name='prod_stock_list'),
+    path('stock/products/create/', create_prod_stock, name='create_prod_stock'),
+    path('stock/products/filter/', filter_prod_stock, name='filter_prod_stock'),
     path('stock/products/<hashid:pk>/', prod_stock_details, name='prod_stock_details'),
     path('stock/products/<hashid:pk>/edit/',
-         edit_product_stock, name='edit_product_stock'),
+         edit_prod_stock, name='edit_prod_stock'),
     path('stock/', stock, name='stock'),
     path('stock/inputs/', stock_inputs, name='stock_inputs'),
     path('stock/inputs/create/', create_stock_input, name='create_stock_input'),
-    path('stock/inputs/<hashid:pk>/', input_details, name='input_details'),
+    path('stock/inputs/<hashid:pk>/', stock_input_details, name='stock_input_details'),
     path('stock/outputs/', stock_outputs, name='stock_outputs'),
     path('stock/outputs/create/', create_stock_output, name='create_stock_output'),
-    path('stock/outputs/<hashid:pk>/', output_details, name='output_details'),
+    path('stock/outputs/<hashid:pk>/', stock_output_details, name='stock_output_details'),
     path('stock/inventories/', stock_inventories, name='stock_inventories'),
     path('stock/inventories/create/', create_inventory, name='create_inventory'),
     path('stock/inventories/<hashid:pk>/', inventory_details, name='inventory_details'),
@@ -58,7 +57,7 @@ urlpatterns = [
     path('purchases/products/list/', prod_purchases_list, name='prod_purchases_list'),
     path('purchases/products/<hashid:pk>/', prod_purchase_details, name='prod_purchase_details'),
     path('purchases/products/<hashid:pk>/edit/',
-         edit_prod_purchase, name='edit_prod_purchase'),
+         edit_product_purchase, name='edit_product_purchase'),
     path('purchases/services/create/', create_serv_purchase, name='create_serv_purchase'),
     path('purchases/services/list/', serv_purchases_list, name='serv_purchases_list'),
     path('purchases/services/<hashid:pk>/',
@@ -70,15 +69,22 @@ urlpatterns = [
     path('clients/', clients, name='clients'),
     path('clients/create/', create_client, name='create_client'),
     path('clients/list/', clients_list, name='clients_list'),
+    path('clients/filter/', filter_clients, name='filter_clients'),
+    path('clients/<hashid:pk>/', client_details, name='client_details'),
+    path('clients/<hashid:pk>/edit/', edit_client, name='edit_client'),
+    path('clients/<hashid:pk>/purchases/', client_purchases, name='client_purchases'),
+    path('clients/<hashid:pk>/purchases/filter/', filter_client_purchases, name='filter_client_purchases'),
     # ----------------------------------------------------------------------------
     path('staff/', staff, name='staff'),
     path('staff/grid/', staff_grid, name='staff_grid'),
     path('staff/list/', staff_list, name='staff_list'),
+    path('staff/create/', create_staff, name='create_staff'),
     path('staff/<hashid:pk>/', staff_details, name='staff_details'),
     # ----------------------------------------------------------------------------
     path('suppliers/', suppliers, name='suppliers'),
     path('suppliers/create/', create_supplier, name='create_supplier'),
     path('suppliers/list/', suppliers_list, name='suppliers_list'),
+    path('suppliers/filter/', filter_suppliers, name='filter_suppliers'),
     path('suppliers/<hashid:pk>/', supplier_details, name='supplier_details'),
     path('suppliers/<hashid:pk>/edit/', edit_supplier, name='edit_supplier'),
     # ----------------------------------------------------------------------------
@@ -96,6 +102,18 @@ urlpatterns = [
     path('finances/', finances, name='finances'),
     path('finances/reports/', reports, name='reports'),
     path('finances/treasury/', treasury, name='treasury'),
+    # --------------------------
+    path('finances/cashdesks/create/', create_cashdesk, name='create_cashdesk'),
+    path('finances/cashdesks/list/', cashdesks_list, name='cashdesks_list'),
+    path('finances/cashdesks/<hashid:pk>/', cashdesk_details, name='cashdesk_details'),
+    path('finances/cashdesks/<hashid:pk>/edit/', edit_cashdesk, name='edit_cashdesk'),
+    path('finances/credits/list/', credits_list, name='credits_list'),
+    path('finances/debits/list/', debits_list, name='debits_list'),
+    # --------------------------
+    path('finances/transactions/list/', transactions_list, name='transactions_list'),
+    path('finances/transactions/filter/', filter_transactions, name='filter_transactions'),
+    path('finances/transactions/<hashid:pk>/', transaction_details, name='transaction_details'),
+    path('finances/transactions/<hashid:pk>/edit/', edit_transaction, name='edit_transaction'),
     # --------------------------
     path('base/objects/<hashid:pk>/<str:model_name>/delete/',
          delete_base_object, name='delete_base_object'),

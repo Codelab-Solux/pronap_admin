@@ -8,13 +8,13 @@
   <img
     src="{{ obj.product.image.url }}"
     alt="{{ obj.product.name }}"
-    class="w-24 h-24 object-contain object-center"
+    class="w-24 h-24 object-cover object-center"
   />
   {% else %}
   <img
     src="{% static 'imgs/icon-w.png' %}"
     alt="image"
-    class="w-24 h-24 object-contain"
+    class="w-24 h-24 object-cover"
   />
   {% endif %} 
   <!--  -->
@@ -30,12 +30,13 @@
     class="p-2 w-full h-100 flex flex-col justify-center gap-1 bg-gray-50 text-sm"
   >
     <h3 class="font-bold text-black text-sm">{{obj.product.name}}</h3>
-    <span class="text-xs">{{obj.product.brand}}</span>
+    <p class="text-xs">{{obj.product.brand}}</p>
     {% if obj.is_promoted %}
     <p>{{obj.promo_price}} CFA</p>
     {% else %}
     <p>{{obj.price}} CFA</p>
     {% endif %}
+    <span class="w-fit text-xs text-black bg-orange-200 rounded-md px-2 py-[0.2em]">{{obj.quantity}} en stock</span>
   </article>
 </div>
 <!-- Hidden CSRF token input -->

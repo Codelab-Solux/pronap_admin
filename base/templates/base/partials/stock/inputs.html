@@ -18,7 +18,7 @@
     <span class="text-lg font-bold ml-2 text-black">{{gifts|length}}</span>
   </p>
   <p class="bg-green-200 rounded-lg px-4 py-2 flex items-center">
-    Differences d’inventaire :
+    <span class="text-3xl mr-2">≠</span> d’inventaire :
     <span class="text-lg font-bold ml-2 text-black"
       >{{differences|length}}</span
     >
@@ -79,7 +79,7 @@
             <!--  -->
             <a
               hx-boost="false"
-              href="{% url 'input_details' obj.id %}"
+              href="{% url 'stock_input_details' obj.id %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails

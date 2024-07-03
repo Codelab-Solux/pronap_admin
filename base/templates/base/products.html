@@ -11,16 +11,16 @@
       <!--  -->
       <form
         id="filter"
-        hx-post="{% url 'filter_products_stock' %}"
-        hx-target=".products_stock"
+        hx-post="{% url 'filter_prod_stock' %}"
+        hx-target=".prod_stock_list"
         class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
       >
         {% csrf_token %}
         <section class="w-full flex justify-between items-center gap-1 text-xs">
           <!-- name field -->
           <input
-            hx-post="{% url 'filter_products_stock' %}"
-            hx-target=".products_stock"
+            hx-post="{% url 'filter_prod_stock' %}"
+            hx-target=".prod_stock_list"
             hx-trigger="keyup changed delay:500ms"
             placeholder="Article"
             name="name"
@@ -29,8 +29,8 @@
           />
           <!-- brand field -->
           <input
-            hx-post="{% url 'filter_products_stock' %}"
-            hx-target=".products_stock"
+            hx-post="{% url 'filter_prod_stock' %}"
+            hx-target=".prod_stock_list"
             hx-trigger="keyup changed delay:500ms"
             placeholder="Marque"
             name="brand"
@@ -39,8 +39,8 @@
           />
           <!-- quantity fields -->
           <input
-            hx-post="{% url 'filter_products_stock' %}"
-            hx-target=".products_stock"
+            hx-post="{% url 'filter_prod_stock' %}"
+            hx-target=".prod_stock_list"
             hx-trigger="keyup changed delay:500ms"
             placeholder="Quant min"
             name="min_quantity"
@@ -48,8 +48,8 @@
             class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           />
           <input
-            hx-post="{% url 'filter_products_stock' %}"
-            hx-target=".products_stock"
+            hx-post="{% url 'filter_prod_stock' %}"
+            hx-target=".prod_stock_list"
             hx-trigger="keyup changed delay:500ms"
             placeholder="Quant max"
             name="max_quantity"
@@ -98,7 +98,7 @@
     <button
       onclick="hide_dialogs()"
       hx-target="#basic_dialog"
-      hx-get="{% url 'create_product_stock' %}"
+      hx-get="{% url 'create_prod_stock' %}"
       class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
     >
       Ajouter un produit
@@ -108,8 +108,8 @@
 
   <!--  -->
   <div
-    class="products_stock"
-    hx-get="{% url 'products_stock' %}"
+    class="prod_stock_list"
+    hx-get="{% url 'prod_stock_list' %}"
     hx-trigger="load, db_changed from:body"
     hx-target="this"
   ></div>

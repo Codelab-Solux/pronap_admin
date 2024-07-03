@@ -18,36 +18,59 @@
         <section class="w-full flex justify-between items-center gap-1 text-xs">
           <!-- date margins -->
           {#% include 'base/components/date_margins.html' %#}
-          <!-- phone field -->
+          <!-- initiator -->
+          <select
+            name="store"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Boutique
+            </option>
+            {% for obj in stores %}
+            <option value="{{obj.id}}">{{obj.name}} {{obj.address}}</option>
+            {% endfor %}
+          </select>
+          <!-- initiator -->
+          <select
+            name="cashdesk"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Caisse
+            </option>
+            {% for obj in cashdesks %}
+            <option value="{{obj.id}}">{{obj.name}} {{obj.get_type_display}}</option>
+            {% endfor %}
+          </select>
+          <select
+            name="initiator"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Vendeur
+            </option>
+            {% for obj in sellers %}
+            <option value="{{obj.id}}">{{obj.get_full_name}}</option>
+            {% endfor %}
+          </select>
+          <select
+            name="buyer"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Client
+            </option>
+            {% for obj in buyers %}
+            <option value="{{obj.id}}">{{obj.name}}</option>
+            {% endfor %}
+          </select>
           <!-- amount field -->
-          <input
+          <!-- <input
             placeholder="Montant"
             name="total"
             type="text"
             class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-          />
-          <!-- items counts -->
-          <select
-            name="items"
-            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-          >
-            <option value="" selected disabled>Nombre d'articles</option>
-            <option value="10">1 - 10</option>
-            <option value="30">11 - 30</option>
-            <option value="50">31 - 50</option>
-            <option value="100">51 - 100</option>
-            <option value="101">plus de 100</option>
-          </select>
-          <!-- statuses -->
-          <select
-            name="status"
-            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-          >
-            <option value="" selected="true" disabled="disabled">Audit</option>
-            <option value="pending">En attente</option>
-            <option value="validated">Validé</option>
-            <option value="rejected">Rejeté</option>
-          </select>
+          /> -->
         </section>
 
         <button
@@ -66,7 +89,7 @@
       </form>
     </div>
     <a
-      href="{% url 'sales' %}"
+      href="{% url 'sales' %} query=datetime.now.today"
       class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
     >
       Ventes du jour
@@ -84,100 +107,81 @@
     <span>Aucune ventes trouvé</span>
   </div>
   {% else %}
-  <!-- <div class="h-full overflow-x-auto overflow-y-hidden rounded-xl"> -->
-    <table class="w-full text-left db-table rounded-xl">
-      <thead class="bg-green-700 border border-green-900 text-white">
-        <tr>
-          <th class="px-3 py-4 text-sm">Réf.</th>
-          <th class="px-3 py-4 text-sm">Boutique</th>
-          <th class="px-3 py-4 text-sm">Client</th>
-          <th class="px-3 py-4 text-sm">Vendeur</th>
-          <th class="px-3 py-4 text-sm">Caisse</th>
-          <th class="px-3 py-4 text-sm">Audit</th>
-          <th class="px-3 py-4 text-sm">Montant</th>
-          <th class="px-3 py-4 text-sm">Actions</th>
-        </tr>
-      </thead>
+  <table class="w-full text-left db-table rounded-xl">
+    <thead class="bg-green-700 border border-green-900 text-white">
+      <tr>
+        <th class="px-3 py-4 text-sm">Réf.</th>
+        <th class="px-3 py-4 text-sm">Date</th>
+        <th class="px-3 py-4 text-sm">Boutique</th>
+        <th class="px-3 py-4 text-sm">Client</th>
+        <th class="px-3 py-4 text-sm">Vendeur</th>
+        <th class="px-3 py-4 text-sm">Caisse</th>
+        <th class="px-3 py-4 text-sm">Montant</th>
+        <th class="px-3 py-4 text-sm">Actions</th>
+      </tr>
+    </thead>
 
-      <tbody class="border">
-        {% for obj in objects %}
-        <tr
-          class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
-        >
-          <td class="px-3 py-1">Vnt-000-{{obj.id}}</td>
-          <td class="px-3 py-1">{{obj.store.name}}</td>
-          <td class="px-3 py-1">{{obj.buyer.name}}</td>
-          <td class="px-3 py-1">{{obj.seller.get_full_name}}</td>
-          <td class="px-3 py-1">{{obj.cashdesk.name}}</td>
-          <td class="px-3 py-1">{{obj.get_audit_display}}</td>
-          <td class="px-3 py-1">{{obj.total}} Cfa</td>
-          <td class="px-3 py-1 relative">
-            <div
-              class="w-fit flex gap-3 justify-end items-end text-end text-gray-700"
+    <tbody class="border">
+      {% for obj in objects %}
+      <tr
+        class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
+      >
+        <td class="px-3 py-1">Vnt-000-{{obj.id}}</td>
+        <td class="px-3 py-1">{{obj.timestamp.date}}</td>
+        <td class="px-3 py-1">{{obj.store.name}}</td>
+        <td class="px-3 py-1">{{obj.buyer.name}}</td>
+        <td class="px-3 py-1">{{obj.seller.get_full_name}}</td>
+        <td class="px-3 py-1">{{obj.cashdesk.name}}</td>
+        <td class="px-3 py-1">{{obj.total}} Cfa</td>
+        <td class="px-3 py-1 relative">
+          <div
+            class="w-fit flex gap-3 justify-end items-end text-end text-gray-700"
+          >
+            <button
+              type="button"
+              class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
+              name="sentry"
+              onclick="toggleMenu(this,'menu_{{obj.id}}')"
             >
+              <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+            </button>
+
+            <div
+              class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+              id="menu_{{obj.id}}"
+            >
+              <!--  -->
+              <a
+                href="{% url 'sale_details' obj.id %}"
+                class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+                ><i class="text-sm fa-solid fa-expand mr-2"></i>
+                Détails
+              </a>
+
+              <a
+                href="{% url 'edit_sale' obj.id %}"
+                class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+              >
+                <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+                Modifier
+              </a>
+              {% if user.is_superuser %}
               <button
-                type="button"
-                class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
-                name="sentry"
-                onclick="toggleMenu(this,'menu_{{obj.id}}')"
+                hx-confirm="Voulez vous vraiment suprimmer ceci?"
+                hx-delete="{% url 'delete_base_object' obj.id 'Sale' %}"
+                class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
               >
-                <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+                <i class="text-sm fa-solid fa-trash mr-2"></i>
+                Supprimer
               </button>
-
-              <div
-                class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
-                id="menu_{{obj.id}}"
-              >
-                <!--  -->
-                <a
-                  href="{% url 'sale_details' obj.id %}"
-                  class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
-                  ><i class="text-sm fa-solid fa-expand mr-2"></i>
-                  Détails
-                </a>
-
-                <button
-                  href="{% url 'edit_sale' obj.id %}"
-                  class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
-                >
-                  <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
-                  Modifier
-                </button>
-
-                <button
-                  hx-confirm="Voulez vous vraiment suprimmer ceci?"
-                  hx-delete="{% url 'delete_base_object' obj.id 'Sale' %}"
-                  class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
-                >
-                  <i class="text-sm fa-solid fa-trash mr-2"></i>
-                  Supprimer
-                </button>
-              </div>
+              {% endif %}
             </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  <!-- </div> -->
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% endif %}
 </div>
-
-<script>
-  function clearForm(div_id) {
-    var form = document.getElementById(div_id);
-    form.reset();
-  }
-
-  document
-    .getElementById("back-button")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent the default anchor behavior
-      window.history.go(-1); // Go back two pages
-    });
-
-    window.addEventListener("mouseup", function (event) {
-  activeMenu.classList.add("hidden");
-});
-</script>
 {% endblock %}

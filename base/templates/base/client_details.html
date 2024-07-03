@@ -1,25 +1,15 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
-<div class="p-8 w-full max-w-7xl mx-auto flex flex-col justify-between gap-6">
-  <div class="flex justify-between">
-    <div
-      class="bg-teal-900 py-2 px-4 rounded-full flex items-center text-white gap-4"
-    >
-      <a
-        id="back-button"
-        class="px-2 py-1 font-bold hover:bg-yellow-200 hover:text-black rounded-full transition-all duration-300"
-        href="#"
-        >&larr;</a
-      >
-      Retourner
-    </div>
-    <span
-      class="flex items-center gap-4 py-2 px-4 rounded-full bg-yellow-200 text-black"
-      ><i class="fa-solid fa-user"></i> Profil du client N°: {{curr_obj.id}}</span
-    >
-  </div>
+<div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
+  <a
+    id="back-button"
+    class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+    href="#"
+    >&larr;</a
+  >
+  <!--  -->
   <div class="w-full grid md:grid-cols-2 gap-4">
     <div
-      class="p-3 w-full bg-teal-200 rounded-xl flex flex-col lg:flex-row items-center gap-4"
+      class="p-3 w-full bg-green-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
     >
       {% if not curr_obj.image %}
       <img
@@ -34,92 +24,106 @@
         alt="image"
       />
       {% endif %}
-      <article class="text-gray-700 grid gap-1">
-        <h4 class="text-black text-2xl font-bold">
-          {{curr_obj.last_name}} {{curr_obj.first_name}}
-        </h4>
-        <span class="text-teal-700">@{{curr_obj.username}}</span>
-
+      <article class="text-gray-700 grid gap-1 w-full">
+        <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
         <p>
-          <i class="fa-solid fa-venus-mars text-gray-800 mr-3"></i> Sexe :
-          <span class="text-black"> {{curr_obj.get_sex_display|title}} </span>
+          <i class="fa-solid fa-briefcase text-gray-800 mr-3"></i> Type :
+          <span class="text-black"> {{curr_obj.get_type_display}} </span>
         </p>
         <p>
           <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de telephone :
-          <span class="text-black"> {{curr_obj.phone}} </span>
+          <span class="text-black">{{curr_obj.phone}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-envelope-open text-gray-800 mr-3"></i> Email :
+          <span class="text-black">{{curr_obj.email}} </span>
+        </p>
+        <p>
+          <i class="fa-solid fa-location-dot text-gray-800 mr-3"></i> Adresse :
+          <span class="text-black">{{curr_obj.address}} </span>
         </p>
       </article>
     </div>
-    <img
-      class="h-100 w-full bg-white rounded-xl object-cover"
-      src="{% static 'imgs/banner_2.webp' %}"
-      alt="image"
-    />
+
+    <div class="h-full bg-orange-200 mb-4 p-4 rounded-2xl text-base grid gap-4">
+      <span>Achats : <b>{{ purchases|length }}</b></span>
+      <span>Retours : <b>{{ returned|length }}</b></span>
+      <span>Dons : <b>{{ gifts|length }}</b></span>
+    </div>
   </div>
 
-  <section class="flex flex-col gap-4">
-    <!--------------------------------------- menu tabs buttons --------------------------------------->
+  <section class="mb-20 flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg text-black">Liste des achats</h3>
+      <form
+        id="filter"
+        hx-post="{% url 'filter_client_purchases' curr_obj.id %}"
+        hx-target=".client_purchases"
+        class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
+      >
+        {% csrf_token %}
+        <section class="w-full flex justify-between items-center gap-1 text-xs">
+          {% include 'base/components/date_margins.html' %}
+          <!-- transaction initiator -->
+          <select
+            name="initiator"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Initiateurs
+            </option>
+            {% for obj in initiators %}
+            <option value="{{obj.id}}">{{obj.get_full_name}}</option>
+            {% endfor %}
+          </select>
+          <!-- transaction amount margin -->
+          <input
+            hx-post="{% url 'filter_client_purchases' curr_obj.id %}"
+            hx-target=".client_purchases"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Min"
+            name="min_amount"
+            type="number"
+            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          />
+          <input
+            hx-post="{% url 'filter_client_purchases' curr_obj.id %}"
+            hx-target=".client_purchases"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Max"
+            name="max_amount"
+            type="number"
+            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          />
+        </section>
+
+        <button
+          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
+          type="submit"
+        >
+          <i class="fa-solid fa-filter"></i>
+        </button>
+        <button
+          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded-lg transition duration-200 ease-in"
+          hx-on:click="clearForm('filter')"
+          type="submit"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </form>
+    </div>
+
     <div
-      class="flex justify-between gap-2 text-xs tabbar h-fit w-full max-w-80 lg:max-w-[500px] p-2 bg-teal-900 rounded-full"
-    >
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-teal-900 hover:text-white rounded-full w-full"
-        onclick="openTab(event, 'cart')"
-        id="defaultTab"
-      >
-        <i class="fa-solid fa-shopping-cart"></i>
-        <span class="ml-2">Panier</span>
-      </button>
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-teal-900 hover:text-white rounded-full w-full"
-        onclick="openTab(event, 'orders')"
-      >
-        <i class="fa-solid fa-dolly"></i>
-        <span class="ml-2">Commandes</span>
-      </button>
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-teal-900 hover:text-white rounded-full w-full"
-        onclick="openTab(event, 'deliveries')"
-      >
-        <i class="fa-solid fa-truck"></i>
-        <span class="ml-2">Livraisons</span>
-      </button>
-    </div>
+      class="client_purchases"
+      hx-get="{% url 'client_purchases' curr_obj.id %}"
+      hx-trigger="load, db_changed from:body"
+      hx-target="this"
+    ></div>
 
-    <div id="cart" class="tabcontent w-full flex flex-col gap-2">
-      <div
-        hx-get="{% url 'cart_resume' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
-    </div>
-
-    <div id="orders" class="tabcontent w-full flex flex-col gap-2">
-        <div
-        hx-get="{% url 'orders_resume' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
-    </div>
-
-    <div id="deliveries" class="tabcontent w-full flex flex-col gap-2">
-           <div
-        hx-get="{% url 'deliveries_resume' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
-    </div>
   </section>
 </div>
 
 <script>
-  document
-    .getElementById("back-button")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent the default anchor behavior
-      window.history.go(-1); // Go back two pages
-    });
-
   //  tabs control ----------------------------------------------------------------------------------------------------
   document.getElementById("defaultTab").click();
   function openTab(event, tabName) {
