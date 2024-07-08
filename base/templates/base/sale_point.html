@@ -51,6 +51,9 @@
           <option value="{{obj.id}}">{{obj.name}}</option>
           {% endfor %}
         </select>
+        <!--  -->
+        {% include 'base/components/store_filter.html' %}
+        <!--  -->
         <button
           class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
           type="submit"
@@ -72,9 +75,9 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'create_client' %}"
-        class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
+        class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4  text-black flex items-center gap-4 group"
       >
-        Ajouter un client
+        Nouveau client
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
     </div>

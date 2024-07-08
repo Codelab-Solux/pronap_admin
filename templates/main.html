@@ -115,9 +115,19 @@
       scripts.init(content);
     });
 
+    //  pop up dismisser ----------------------------------------------------------------------------------------------------
+    window.addEventListener("mouseup", function (event) {
+      activeMenu.classList.add("hidden");
+    });
+
+    //  form resetter ----------------------------------------------------------------------------------------------------
+    function clearForm(div_id) {
+      var form = document.getElementById(div_id);
+      form.reset();
+    }
+
     //  go back one page ----------------------------------------------------------------------------------------------------
     backBtn = document.getElementById("back-button");
-
     backBtn.addEventListener("click", function (event) {
       event.preventDefault(); // Prevent the default anchor behavior
       window.history.go(-1); // Go back two pages

@@ -74,9 +74,9 @@
       onclick="hide_dialogs()"
       hx-target="#basic_dialog"
       hx-get="{% url 'create_supplier' %}"
-      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
+      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
     >
-      Ajouter un fournisseur
+      Nouveau
       <i class="text-sm fa-solid fa-plus ml-2"></i>
     </button>
   </div>
@@ -92,17 +92,4 @@
   ></div>
 </div>
 
-<script>
-  function clearForm(div_id) {
-    var form = document.getElementById(div_id);
-    form.reset();
-  }
-
-  document
-    .getElementById("back-button")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent the default anchor behavior
-      window.history.go(-1); // Go back two pages
-    });
-</script>
 {% endblock %}

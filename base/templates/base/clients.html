@@ -26,21 +26,13 @@
         class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
       />
       <select
-        name="sex"
-        class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-      >
-        <option value="" selected="true" disabled="disabled">Sexe</option>
-        <option value="feminin">Masculin</option>
-        <option value="masculin">Féminin</option>
-        <option value="neutral">Neutre</option>
-      </select>
-      <select
         name="entity_type"
         class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
       >
         <option value="" selected="true" disabled="disabled">Type</option>
-        <option value="person">Personne</option>
         <option value="company">Compagnie</option>
+        <option value="woman">Femme</option>
+        <option value="man">Homme</option>
       </select>
 
       <button
@@ -58,14 +50,14 @@
       </button>
     </form>
 
-    <a
+    <button
       hx-target="#basic_dialog"
       hx-get="{% url 'create_client' %}"
-      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
+      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
     >
-      Ajouter un client
+      Nouveau
       <i class="fa-solid fa-plus ml-2"></i>
-    </a>
+    </button>
   </div>
 
   <div

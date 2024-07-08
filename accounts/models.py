@@ -76,7 +76,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f' {self.last_name} {self.first_name}'
 
 
-gender_list = (
+genders = (
     ('female', 'Féminin'),
     ('male', 'Masculin'),
 )
@@ -84,9 +84,10 @@ gender_list = (
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    store = models.OneToOneField('base.Store', blank=True, null=True, on_delete=models.SET_NULL)
     phone = models.CharField(max_length=100, unique=True, blank=True, null=True)
     sex = models.CharField(
-        max_length=10, choices=gender_list, blank=True, null=True)
+        max_length=10, choices=genders, blank=True, null=True)
     image = models.ImageField(
         upload_to='uploads/users/profiles', default='../static/imgs/anon.png', blank=True, null=True)
 

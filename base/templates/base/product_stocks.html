@@ -38,7 +38,7 @@
             class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           />
           <!-- quantity fields -->
-          <input
+          <!-- <input
             hx-post="{% url 'filter_prod_stock' %}"
             hx-target=".prod_stock_list"
             hx-trigger="keyup changed delay:500ms"
@@ -55,7 +55,7 @@
             name="max_quantity"
             type="number"
             class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-          />
+          /> -->
           <!-- categories and subcategories -->
           <select
             name="category"
@@ -72,13 +72,16 @@
             name="family"
             class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
-            <option value="" selected="true" disabled="disabled">Famille</option>
+            <option value="" selected="true" disabled="disabled">
+              Famille
+            </option>
             {% for obj in families %}
             <option value="{{obj.id}}">{{obj.name}}</option>
             {% endfor %}
           </select>
+          {% include 'base/components/store_filter.html' %}
         </section>
-  
+
         <button
           class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
           type="submit"
@@ -95,15 +98,15 @@
       </form>
     </div>
     <!--  -->
-    <button
+    <!-- <button
       onclick="hide_dialogs()"
       hx-target="#basic_dialog"
       hx-get="{% url 'create_prod_stock' %}"
       class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
     >
-      Ajouter un produit
+      Nouveau
       <i class="text-sm fa-solid fa-plus ml-2"></i>
-    </button>
+    </button> -->
   </div>
 
   <!--  -->

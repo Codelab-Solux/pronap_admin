@@ -1,28 +1,39 @@
 {% load static %}
-
+<!--  -->
 <div
-  class="p-2 w-full bg-white hover:bg-gray-100 text-xs lg:text-sm flex justify-between items-center rounded-lg border hover:shadow-lg transition duration-200 ease-in"
+  class="relative h-full flex items-center border bg-white hover:shadow-md rounded-xl overflow-hidden"
 >
-  <h3 class="font-bold text-black">Personel N°{{obj.id}}</h3>
-  <p>
-    <i class="fa-solid fa-user mr-2"></i>
-    {{obj.lastname|title}} {{obj.firstname|title}}
-  </p>
-  <p>
-    <i class="fa-solid fa-email mr-2"></i>
-    {{obj.email}}
-  </p>
-  <p>
-    <i class="fa-solid fa-clock mr-2"></i>
-    {{obj.orders_set_all|length}}
-  </p>
-  <small class="bg-red-200 text-black px-2 py-1 rounded-full">
-    {{obj.is_active}}
-  </small>
   <button
-    onclick="toggle_sentry()"
-    class="text-gray-400 hover:text-teal-900 p-2 transition duration-200 ease-in"
+    onclick="closeModal()"
+    hx-target="#basic_dialog"
+    hx-get="{% url 'edit_staff' obj.id %}"
+    class="absolute top-1 left-1 w-fit bg-green-700 hover:bg-green-900 text-white px-2 py-1 text-xs rounded-md transition duration-200 ease-in"
   >
-    <i class="fa-solid fa-ellipsis-vertical"></i>
+    <i class="fa-solid fa-pen-to-square"></i>
   </button>
+  {% if not obj.profile.image %}
+  <img
+    class="h-20 w-20 mx-auto rounded-full object-cover"
+    src="{% static 'imgs/anon.png' %}"
+    alt="image"
+  />
+  {% else %}
+  <img
+    class="h-20 w-20 mx-auto rounded-full object-cover"
+    src="{{obj.profile.image.url}}"
+    alt="image"
+  />
+  {% endif %}
+
+  <a
+    href="{% url 'staff_details' obj.id %}"
+    hx-boost="false"
+    class="bg-lime-200 bg-white p-3 h-full w-full flex flex-col gap-1 text-left cursor-pointer"
+  >
+    <h4 class="text-black font-bold">{{obj.last_name}} {{obj.first_name}}</h4>
+    <p class="rounded-md flex gap-2 items-center text-black text-xs">
+      {{obj.role.name}}
+    </p>
+    <p class="text-sm">{{obj.profile.bio|truncatechars:50}}</p>
+  </a>
 </div>

@@ -8,6 +8,63 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from accounts.models import *
 from utils import *
 
+
+
+# ----------------------------------- Entities -----------------------------------
+
+entity_types = (
+    ('company', "Compagnie"),
+    ('woman', 'Femme'),
+    ('man', "Homme"),
+)
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=255)
+    phone = models.CharField(unique=True, max_length=255, blank=True, null=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
+    address = models.CharField(max_length=255)
+    domain = models.CharField(max_length=255)
+    is_new = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True,  blank=True, null=True)
+    type = models.CharField(max_length=50, choices=entity_types, default='company')
+    description = models.CharField(max_length=500, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name} - {self.phone}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('supplier_details', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        if self.is_new and self.timestamp and timezone.now() > self.timestamp + timedelta(weeks=2):
+            self.is_new = False
+        super(Supplier, self).save(*args, **kwargs)
+
+
+class Client(models.Model):
+    name = models.CharField(
+        max_length=255, default='', null=True, blank=True)
+    phone = models.CharField(unique=True, max_length=255, blank=True, null=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now=True)
+    type = models.CharField(max_length=50, choices=entity_types, default='company')
+    description = models.CharField(max_length=500, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name} - {self.phone}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('client_details', kwargs={'pk': self.pk})
+
+
+
 # ----------------------------------- Store -----------------------------------
 store_types = (
     ('generic', "Generique"),
@@ -19,8 +76,8 @@ class Store(models.Model):
     type = models.CharField(max_length=50, choices=store_types)
     manager = models.ForeignKey(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL, related_name='store_manager')
-    workers = models.ManyToManyField(
-        CustomUser, blank=True, related_name='store_workers')
+    # workers = models.ManyToManyField(
+    #     CustomUser, blank=True, related_name='store_workers')
     name = models.CharField(max_length=255, default='', null=True, blank=True)
     address = models.CharField(max_length=255, default='',)
     city = models.CharField(max_length=255, default='',)
@@ -41,8 +98,10 @@ class Store(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('store', kwargs={'pk': self.pk})
+        return reverse('store_details', kwargs={'pk': self.pk})
 
+
+# ----------------------------------- Finances -----------------------------------
 
 cashdesk_types = (
     ('cash', "Physique"),
@@ -50,10 +109,16 @@ cashdesk_types = (
     ('bank', "Bancaire"),
 )
 
+carrier_types = (
+    ('moov', "Moov Africa"),
+    ('togocom', "Togocom"),
+)
+
 
 class Cashdesk(models.Model):
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, blank=True, null=True, on_delete=models.SET_NULL)
     type = models.CharField(max_length=50, choices=cashdesk_types)
+    carrier = models.CharField(max_length=50, choices=carrier_types, blank=True, null=True)
     name = models.CharField(max_length=500)
     phone = models.CharField(max_length=500, blank=True, null=True)
     acc_number = models.CharField(max_length=500, blank=True, null=True)
@@ -71,7 +136,28 @@ class Cashdesk(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('cashdesk', kwargs={'pk': self.pk})
+        return reverse('cashdesk_details', kwargs={'pk': self.pk})
+
+
+class Payment(models.Model):
+    initiator = models.ForeignKey(
+        CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
+    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
+    cashdesk = models.ForeignKey(
+        Cashdesk, blank=True, null=True, on_delete=models.SET_NULL)
+    amount = models.IntegerField(default='0', blank=True, null=True)
+    label = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.initiator} - {self.amount} Cfa'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('payment_details', kwargs={'pk': self.pk})
 
 
 transaction_types = (
@@ -84,7 +170,6 @@ audit_statuses = (
     ('validated', "Validé"),
     ('rejected', "Rejeté"),
 )
-
 
 
 class Transaction(models.Model):
@@ -101,9 +186,9 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
     audit = models.CharField(
         max_length=50, choices=audit_statuses, default='pending')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
+    content_type = models.ForeignKey(ContentType, blank=True, null=True, on_delete=models.SET_NULL)
+    object_id = models.PositiveIntegerField( blank=True, null=True,)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
 
     def __str__(self):
@@ -124,71 +209,80 @@ class Transaction(models.Model):
         return obj
 
     def get_absolute_url(self):
-        return reverse('transaction', kwargs={'pk': self.pk})
+        return reverse('transaction_details', kwargs={'pk': self.pk})
 
 
-# ----------------------------------- Entities -----------------------------------
-
-
-entity_types = (
-    ('person', "Personne"),
-    ('company', "Compagnie"),
-)
-
-
-class Supplier(models.Model):
-    name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    email = models.EmailField(max_length=255)
-    domain = models.CharField(max_length=255)
-    is_new = models.BooleanField(default=True)
-    timestamp = models.DateTimeField(auto_now_add=True,  blank=True, null=True)
-    type = models.CharField(max_length=50, choices=entity_types, default='company')
-
-    def __str__(self):
-        return f'{self.name} - {self.type}'
-
-    def get_hashid(self):
-        return h_encode(self.id)
-
-    def get_absolute_url(self):
-        return reverse('supplier', kwargs={'pk': self.pk})
-
-    def save(self, *args, **kwargs):
-        if self.is_new and self.timestamp and timezone.now() > self.timestamp + timedelta(weeks=2):
-            self.is_new = False
-        super(Supplier, self).save(*args, **kwargs)
-
-
-sexes = (
-    ('male', "Masculin"),
-    ('female', 'Féminin'),
-    ('neutral', 'Neutre'),
-)
-
-
-class Client(models.Model):
-    name = models.CharField(
-        max_length=255, default='', null=True, blank=True)
-    sex = models.CharField(max_length=50, default='neutral', choices=sexes)
-    email = models.EmailField(max_length=255, blank=True, null=True)
-    phone = models.CharField(max_length=255, default='', blank=True, null=True)
-    address = models.CharField( max_length=255, default='', blank=True, null=True)
+class Payment(models.Model):
+    initiator = models.ForeignKey(
+        CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
+    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
+    cashdesk = models.ForeignKey(
+        Cashdesk, blank=True, null=True, on_delete=models.SET_NULL)
+    amount = models.IntegerField(default='0', blank=True, null=True)
+    label = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
-    type = models.CharField(max_length=50, choices=entity_types, default='company')
 
     def __str__(self):
-        return f'{self.name} - {self.sex}'
+        return f'{self.initiator} - {self.amount} Cfa'
 
     def get_hashid(self):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('client', kwargs={'pk': self.pk})
+        return reverse('payment_details', kwargs={'pk': self.pk})
+    
+
+class Receivable(models.Model):
+    initiator = models.ForeignKey(
+        CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
+    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
+    label = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    due_date = models.DateField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content_type = models.ForeignKey(ContentType, blank=True, null=True, on_delete=models.SET_NULL)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f'{self.client} owes {self.amount}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('receivable_details', kwargs={'pk': self.pk})
+    
+
+class Debt(models.Model):
+    initiator = models.ForeignKey(
+        CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
+    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
+    label = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    due_date = models.DateField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content_type = models.ForeignKey(ContentType, blank=True, null=True, on_delete=models.SET_NULL)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f'Owes {self.supplier} {self.amount}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('debt_details', kwargs={'pk': self.pk})
 
 
 # ----------------------------------- Products -----------------------------------
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     is_featured = models.BooleanField(default=False)
@@ -202,7 +296,7 @@ class Category(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('prod_category', kwargs={'pk': self.pk})
+        return reverse('prod_category_details', kwargs={'pk': self.pk})
 
 
 class Family(models.Model):
@@ -217,7 +311,7 @@ class Family(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('prod_family', kwargs={'pk': self.pk})
+        return reverse('prod_family_details', kwargs={'pk': self.pk})
     
 
 class Lot(models.Model):
@@ -231,7 +325,7 @@ class Lot(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('prod_lot', kwargs={'pk': self.pk})
+        return reverse('prod_lot_details', kwargs={'pk': self.pk})
 
 
 unit_types = (
@@ -264,7 +358,7 @@ class Product(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('product', kwargs={'pk': self.pk})
+        return reverse('product_details', kwargs={'pk': self.pk})
 
     def save(self, *args, **kwargs):
         if self.is_new and self.timestamp and timezone.now() > self.timestamp + timedelta(weeks=2):
@@ -293,14 +387,14 @@ class ProductStock(models.Model):
         return h_encode(self.id)
 
     def get_absolute_url(self):
-        return reverse('product_stock', kwargs={'pk': self.pk})
+        return reverse('product_stock_details', kwargs={'pk': self.pk})
 
 # ----------------------------------- Sales -----------------------------------
 
 class Sale(models.Model):
     store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
-    buyer = models.ForeignKey(Client, default=1, on_delete=models.CASCADE)
-    seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    initiator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, default=1, on_delete=models.CASCADE)
     product_stocks = models.ManyToManyField(ProductStock, through='SaleItem')
     cashdesk = models.ForeignKey(Cashdesk, default=1, blank=True, null=True, on_delete=models.SET_NULL)
     audit = models.CharField(max_length=50, choices=audit_statuses, default='pending')
@@ -383,10 +477,11 @@ class PurchaseItem(models.Model):
     purchase = models.ForeignKey(ProductPurchase, on_delete=models.SET_NULL, null=True)
     product_stock = models.ForeignKey(ProductStock, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=0)
+    price = models.PositiveIntegerField(default=0)
 
     @property
     def get_total(self):
-        total = self.product_stock.price * self.quantity
+        total = self.price * self.quantity
         return total
 
     def __str__(self):
@@ -429,6 +524,8 @@ stock_input_types = (
 class StockInput(models.Model):
     initiator = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, blank=True, null=True)
+    store = models.ForeignKey(
+        Store, on_delete=models.SET_NULL, blank=True, null=True)
     type = models.CharField(
         max_length=50, choices=stock_input_types, default='purchase')
     product_stocks = models.ManyToManyField(
@@ -466,6 +563,8 @@ stock_output_types = (
 
 
 class StockOutput(models.Model):
+    store = models.ForeignKey(
+        Store, on_delete=models.SET_NULL, blank=True, null=True)
     initiator = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, blank=True, null=True)
     type = models.CharField(
@@ -496,6 +595,8 @@ class StockOutputItem(models.Model):
 
 # ----------------------------------- Inventory -----------------------------------
 class Inventory(models.Model):
+    store = models.ForeignKey(
+        Store, on_delete=models.SET_NULL, blank=True, null=True)
     date = models.DateField(default=datetime.date.today)
     initiator = models.ForeignKey(
         CustomUser,  on_delete=models.SET_NULL, blank=True, null=True, related_name='initiator')

@@ -50,14 +50,14 @@ def get_stock_value(pk):
 @register.filter
 def get_purchases_count(pk):
     client = Client.objects.get(id=pk)
-    sales_count = Sale.objects.filter(buyer = client).count()
+    sales_count = Sale.objects.filter(client = client).count()
 
     return sales_count
 
 @register.filter
 def get_purchases_value(pk):
     client = Client.objects.get(id=pk)
-    sales = Sale.objects.filter(buyer = client)
+    sales = Sale.objects.filter(client = client)
     sales_value = sales.aggregate(totals=Sum('total'))['totals'] or 0
 
     return sales_value

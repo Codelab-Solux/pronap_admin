@@ -59,9 +59,9 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'create_stock_input' %}"
-        class="mb-4 px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        class="mb-4 px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
       >
-        Nouvelle entrée
+        Nouveau
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
       <div
@@ -78,9 +78,9 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'create_stock_output' %}"
-        class="mb-4 px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        class="mb-4 px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
       >
-        Nouvelle sortie
+        Nouveau 
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
       <div
@@ -96,9 +96,9 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'create_inventory' %}"
-        class="mb-4 px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        class="mb-4 px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
       >
-        Nouvelle inventaire
+        Nouveau
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
       <div
@@ -110,37 +110,4 @@
     </div>
   </section>
 </div>
-
-<script>
-  function clearForm(div_id) {
-    var form = document.getElementById(div_id);
-    form.reset();
-  }
-
-  document
-    .getElementById("back-button")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent the default anchor behavior
-      window.history.go(-1); // Go back two pages
-    });
-
-  document.getElementById("defaultTab").click();
-  function openTab(event, tabName) {
-    var i, tabcontent, tabBtn;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tabBtn = document.getElementsByClassName("tabBtn");
-    for (i = 0; i < tabBtn.length; i++) {
-      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    event.currentTarget.className += " active";
-    var minitabs = document.getElementsByClassName("minitabcontent");
-    if (minitabs.length != 0) {
-      minitabs = tabcontent.children;
-    }
-  }
-</script>
 {% endblock %}

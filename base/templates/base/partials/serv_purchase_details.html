@@ -1,7 +1,15 @@
 {% load static %}
 
 <div class="w-full flex flex-col gap-2">
-  <h2 class="text-4xl font-bold text-black">{{curr_obj.label}}</h2>
+  <div class="flex items-center gap-2">
+    <h2 class="text-4xl font-bold text-black">{{curr_obj.label}}</h2>
+    <a
+      href="{% url 'edit_service_purchase' curr_obj.id %}"
+      class="w-fit hover:bg-green-700 hover:text-white py-2 px-3 rounded-full transition duration-200 ease-in"
+    >
+      <i class="fa-solid fa-pen-to-square"></i
+    ></a>
+  </div>
 
   <p><b>Fournisseur : </b> {{curr_obj.supplier.name }}</p>
   <p><b>Caisse : </b> {{curr_obj.cashdesk.name }}</p>
@@ -9,9 +17,4 @@
   <p><b>Status du paiement : </b> {{curr_obj.get_payment_status_display }}</p>
   <p><b>Montant : </b> {{curr_obj.total }} Cfa</p>
   <!-- <p><b>Description : </b> {{curr_obj.description }}</p> -->
-  <a
-    href="{% url 'edit_service_purchase' curr_obj.id %}"
-    class="w-fit bg-green-700 hover:bg-green-900 text-white px-6 py-2 rounded-lg transition duration-200 ease-in"
-    >Modifier<i class="fa-solid fa-pen-to-square ml-4"></i
-  ></a>
 </div>

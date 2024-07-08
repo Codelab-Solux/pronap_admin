@@ -1,0 +1,14 @@
+
+          {% if user.role.sec_level > 1 %}
+          <select
+            name="store"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Boutique
+            </option>
+            {% for obj in stores %}
+            <option value="{{obj.id}}">{{obj.name}}</option>
+            {% endfor %}
+          </select>
+          {% endif %}

@@ -2,7 +2,7 @@
 
 <div
   onclick="update_cart('{{ obj.product.id }}', 'add_item')"
-  class="cursor-pointer relative w-full h-fit bg-white flex justify-between rounded-xl border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
+  class="cursor-pointer relative w-full h-full bg-white flex justify-between rounded-xl border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
 >
   {% if obj.product.image %}
   <img
@@ -36,7 +36,7 @@
     {% else %}
     <p>{{obj.price}} CFA</p>
     {% endif %}
-    <span class="w-fit text-xs text-black bg-orange-200 rounded-md px-2 py-[0.2em]">{{obj.quantity}} en stock</span>
+    <span class="w-fit text-xs text-black bg-lime-200 rounded-md px-2 py-[0.2em]">{{obj.quantity}} en stock</span>
   </article>
 </div>
 <!-- Hidden CSRF token input -->

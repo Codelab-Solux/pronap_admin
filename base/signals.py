@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from .models import Sale, SaleItem, ProductPurchase, PurchaseItem, ServicePurchase, Transaction
 from django.contrib.contenttypes.models import ContentType
@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 def create_sale_transaction(sender, instance, created, **kwargs):
     if created:
         Transaction.objects.create(
-            initiator=instance.seller,
+            initiator=instance.initiator,
             store=instance.store,
             cashdesk=instance.cashdesk,
             type='credit',
@@ -24,11 +24,12 @@ def create_sale_transaction(sender, instance, created, **kwargs):
             amount=instance.total,
             cashdesk=instance.cashdesk,
             store=instance.store,
-            initiator=instance.seller,
+            initiator=instance.initiator,
         )
 
 @receiver(post_save, sender=SaleItem)
-def update_sale_total(sender, instance, created, **kwargs):
+@receiver(post_delete, sender=SaleItem)
+def update_sale_total(sender, instance, **kwargs):
     instance.sale.calculate_total()
 
 @receiver(post_save, sender=ProductPurchase)
@@ -55,7 +56,8 @@ def create_product_purchase_transaction(sender, instance, created, **kwargs):
         )
 
 @receiver(post_save, sender=PurchaseItem)
-def update_product_purchase_total(sender, instance, created, **kwargs):
+@receiver(post_delete, sender=PurchaseItem)
+def update_product_purchase_total(sender, instance, **kwargs):
     instance.purchase.calculate_total()
 
 @receiver(post_save, sender=ServicePurchase)

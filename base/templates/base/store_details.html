@@ -7,92 +7,193 @@
       href="#"
       >&larr;</a
     >
-    <!--------------------------------------- menu tabs buttons --------------------------------------->
-    <div
-      class="flex justify-between gap-2 text-xs tabbar h-fit w-full lg:max-w-[600px] p-2 bg-green-700 rounded-xl"
-    >
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
-        onclick="openTab(event, 'trans')"
-        id="defaultTab"
-      >
-        <i class="fa-solid fa-scroll"></i>
-        <span class="ml-2">Transactions</span>
-      </button>
-      <button
-        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
-        onclick="openTab(event, 'stock')"
-      >
-        <i class="fa-solid fa-boxes"></i>
-        <span class="ml-2">Stock</span>
-      </button>
-    </div>
   </div>
 
   <div class="w-full grid md:grid-cols-2 gap-4">
-    <div
-      class="p-3 w-full bg-lime-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
-    >
-      <img
-        class="h-40 w-40 bg-white rounded-full object-cover"
-        src="{% static 'imgs/icon-w.png' %}"
-        alt="image"
-      />
-
-      <div class="w-full bg-lime-300 p-3 rounded-lg">
-        <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
-        <p>
-          <i class="fa-solid fa-phone text-gray-800 mr-3"></i>Téléphone :
-          <span class="text-black">{{curr_obj.phone}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-envelope-open text-gray-800 mr-3"></i>Email :
-          <span class="text-black">{{curr_obj.email}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-location-dot text-gray-800 mr-3"></i>Adresse :
-          <span class="text-black">{{curr_obj.address}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-city text-gray-800 mr-3"></i>Ville :
-          <span class="text-black">{{curr_obj.city}} </span>
-        </p>
-      </div>
-    </div>
-
-    <div
-      class="h-full bg-white border mb-4 p-3 rounded-2xl shadow-md grid gap-2"
-    >
+    <section class="p-3 w-full bg-lime-200 rounded-2xl flex flex-col gap-4">
       <div
-        class="p-2 bg-green-200 rounded-lg text-black flex justify-between items-center gap-2"
+        class="p-3 w-full bg-lime-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
       >
-        <span>Encaissements : <b>{{ credits|length }}</b></span>
-        <span>Montant total encaissé : <b>{{ credits_aggregate }} Cfa</b></span>
+        <img
+          class="h-40 w-40 bg-white rounded-full object-cover"
+          src="{% static 'imgs/logo.png' %}"
+          alt="image"
+        />
+
+        <div class="w-full bg-lime-300 p-4 rounded-xl">
+          <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
+          <p>
+            <i class="fa-solid fa-phone text-gray-800 mr-3"></i>Téléphone :
+            <span class="text-black">{{curr_obj.phone}} </span>
+          </p>
+          <p>
+            <i class="fa-solid fa-envelope-open text-gray-800 mr-3"></i>Email :
+            <span class="text-black">{{curr_obj.email}} </span>
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot text-gray-800 mr-3"></i>Adresse :
+            <span class="text-black">{{curr_obj.address}} </span>
+          </p>
+          <p>
+            <i class="fa-solid fa-city text-gray-800 mr-3"></i>Ville :
+            <span class="text-black">{{curr_obj.city}} </span>
+          </p>
+        </div>
       </div>
+      <article class="px-3">
+        <p>
+          <b>Description :</b> Lorem ipsum dolor sit, amet consectetur
+          adipisicing elit. Magni non aliquam ad alias illum? Neque doloremque
+          commodi maxime magnam mollitia molestiae doloribus alias impedit
+          possimus maiores, reprehenderit molestias est amet blanditiis.
+          Consectetur aperiam eveniet similique possimus laudantium tempore
+          incidunt, eum facilis numquam. Temporibus minus numquam eum magnam
+          fuga cum maiores est nisi harum facilis iusto aut omnis expedita,
+          reprehenderit sed, porro aperiam doloribus, similique aliquid debitis
+          veniam! Esse dolorem incidunt magnam minima.
+        </p>
+      </article>
+      <!--------------------------------------- menu tabs buttons --------------------------------------->
+      <div
+        class="bg-green-700 w-full h-fit p-2 rounded-xl flex justify-between gap-2 text-xs tabbar"
+      >
+        <button
+          class="tabBtn px-2 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'trans')"
+          id="defaultTab"
+        >
+          <i class="fa-solid fa-scroll"></i>
+          <span class="ml-2">Transactions</span>
+        </button>
+        <button
+          class="tabBtn px-2 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'stock')"
+        >
+          <i class="fa-solid fa-cubes"></i>
+          <span class="ml-2">Stock</span>
+        </button>
+        <button
+          class="tabBtn px-2 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'recevs')"
+        >
+          <i class="fa-solid fa-wallet"></i>
+          <span class="ml-2">Créances</span>
+        </button>
+        <button
+          class="tabBtn px-2 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'debts')"
+        >
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span class="ml-2">Dettes</span>
+        </button>
+        <button
+          class="tabBtn px-2 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'pays')"
+        >
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <span class="ml-2">Paiements</span>
+        </button>
+      </div>
+    </section>
+    <section
+      class="mb-4 p-3 h-full bg-white border text-black rounded-2xl shadow-md grid gap-2"
+    >
+      <!-- credits overview -->
 
       <div
-        class="p-2 bg-orange-200 rounded-lg text-black flex justify-between items-center gap-2"
+        class="p-2 bg-green-50 border-2 border-green-300 rounded-xl flex flex-col justify-evenly gap-2"
       >
-        <span>Décaissements : <b>{{ debits|length }}</b></span>
-        <span>Montant total décaissé : <b>{{ debits_aggregate }} Cfa</b></span>
+        <div
+          class="p-2 bg-green-100 rounded-lg flex justify-between items-center gap-2"
+        >
+          <span>Encaissements : <b>{{ credits|length }}</b></span>
+          <span
+            >Montant total encaissé : <b>{{ credits_aggregate }} Cfa</b></span
+          >
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="p-2 bg-green-200 rounded-md flex flex-col">
+            <span>Espèces</span>
+            <b>{{ cash_credits }} Cfa</b>
+          </div>
+          <div class="p-2 bg-green-300 rounded-md flex flex-col">
+            <span>T-Money</span>
+            <b>{{ tmoney_credits }} Cfa</b>
+          </div>
+          <div class="p-2 bg-green-400 rounded-md flex flex-col">
+            <span>Moov Money</span>
+            <b>{{ moov_credits }} Cfa</b>
+          </div>
+        </div>
       </div>
 
-      <div class="p-2 bg-gray-200 rounded-lg text-black flex items-center">
-        <span>Solde : <b>{{ balance }} Cfa</b></span>
+      <!-- debits overview -->
+
+      <div
+        class="p-2 bg-orange-50 border-2 border-orange-300 rounded-xl flex flex-col justify-evenly gap-2"
+      >
+        <div
+          class="p-2 bg-orange-100 rounded-lg flex justify-between items-center gap-2"
+        >
+          <span>Décaissements : <b>{{ debits|length }}</b></span>
+          <span
+            >Montant total décaissé : <b>{{ debits_aggregate }} Cfa</b></span
+          >
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="p-2 bg-orange-200 rounded-md flex flex-col">
+            <span>Espèces</span>
+            <b>{{ cash_debits }} Cfa</b>
+          </div>
+          <div class="p-2 bg-orange-300 rounded-md flex flex-col">
+            <span>T-Money</span>
+            <b>{{ tmoney_debits }} Cfa</b>
+          </div>
+          <div class="p-2 bg-orange-400 rounded-md flex flex-col">
+            <span>Moov Money</span>
+            <b>{{ moov_debits }} Cfa</b>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- balance overview -->
+      <div
+        class="p-2 bg-gray-50 border-2 border-gray-300 rounded-xl flex flex-col justify-evenly gap-2"
+      >
+        <div
+          class="p-2 border border-gray-200 rounded-lg flex justify-between items-center gap-2"
+        >
+          <span>Solde total</span> <b>{{ balance }} Cfa</b>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="p-2 bg-gray-100 rounded-md flex flex-col">
+            <span>Solde liquide</span>
+            <b>{{ cash_balance }} Cfa</b>
+          </div>
+          <div class="p-2 bg-gray-200 rounded-md flex flex-col">
+            <span>Solde T-Money</span>
+            <b>{{ tmoney_balance }} Cfa</b>
+          </div>
+          <div class="p-2 bg-gray-300 rounded-md flex flex-col">
+            <span>Solde Moov Money</span>
+            <b>{{ moov_balance }} Cfa</b>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <section class="flex flex-col gap-4">
     <!--  -->
     <div id="trans" class="tabcontent w-full flex flex-col gap-2">
       <div class="mb-4 flex items-center justify-between">
-        <h3 class="font-bold text-lg">Liste des transactions</h3>
+        <h3 class="font-bold text-black text-lg">Liste des transactions</h3>
         <form
           id="filter"
           hx-post="{% url 'filter_transactions' %}"
           hx-target=".transactions_list"
-          class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
+          class="w-full max-w-2xl flex justify-between items-center gap-1 text-sm"
         >
           {% csrf_token %}
           <section
@@ -112,7 +213,7 @@
               {% endfor %}
             </select>
             <!-- transaction amount margin -->
-            <input
+            <!-- <input
               hx-post="{% url 'filter_transactions' %}"
               hx-target=".transactions_list"
               hx-trigger="keyup changed delay:500ms"
@@ -129,7 +230,7 @@
               name="max_amount"
               type="number"
               class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-            />
+            /> -->
             <!-- transaction type -->
             <select
               name="type"
@@ -157,8 +258,8 @@
         </form>
       </div>
       <div
-        class="transaction_list"
-        hx-get="{% url 'transactions_list' %}"
+        class="store_transactions"
+        hx-get="{% url 'store_transactions' curr_obj.id %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
       ></div>
@@ -166,12 +267,14 @@
     <!--  -->
     <div id="stock" class="tabcontent w-full flex flex-col gap-2">
       <div class="mb-4 flex items-center justify-between">
-        <h3 class="font-bold text-lg">Liste des produits en stock</h3>
+        <h3 class="font-bold text-black text-lg">
+          Liste des produits en stock
+        </h3>
         <form
           id="filter"
           hx-post="{% url 'filter_transactions' %}"
           hx-target=".transactions_list"
-          class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
+          class="w-full max-w-2xl flex justify-between items-center gap-1 text-sm"
         >
           {% csrf_token %}
           <section
@@ -191,7 +294,7 @@
               {% endfor %}
             </select>
             <!-- transaction amount margin -->
-            <input
+            <!-- <input
               hx-post="{% url 'filter_transactions' %}"
               hx-target=".transactions_list"
               hx-trigger="keyup changed delay:500ms"
@@ -208,7 +311,7 @@
               name="max_amount"
               type="number"
               class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-            />
+            /> -->
             <!-- transaction type -->
             <select
               name="type"
@@ -236,33 +339,70 @@
         </form>
       </div>
       <div
-        class="stock_overview"
-        hx-get="{% url 'stock_overview' %}"
+        class="store_stock"
+        hx-get="{% url 'store_stock' curr_obj.id %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!--  -->
+    <div id="recevs" class="tabcontent w-full flex flex-col gap-2">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="font-bold text-black text-lg">Liste des créances</h3>
+        <button
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_receivable' %}"
+          class="w-fit bg-orange-200 hover:bg-orange-300 text-xs px-3 py-2 rounded-md transition duration-200 ease-in"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <div
+        class="receivables_list"
+        hx-get="{% url 'receivables_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!--  -->
+    <div id="debts" class="tabcontent w-full flex flex-col gap-2">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="font-bold text-black text-lg">Liste des dettes</h3>
+        <button
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_debt' %}"
+          class="w-fit bg-orange-200 hover:bg-orange-300 text-xs px-3 py-2 rounded-md transition duration-200 ease-in"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+      <div
+        class="debts_list"
+        hx-get="{% url 'debts_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!--  -->
+    <div id="pays" class="tabcontent w-full flex flex-col gap-2">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="font-bold text-black text-lg">Liste des paiements</h3>
+        <button
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_payment' %}"
+          class="w-fit bg-orange-200 hover:bg-orange-300 text-xs px-3 py-2 rounded-md transition duration-200 ease-in"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+      <div
+        class="payments_list"
+        hx-get="{% url 'payments_list' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
       ></div>
     </div>
   </section>
 </div>
-<script>
-  document.getElementById("defaultTab").click();
-  function openTab(event, tabName) {
-    var i, tabcontent, tabBtn;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tabBtn = document.getElementsByClassName("tabBtn");
-    for (i = 0; i < tabBtn.length; i++) {
-      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    event.currentTarget.className += " active";
-    var minitabs = document.getElementsByClassName("minitabcontent");
-    if (minitabs.length != 0) {
-      minitabs = tabcontent.children;
-    }
-  }
-</script>
-
 {% endblock %}

@@ -49,61 +49,39 @@
         <div
           class="p-3 w-full bg-lime-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
         >
+          {% if not user.is_superuser %}
           <img
             class="h-40 w-40 bg-white rounded-full object-cover"
-            src="{% static 'imgs/icon-w.png' %}"
+            src="{% static 'imgs/logo.png' %}"
             alt="image"
           />
-          {% if not user.is_superuser %}
           <article class="text-gray-700 grid gap-1 w-full">
-            <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
-            <p>
-              <i class="fa-solid fa-cash-register text-gray-800 mr-3"></i> Type
-              :
-              <span class="text-black"
-                >Caisse {{curr_obj.get_type_display}}
-              </span>
-            </p>
-            <p>
-              <i class="fa-solid fa-store text-gray-800 mr-3"></i> Boutique :
-              <span class="text-black"> {{curr_obj.store.name}} </span>
-            </p>
-            {% if curr_obj.type == 'mobile' %}
-            <p>
-              <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de
-              téléphone :
-              <span class="text-black">{{curr_obj.phone}} </span>
-            </p>
-            {% elif curr_obj.type == 'bank' %}
-            <p>
-              <i class="fa-solid fa-bank text-gray-800 mr-3"></i> Compte
-              bancaire :
-              <span class="text-black">{{curr_obj.acc_number}} </span>
-            </p>
-            {% endif %}
+            <h4 class="text-black text-2xl font-bold">{{store.name}}</h4>
             <p>
               <i
-                class="fa-solid fa-up-right-and-down-left-from-center text-gray-800 mr-3"
+                class="fa-solid fa-scroll text-gray-800 mr-3"
               ></i>
               Transactions :
               <span class="text-black">{{transactions|length}} </span>
             </p>
             <p>
               <i class="fa-solid fa-coins text-gray-800 mr-3"></i> Solde :
-              <span class="text-black">{{curr_obj.get_balance}} </span>
+              <span class="text-black">{{balance}} </span>
             </p>
           </article>
           {% else %}
           <!--  -->
-          {% for obj in store %}
-          <div class="bg-lime-300 p-3 rounded-lg">
-            <h4 class="text-black text-2xl font-bold">{{obj.name}}</h4>
-            <p>
-              <i class="fa-solid fa-phone text-gray-800 mr-3"></i>Téléphone :
-              <span class="text-black">{{obj.phone}} </span>
-            </p>
+          <div class="grid grid-cols-3 gap-2">
+            {% for obj in stores %}
+            <a href="{% url 'store_details' obj.id %}" class="bg-lime-300 p-3 rounded-lg">
+              <h4 class="text-black text-lg font-bold">{{obj.name}}</h4>
+              <p>
+                <i class="fa-solid fa-phone text-gray-800 mr-3"></i>
+                <span class="text-black">{{obj.phone}} </span>
+              </p>
+            </a>
+            {% endfor %}
           </div>
-          {% endfor %}
           <!--  -->
           {% endif %}
         </div>
@@ -136,7 +114,7 @@
       </div>
       <section class="mt-4 flex flex-col gap-4">
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-lg">Liste des transactions</h3>
+          <h3 class="font-bold text-black text-lg">Liste des transactions</h3>
           <form
             id="filter"
             hx-post="{% url 'filter_transactions' %}"
@@ -148,20 +126,32 @@
               class="w-full flex justify-between items-center gap-1 text-xs"
             >
               {% include 'base/components/date_margins.html' %}
+              <!-- transaction store -->
+              <select
+                name="store"
+                class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+              >
+                <option value="" selected="true" disabled="disabled">
+                  Boutique
+                </option>
+                {% for obj in stores %}
+                <option value="{{obj.id}}">{{obj.name}}</option>
+                {% endfor %}
+              </select>
               <!-- transaction initiator -->
               <select
                 name="initiator"
                 class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
               >
                 <option value="" selected="true" disabled="disabled">
-                  Initiateurs
+                  Initiateur
                 </option>
                 {% for obj in initiators %}
                 <option value="{{obj.id}}">{{obj.get_full_name}}</option>
                 {% endfor %}
               </select>
               <!-- transaction amount margin -->
-              <input
+              <!-- <input
                 hx-post="{% url 'filter_transactions' %}"
                 hx-target=".transactions_list"
                 hx-trigger="keyup changed delay:500ms"
@@ -178,7 +168,7 @@
                 name="max_amount"
                 type="number"
                 class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-              />
+              /> -->
               <!-- transaction type -->
               <select
                 name="type"

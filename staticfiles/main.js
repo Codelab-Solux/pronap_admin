@@ -1,23 +1,17 @@
-
-
-
 //  form resetter ----------------------------------------------------------------------------------------------------
 function clearForm(div_id) {
   var form = document.getElementById(div_id);
   form.reset();
 }
 
+//  previous page navigator ----------------------------------------------------------------------------------------------------
+backBtn = document.getElementById("back-button");
+backBtn.addEventListener("click", function (event) {
+  event.preventDefault(); // Prevent the default anchor behavior
+  window.history.go(-1); // Go back two pages
+});
 
-//  go back one page ----------------------------------------------------------------------------------------------------
-  backBtn = document.getElementById("back-button");
-
-  backBtn.addEventListener("click", function (event) {
-    event.preventDefault(); // Prevent the default anchor behavior
-    window.history.go(-1); // Go back two pages
-  });
-
-
-//  tabs control ----------------------------------------------------------------------------------------------------
+//  tabs controller ----------------------------------------------------------------------------------------------------
 document.getElementById("defaultTab").click();
 function openTab(event, tabName) {
   var i, tabcontent, tabBtn;
@@ -37,7 +31,7 @@ function openTab(event, tabName) {
   }
 }
 
-//  accordions control ----------------------------------------------------------------------------------------------------
+//  accordions controller ----------------------------------------------------------------------------------------------------
 function toggleAccordion(div_id) {
   var active_accordion = document.getElementById(div_id);
   var active_caret = document.getElementById(`${div_id}_caret`);
@@ -66,8 +60,7 @@ function toggleAccordion(div_id) {
   }
 }
 
-
-//  dropdown control ----------------------------------------------------------------------------------------------------
+//  dropdown controller ----------------------------------------------------------------------------------------------------
 function toggleMenu(e, obj_id) {
   activeMenu = document.getElementById(obj_id);
   e.name === `sentry`
@@ -75,6 +68,20 @@ function toggleMenu(e, obj_id) {
     : ((e.name = `sentry`), activeMenu.classList.add("hidden"));
 }
 
+//  pop up dismisser ----------------------------------------------------------------------------------------------------
 window.addEventListener("mouseup", function (event) {
   activeMenu.classList.add("hidden");
+});
+
+//  selectfield dashes remover ----------------------------------------------------------------------------------------------------
+$(document).ready(function () {
+  // Add a placeholder option to the select element
+
+  elements = document.getElementsByClassName("input_selector");
+  elements.forEach((e) => {
+    e.children().first().remove();
+    $(".input_selector").prepend(
+      '<option value="" disabled selected></option>'
+    );
+  });
 });

@@ -11,7 +11,8 @@
       <th class="px-3 py-4 text-sm">Réf.</th>
       <th class="px-3 py-4 text-sm">Date</th>
       <th class="px-3 py-4 text-sm">Heure</th>
-      <th class="px-3 py-4 text-sm">Initiateurs</th>
+      <th class="px-3 py-4 text-sm">Boutique</th>
+      <th class="px-3 py-4 text-sm">Initiateur</th>
       <th class="px-3 py-4 text-sm text-center">Total</th>
       <th class="px-3 py-4 text-sm text-center">Remise</th>
       <th class="px-3 py-4 text-sm text-center">Actions</th>
@@ -26,7 +27,8 @@
       <td class="px-3 py-1">Acht-000-{{obj.id}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
       <td class="px-3 py-1">{{obj.timestamp.time}}</td>
-      <td class="px-3 py-1">{{obj.seller.get_full_name}}</td>
+      <td class="px-3 py-1">{{obj.store.name}}</td>
+      <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1 text-center bg-green-100">{{obj.total}} Cfa</td>
       <td class="px-3 py-1 text-center bg-orange-100">{{obj.discount}} Cfa</td>
       <td class="px-3 py-1 text-center relative">

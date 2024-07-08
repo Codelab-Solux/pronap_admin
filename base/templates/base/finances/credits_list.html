@@ -1,14 +1,25 @@
-<div
-  class="mb-4 p-2 grid grid-cols-2 gap-2 border border shadow-md rounded-xl text-gray-700 text-sm"
->
-  <p class="bg-green-700 text-white rounded-lg px-4 py-2 flex items-center">
-    Encaissements :
-    <span class="text-lg font-bold ml-2">{{credits|length}}</span>
-  </p>
-  <p class="bg-green-300  text-black rounded-lg px-4 py-2 flex items-center">
-    Montant total encaissé :
-    <span class="text-lg font-bold ml-2">{{credits_aggregate}} Cfa</span>
-  </p>
+<div class="mb-4 flex justify-between items-center gap-4">
+  <div
+    class="p-2 grid grid-cols-2 gap-2 border border shadow-md rounded-xl text-gray-700 text-sm"
+  >
+    <p class="bg-green-700 text-white rounded-lg px-4 py-2 flex items-center">
+      Encaissements :
+      <span class="text-lg font-bold ml-2">{{credits|length}}</span>
+    </p>
+    <p class="bg-green-300 text-black rounded-lg px-4 py-2 flex items-center">
+      Montant total encaissé :
+      <span class="text-lg font-bold ml-2">{{credits_aggregate}} Cfa</span>
+    </p>
+  </div>
+  <button
+    onclick="hide_dialogs()"
+    hx-target="#basic_dialog"
+    hx-get="{% url 'create_credit' %}"
+    class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
+  >
+    Nouveau
+    <i class="text-sm fa-solid fa-plus ml-2"></i>
+  </button>
 </div>
 
 {% if not credits %}
@@ -29,7 +40,6 @@
       <th class="px-3 py-4 text-sm">Libelé</th>
       <th class="px-3 py-4 text-sm">Montant</th>
       <!-- <th class="px-3 py-4 text-sm">Actions</th> -->
-       
     </tr>
   </thead>
 
@@ -42,7 +52,7 @@
       <td class="px-3 py-1">{{obj.store.name}}</td>
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
-      <td class="px-3 py-1">{{obj.label}} </td>
+      <td class="px-3 py-1">{{obj.label}}</td>
       <td class="px-3 py-1">{{obj.amount}} Cfa</td>
       <td class="px-3 py-1 relative hidden">
         <div

@@ -20,26 +20,14 @@
           {#% include 'base/components/date_margins.html' %#}
           <!-- initiator -->
           <select
-            name="store"
-            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-          >
-            <option value="" selected="true" disabled="disabled">
-              Boutique
-            </option>
-            {% for obj in stores %}
-            <option value="{{obj.id}}">{{obj.name}} {{obj.address}}</option>
-            {% endfor %}
-          </select>
-          <!-- initiator -->
-          <select
             name="cashdesk"
             class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
-            <option value="" selected="true" disabled="disabled">
-              Caisse
-            </option>
+            <option value="" selected="true" disabled="disabled">Caisse</option>
             {% for obj in cashdesks %}
-            <option value="{{obj.id}}">{{obj.name}} {{obj.get_type_display}}</option>
+            <option value="{{obj.id}}">
+              {{obj.name}} {{obj.get_type_display}}
+            </option>
             {% endfor %}
           </select>
           <select
@@ -47,7 +35,7 @@
             class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
             <option value="" selected="true" disabled="disabled">
-              Vendeur
+              Initiateur
             </option>
             {% for obj in sellers %}
             <option value="{{obj.id}}">{{obj.get_full_name}}</option>
@@ -57,9 +45,7 @@
             name="buyer"
             class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
-            <option value="" selected="true" disabled="disabled">
-              Client
-            </option>
+            <option value="" selected="true" disabled="disabled">Client</option>
             {% for obj in buyers %}
             <option value="{{obj.id}}">{{obj.name}}</option>
             {% endfor %}
@@ -71,6 +57,7 @@
             type="text"
             class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           /> -->
+          {% include 'base/components/store_filter.html' %}
         </section>
 
         <button
@@ -88,12 +75,18 @@
         </button>
       </form>
     </div>
+
+    {% load tz %}
+    <!-- Make sure to load the tz template tag for timezone support -->
+    {% now "Y-m-d" as today_date %}
+    <!-- Store today's date in the template context -->
+
     <a
-      href="{% url 'sales' %} query=datetime.now.today"
-      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-xs text-black flex items-center gap-4 group"
+      href="{% url 'sales' %}?date={{ today_date }}"
+      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-2 group"
     >
-      Ventes du jour
-      <i class="fa-solid fa-tag ml-2"></i>
+      <span class="hidden lg:inline lg:mr-2"> Ventes du jour </span>
+      <i class="fa-solid fa-calendar-day"></i>
     </a>
   </div>
 
@@ -114,10 +107,10 @@
         <th class="px-3 py-4 text-sm">Date</th>
         <th class="px-3 py-4 text-sm">Boutique</th>
         <th class="px-3 py-4 text-sm">Client</th>
-        <th class="px-3 py-4 text-sm">Vendeur</th>
+        <th class="px-3 py-4 text-sm">Initiateur</th>
         <th class="px-3 py-4 text-sm">Caisse</th>
         <th class="px-3 py-4 text-sm">Montant</th>
-        <th class="px-3 py-4 text-sm">Actions</th>
+        <th class="px-3 py-4 text-sm text-center">Actions</th>
       </tr>
     </thead>
 
@@ -129,14 +122,12 @@
         <td class="px-3 py-1">Vnt-000-{{obj.id}}</td>
         <td class="px-3 py-1">{{obj.timestamp.date}}</td>
         <td class="px-3 py-1">{{obj.store.name}}</td>
-        <td class="px-3 py-1">{{obj.buyer.name}}</td>
-        <td class="px-3 py-1">{{obj.seller.get_full_name}}</td>
+        <td class="px-3 py-1">{{obj.client.name}}</td>
+        <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
         <td class="px-3 py-1">{{obj.cashdesk.name}}</td>
         <td class="px-3 py-1">{{obj.total}} Cfa</td>
         <td class="px-3 py-1 relative">
-          <div
-            class="w-fit flex gap-3 justify-end items-end text-end text-gray-700"
-          >
+          <div class="w-fit text-gray-700 mx-auto">
             <button
               type="button"
               class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
@@ -158,13 +149,6 @@
                 Détails
               </a>
 
-              <a
-                href="{% url 'edit_sale' obj.id %}"
-                class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
-              >
-                <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
-                Modifier
-              </a>
               {% if user.is_superuser %}
               <button
                 hx-confirm="Voulez vous vraiment suprimmer ceci?"

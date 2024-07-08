@@ -22,8 +22,8 @@
       <span class="hidden xl:inline"> Accueil </span>
     </a>
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{products}}"
-      href="{% url 'products' %}"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{product_stocks}}"
+      href="{% url 'product_stocks' %}"
     >
       <i class="fa-solid fa-boxes-packing xl:mr-2"></i>
       <span class="hidden xl:inline"> Produits </span>
@@ -46,7 +46,7 @@
       class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{purchases}}"
       href="{% url 'purchases' %}"
     >
-      <i class="fa-solid fa-money-check-dollar xl:mr-2"></i>
+      <i class="fa-solid fa-receipt xl:mr-2"></i>
       <span class="hidden xl:inline"> Achats </span>
     </a>
     <a
@@ -64,7 +64,7 @@
         <i class="fa-solid fa-users xl:mr-2 text-sm"></i>
         <span class="hidden xl:inline"> Clients </span>
       </a>
-      {% if user.role.sec_level > 2 %}
+      {% if user.role.sec_level >= 2 %}
       <a
         class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{staff}}"
         href="{% url 'staff' %}"
@@ -82,7 +82,6 @@
       {% endif %}
     </div>
     <!--  -->
-    {% if user.role.sec_level >= 3 %}
     <a
       class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{finances}}"
       href="{% url 'finances' %}"
@@ -90,6 +89,7 @@
       <i class="fa-solid fa-coins xl:mr-2 text-sm"></i>
       <span class="hidden xl:inline"> Finances </span>
     </a>
+    {% if user.role.sec_level >= 3 %}
     <a
       class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{stores}}"
       href="{% url 'stores' %}"
@@ -122,14 +122,14 @@
     >
       {% if not user.profile.image %}
       <img
-        class="hidden xl:inline h-10 w-10 rounded-full object-cover"
+        class=" xl:inline h-10 w-10 rounded-full object-cover"
         src="{% static 'imgs/anon.png' %}"
         alt="welcome image"
       />
       {% else %}
       <img
         class="hidden xl:block h-10 w-10 rounded-full object-cover"
-        src="{{user.image.url}}"
+        src="{{user.profile.image.url}}"
         alt="welcome image"
       />
       {% endif %}
@@ -160,15 +160,15 @@
           id="dropdownMenu"
         >
           <a
-            href="{% url 'user_details' user.id %}"
+            href="{% url 'staff_details' user.id %}"
             class="px-3 py-2 flex text-sm text-gray-700 hover:text-black hover:bg-orange-200 xl:rounded-lg w-full"
           >
             <i class="fa-solid fa-user xl:mr-2 text-sm"></i>
             <span class="hidden xl:inline">Mon Profile</span>
           </a>
           <a
-            hx-boost="false"
             hx-confirm="Voulez vous vraiment vous deconnecter?"
+            hx-boost="true"
             href="{% url 'logout' %}"
             class="px-3 py-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white xl:rounded-lg w-full"
           >

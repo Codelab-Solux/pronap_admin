@@ -1,0 +1,16 @@
+    <div class="w-full flex flex-col gap-2">
+      <h2 class="text-4xl font-bold text-black">{{curr_obj.label}}</h2>
+
+      <p><b>Fournisseur : </b> {{curr_obj.supplier.name }}</p>
+      <p><b>Caisse : </b> {{curr_obj.cashdesk.name }}</p>
+      <p>
+        <b>Moyen de paiement : </b> {{curr_obj.get_payment_option_display }}
+      </p>
+      <p>
+        <b>Status du paiement : </b> {{curr_obj.get_payment_status_display }}
+      </p>
+      <p><b>Total à payé : </b> {{curr_obj.total }} Cfa</p>
+      <p><b>Montant payé : </b> {{curr_obj.amount_paid }} Cfa</p>
+      <p><b>Montant dû : </b> {{ amount_due }} Cfa</p>
+      <!-- <p><b>Description : </b> {{curr_obj.description }}</p> -->
+    </div>

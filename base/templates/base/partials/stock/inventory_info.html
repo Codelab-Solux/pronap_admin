@@ -1,0 +1,7 @@
+    <div class="w-full flex flex-col gap-2">
+      <h2 class="text-4xl text-black">Boutique : <b>{{ curr_obj.store.name }}</b></h2>
+      <!-- <p>Article(s) : <b>{{ inventory_items|length }}</b></p> -->
+      <p>Initiateur : <b>{{ curr_obj.initiator.get_full_name }}</b></p>
+      <p>Superviseur : <b>{{ curr_obj.supervisor.get_full_name }}</b></p>
+      <p>Date : <b>{{ curr_obj.date }}</b></p>
+    </div>

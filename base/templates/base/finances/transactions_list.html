@@ -1,7 +1,10 @@
 {% if not transactions %}
 <div class="flex flex-col items-center gap-2 my-20 mx-auto">
-  <i
+  <!-- <i
     class="fa-solid fa-up-right-and-down-left-from-center text-green-700 text-9xl"
+  ></i> -->
+  <i
+    class="fa-solid fa-scroll text-green-700 text-9xl"
   ></i>
   <span>Aucune transaction trouvée</span>
 </div>
@@ -46,14 +49,14 @@
             type="button"
             class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
             name="sentry"
-            onclick="toggleMenu(this,'menu_{{obj.id}}')"
+            onclick="toggleMenu(this,'trs_{{obj.id}}')"
           >
             <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
           </button>
 
           <div
             class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
-            id="menu_{{obj.id}}"
+            id="trs_{{obj.id}}"
           >
             <!--  -->
             <a

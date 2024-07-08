@@ -1,0 +1,150 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
+  <div class="flex justify-between items-center gap-4">
+      <a
+    class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+        href="{% url 'staff' %}"
+        >&larr;
+      </a>
+
+    {% if curr_obj.profile.store %}
+    <a
+      class="w-fit px-3 py-2 text-black bg-lime-200 hover:bg-lime-300 rounded-lg transition-all duration-300"
+      href="{% url 'store_details' curr_obj.profile.store.id %}"
+      ><i class="fa-solid fa-store-alt mr-3"></i>Boutique</a
+    >
+    {% endif %}
+  </div>
+  <!--  -->
+  <div
+    class="p-3 w-full h-full bg-lime-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
+  >
+    {% if not curr_obj.image %}
+    <img
+      class="h-40 w-40 bg-white rounded-full object-cover"
+      src="{% static 'imgs/anon.png' %}"
+      alt="image"
+    />
+    {% else %}
+    <img
+      class="h-40 w-40 bg-white rounded-full object-cover"
+      src="{{curr_obj.image.url}}"
+      alt="image"
+    />
+    {% endif %}
+    <article class="text-gray-700 grid gap-1 w-full">
+      <div class="flex justify-between items-center">
+        <h4 class="text-black text-2xl font-bold">
+          {{curr_obj.last_name}} {{curr_obj.first_name}}
+        </h4>
+              <div class="flex items-center gap-2">
+        <button
+          hx-target="#basic_dialog"
+          hx-get="{% url 'edit_staff' curr_obj.profile.id %}"
+          class="bg-green-700 hover:bg-green-900 rounded-lg py-2 px-4 text-white flex items-center gap-2"
+        >
+        <small class="hidden xl:inline xl:mr-2">
+          
+          Compte
+        </small>
+          <i class="fa-solid fa-pen text-xs"></i>
+        </button>
+        {% if user.role.sec_level > 1 %}
+        <button
+        hx-target="#basic_dialog"
+        hx-get="{% url 'edit_staff_profile' curr_obj.profile.id %}"
+        class="bg-red-700 hover:bg-red-900 rounded-lg py-2 px-4 text-white flex items-center gap-2"
+        >
+        <small class="hidden xl:inline xl:mr-2">
+        Profile
+        </small>
+        <i class="fa-solid fa-pen-to-square text-xs"></i>
+      </button>
+      {% endif %}
+      </div>
+
+      </div>
+      <span class="text-green-700">@{{curr_obj.username}}</span>
+      <p>
+        <i class="fa-solid fa-venus-mars text-gray-800 mr-3"></i> Sexe :
+        <span class="text-black"> {{curr_obj.profile.get_sex_display|title}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de téléphone :
+        <span class="text-black"> {{curr_obj.phone}} </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-user-tie text-gray-800 mr-3"></i> Role :
+        <span class="text-black"> {{curr_obj.role.name|title}} </span>
+      </p>
+
+    </article>
+    <!--  -->
+    <div
+      class="w-full h-100 bg-green-700 text-white p-4 rounded-xl shadow-md flex flex-col gap-2"
+    >
+      <p>
+        <i class="fa-solid fa-scroll text-lime-200 text-gray-800 mr-3"></i
+        >Transactions :
+        <span class="font-bold">
+          {{transactions|length}} | {{trans_aggregate}} Cfa
+        </span>
+      </p>
+      <p>
+        <i class="fa-solid fa-tags text-lime-200 text-gray-800 mr-3"></i>Ventes
+        effectuées :
+        <span class="font-bold">
+          {{sales|length}} | {{sales_aggregate}} Cfa
+        </span>
+      </p>
+      <p>
+        <i
+          class="fa-solid fa-boxes-packing text-lime-200 text-gray-800 mr-3"
+        ></i
+        >Stockages effectuées :
+        <span class="font-bold">
+          {{stocks|length}} | {{stock_aggregate}} Cfa
+        </span>
+      </p>
+
+      <!--------------------------------------- menu tabs buttons --------------------------------------->
+
+      <div
+        class="flex justify-between gap-2 text-xs text-black tabbar h-fit w-full max-w-80 lg:max-w-[600px]"
+      >
+        <button
+          class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'overview')"
+          id="defaultTab"
+        >
+          <i class="fa-solid fa-chart-bar"></i>
+          <span class="ml-2">Stats</span>
+        </button>
+        <button
+          class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'sales')"
+        >
+          <i class="fa-solid fa-tags"></i>
+          <span class="ml-2">Ventes</span>
+        </button>
+        <button
+          class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+          onclick="openTab(event, 'stocks')"
+        >
+          <i class="fa-solid fa-boxes-packing"></i>
+          <span class="ml-2">Stockages</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="flex flex-col gap-4">
+    <div id="overview" class="tabcontent w-full flex flex-col gap-2"></div>
+
+    <div id="sales" class="tabcontent w-full flex flex-col gap-2"></div>
+
+    <div id="stocks" class="tabcontent w-full flex flex-col gap-2"></div>
+  </section>
+</div>
+
+{% endblock %}

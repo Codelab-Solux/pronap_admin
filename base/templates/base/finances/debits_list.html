@@ -1,14 +1,25 @@
-<div
-  class="mb-4 p-2 grid grid-cols-2 gap-2 border border shadow-md rounded-xl text-gray-700 text-sm"
->
-  <p class="bg-orange-700 text-white rounded-lg px-4 py-2 flex items-center">
-    Décaissements effectués :
-    <span class="text-lg font-bold ml-2">{{debits|length}}</span>
-  </p>
-  <p class="bg-orange-300 text-black rounded-lg px-4 py-2 flex items-center">
-    Montant total décaissé :
-    <span class="text-lg font-bold ml-2">{{debits_aggregate}} Cfa</span>
-  </p>
+<div class="mb-4 flex justify-between items-center gap-4">
+  <div
+    class="p-2 grid grid-cols-2 gap-2 border border shadow-md rounded-xl text-gray-700 text-sm"
+  >
+    <p class="bg-orange-700 text-white rounded-lg px-4 py-2 flex items-center">
+      Décaissements effectués :
+      <span class="text-lg font-bold ml-2">{{debits|length}}</span>
+    </p>
+    <p class="bg-orange-300 text-black rounded-lg px-4 py-2 flex items-center">
+      Montant total décaissé :
+      <span class="text-lg font-bold ml-2">{{debits_aggregate}} Cfa</span>
+    </p>
+  </div>
+  <button
+    onclick="hide_dialogs()"
+    hx-target="#basic_dialog"
+    hx-get="{% url 'create_debit' %}"
+    class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
+  >
+    Nouveau
+    <i class="text-sm fa-solid fa-plus ml-2"></i>
+  </button>
 </div>
 
 {% if not debits %}
@@ -29,7 +40,7 @@
       <th class="px-3 py-4 text-sm">Date</th>
       <th class="px-3 py-4 text-sm">Libelé</th>
       <th class="px-3 py-4 text-sm">Montant</th>
-      <!-- <th class="px-3 py-4 text-sm">Actions</th> -->
+      <th class="px-3 py-4 text-sm">Actions</th>
     </tr>
   </thead>
 
@@ -42,11 +53,11 @@
       <td class="px-3 py-1">{{obj.store.name}}</td>
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
-      <td class="px-3 py-1">{{obj.label}} </td>
+      <td class="px-3 py-1">{{obj.label}}</td>
       <td class="px-3 py-1">{{obj.amount}} Cfa</td>
-      <td class="px-3 py-1 relative hidden">
+      <td class="px-3 py-1 relative">
         <div
-          class="w-fit flex gap-3 justify-end items-end text-end text-gray-700"
+          class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"
         >
           <button
             type="button"
@@ -71,12 +82,14 @@
             </a>
 
             <button
-              href="{% url 'edit_sale' obj.id %}"
+              hx-target="#basic_dialog"
+              hx-get="{% url 'edit_transaction' obj.id %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
               Modifier
             </button>
+
             {% if user.is_superuser %}
             <button
               hx-confirm="Voulez vous vraiment suprimmer ceci?"

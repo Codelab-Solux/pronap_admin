@@ -1,11 +1,10 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
-  <a
-    id="back-button"
+      <a
     class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
-    href="#"
-    >&larr;</a
-  >
+        href="{% url 'clients' %}"
+        >&larr;
+      </a>
   <!--  -->
   <div class="w-full grid md:grid-cols-2 gap-4">
     <div
@@ -54,7 +53,7 @@
 
   <section class="mb-20 flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <h3 class="font-bold text-lg text-black">Liste des achats</h3>
+      <h3 class="font-bold text-lg text-black">Liste des achats du client</h3>
       <form
         id="filter"
         hx-post="{% url 'filter_client_purchases' curr_obj.id %}"
@@ -64,20 +63,32 @@
         {% csrf_token %}
         <section class="w-full flex justify-between items-center gap-1 text-xs">
           {% include 'base/components/date_margins.html' %}
-          <!-- transaction initiator -->
+          <!-- store -->
+          <select
+            name="store"
+            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Boutique
+            </option>
+            {% for obj in stores %}
+            <option value="{{obj.id}}">{{obj.get_full_name}}</option>
+            {% endfor %}
+          </select>
+          <!-- initiator -->
           <select
             name="initiator"
             class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
             <option value="" selected="true" disabled="disabled">
-              Initiateurs
+              Initiateur
             </option>
             {% for obj in initiators %}
             <option value="{{obj.id}}">{{obj.get_full_name}}</option>
             {% endfor %}
           </select>
-          <!-- transaction amount margin -->
-          <input
+          <!-- amount margin -->
+          <!-- <input
             hx-post="{% url 'filter_client_purchases' curr_obj.id %}"
             hx-target=".client_purchases"
             hx-trigger="keyup changed delay:500ms"
@@ -94,7 +105,7 @@
             name="max_amount"
             type="number"
             class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
-          />
+          /> -->
         </section>
 
         <button

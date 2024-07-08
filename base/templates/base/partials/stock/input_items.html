@@ -1,0 +1,91 @@
+{% load static %} 
+{% load app_tags %} 
+{% if not items %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-cubes-stacked text-green-700 text-9xl"></i>
+  <span>Aucun produit trouvé</span>
+</div>
+{% else %}
+<table class="w-full text-left db-table">
+  <thead class="bg-green-700 border border-green-900 text-white">
+    <tr>
+      <th class="px-3 py-4 text-sm">Image</th>
+      <th class="px-3 py-4 text-sm">Article</th>
+      <th class="px-3 py-4 text-sm">Quantité</th>
+      <!-- <th class="px-3 py-4 text-sm">Valeur</th> -->
+      <th class="px-3 py-4 text-sm text-center">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody class="border">
+    {% for obj in items %}
+    <tr
+      class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-300"
+    >
+      <td class="px-3 py-1">
+        {% if obj.product_stock.product.image %}
+        <img
+          class="h-7 text-gray-200"
+          src="{{obj.product_stock.product.image.url}}"
+          alt="item image"
+        />
+        {% else %}
+        <img
+          class="h-7 text-gray-200"
+          src="{% static 'imgs/logo.png' %}"
+          alt="image"
+        />
+        {% endif %}
+      </td>
+      <td class="px-3 py-1">{{obj.product_stock.product.name}}</td>
+      <td class="px-3 py-1">
+        {{ obj.quantity }}
+        <!--  -->
+        {{ obj.product_stock.product.get_unit_display }}
+      </td>
+      <!-- <td class="px-3 py-1">{{obj.get_value}}</td> -->
+
+      <td class="px-3 py-1 text-center relative">
+        <div
+          class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"
+        >
+          <button
+            type="button"
+            class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
+            name="sentry"
+            onclick="toggleMenu(this,'purch_item_{{obj.id}}')"
+          >
+            <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+          </button>
+
+          <div
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-sm lg:text-sm overflow-hidden"
+            id="purch_item_{{obj.id}}"
+          >
+            <!--  -->
+            <button
+              onclick="hide_dialogs()"
+              hx-target="#basic_dialog"
+              hx-get="{% url 'edit_stock_input_item' obj.id %}"
+              class="px-3 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+            >
+              <i class="text-sm fa-solid fa-pen mr-2"></i>
+              Modifier
+            </button>
+
+            <button
+              hx-delete="{% url 'delete_base_object' obj.id 'StockInputItem' %}"
+              hx-confirm="Voulez vous vraiment suprimmer ceci?"
+              class="px-3 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+            >
+              <i class="text-sm fa-solid fa-trash mr-2"></i>
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
