@@ -26,10 +26,10 @@ class SignupForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = (
-            'email',
-            'first_name',
-            'role',
             'last_name',
+            'first_name',
+            'email',
+            'role',
         )
         labels = {
             'email': 'Email',
@@ -103,4 +103,26 @@ class ProfileForm(forms.ModelForm):
             'sex': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
             'store': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
             'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+        }
+
+
+class WalletForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(WalletForm, self).__init__(*args, **kwargs)
+
+        if user and user.role.sec_level < 3:
+            self.fields.pop('user')
+
+    class Meta:
+        model = Wallet
+        fields = '__all__'
+        exclude=('user',)
+        labels = {
+            'balance': 'Solde',
+        }
+        widgets = {
+            'user': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'balance': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
         }

@@ -85,3 +85,37 @@ $(document).ready(function () {
     );
   });
 });
+
+ // ----------------------------pdf generator and exporter-------------------------------
+
+  function generatePDF(div_id) {
+  var doc = new jsPDF();
+  html2canvas(document.getElementById(div_id))
+    .then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      doc.addImage(imgData, 'PNG', 0, 0);
+      doc.save(`${div_id}.pdf`);
+    });
+  }
+
+  // ----------------------------appointments exporter-------------------------------
+function extractXLS (div_id) {
+      document.getElementById(div_id);
+      // Hide the "more_visits" row
+      const moreRows = document.getElementById(`more${div_id}`);
+      if (moreRows) {
+        moreRows.style.display = "none";
+      }
+      // Create a new Excel workbook
+      const wb = XLSX.utils.book_new();
+
+      // Create a new worksheet
+      const ws = XLSX.utils.table_to_sheet(
+        document.getElementById(div_id)
+      );
+      // Add the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Datasheet");
+
+      // Save the workbook as an Excel file
+      XLSX.writeFile(wb, "datasheet.xlsx");
+    };

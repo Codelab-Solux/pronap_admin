@@ -1,0 +1,108 @@
+{% load static %} {% if not items %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-cubes-stacked text-green-700 text-9xl"></i>
+  <span>Aucun produit trouvé</span>
+</div>
+{% else %}
+<form 
+  method="post"
+  action="{% url 'inventory_details' curr_obj.id %}"class="w-full flex flex-col gap-4">
+  <table class="w-full text-left db-table">
+    <thead class="bg-green-700 border border-green-900 text-white">
+      <tr>
+        <th class="px-3 py-4 text-sm">Image</th>
+        <th class="px-3 py-4 text-sm">Article</th>
+        <th class="px-3 py-4 text-sm">Quantité théorique</th>
+        <th class="px-3 py-4 text-sm">Quantité physique</th>
+        <th class="px-3 py-4 text-sm">Différence d'inventaire</th>
+        <th class="px-3 py-4 text-sm">Commentaire</th>
+      </tr>
+    </thead>
+    <tbody class="border">
+      {% for obj in items %}
+      <tr
+        data-item-id="{{ obj.id }}"
+        class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-300"
+      >
+        <td class="px-3 py-1">
+          {% if obj.product_stock.product.image %}
+          <img
+            class="h-7 text-gray-200"
+            src="{{obj.product_stock.product.image.url}}"
+            alt="item image"
+          />
+          {% else %}
+          <img
+            class="h-7 text-gray-200"
+            src="{% static 'imgs/icon-w.png' %}"
+            alt="image"
+          />
+          {% endif %}
+        </td>
+        <td class="px-3 py-1">{{obj.product_stock.product.name}}</td>
+        <td class="px-3 py-1" id="qty_expected_{{ obj.id }}">
+          {{ obj.quantity_expected }}
+          <!--  -->
+          {{ obj.product_stock.product.get_unit_display }}
+        </td>
+        <td class="px-3 text-black">
+          <input
+            type="number"
+            name="qty_found_{{ obj.id }}"
+            value="{{ obj.quantity_found }}"
+            placeholder="0"
+            id="qty_found_{{ obj.id }}"
+            class="px-3 py-2 bg-lime-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full"
+            data-item-id="{{ obj.id }}"
+          />
+        </td>
+        <td class="px-3">
+          <input
+            type="number"
+            value="{{ obj.difference }}"
+            placeholder="0"
+            id="difference_{{ obj.id }}"
+            class="px-3 py-2 bg-gray-200 focus:outline-none bg-gray-50 w-full"
+            readonly
+          />
+        </td>
+        <td class="px-3 py-1">
+          <textarea
+            id="comment"
+            name="comment"
+            rows="1"
+            class="mt-2 px-3 py-2 bg-lime-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full"
+          ></textarea>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button
+    type="submit"
+    class="w-full px-6 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+  >
+    Enregistrer
+  </button>
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document
+      .querySelectorAll('input[id^="qty_found_"]')
+      .forEach(function (input) {
+        input.addEventListener("input", function () {
+          const itemId = this.getAttribute("data-item-id");
+          const qtyFound = parseFloat(this.value) || 0;
+          const qtyExpected =
+            parseFloat(
+              document.getElementById(`qty_expected_${itemId}`).innerText
+            ) || 0;
+          const difference = qtyFound - qtyExpected;
+          document.getElementById(`difference_${itemId}`).value = difference;
+        });
+      });
+  });
+</script>
+
+{% endif %}

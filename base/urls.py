@@ -26,9 +26,17 @@ urlpatterns = [
     path('products/<hashid:pk>/', product_details, name='product_details'),
     path('products/<hashid:pk>/edit/', edit_product, name='edit_product'),
     # ----------------------------------------------------------------------------
+    path('entities/types/list/', entity_types_list, name='entity_types_list'),
+    path('entities/types/createv', create_entity_type, name='create_entity_type'),
+    path('entities/types/<hashid:pk>/edit/', edit_entity_type, name='edit_entity_type'),
+    # ----------------------------------------------------------------------------
     path('stock/', stock, name='stock'),
     # ----------------
+    path('stock/inventories/', inventories, name='inventories'),
     path('stock/overview/', stock_overview, name='stock_overview'),
+    path('stock/inventory/create', create_inventory, name='create_inventory'),
+    path('stock/inventories/<hashid:pk>/', inventory_details, name='inventory_details'),
+    path('stock/inventories/<hashid:pk>/edit/', edit_inventory, name='edit_inventory'),
     # ----------------
     path('stock/products/list/', prod_stock_list, name='prod_stock_list'),
     path('stock/products/create/', create_prod_stock, name='create_prod_stock'),
@@ -70,22 +78,6 @@ urlpatterns = [
          create_stock_output_item, name='create_stock_output_item'),
     path('stock/outputs/item/<hashid:pk>/edit/',
          edit_stock_output_item, name='edit_stock_output_item'),
-    # ----------------
-    path('stock/inventories/', stock_inventories, name='stock_inventories'),
-    path('stock/inventories/create/', create_inventory, name='create_inventory'),
-    path('stock/inventories/<hashid:pk>/',
-         inventory_details, name='inventory_details'),
-    path('stock/inventories/<hashid:pk>/edit/',
-         edit_inventory, name='edit_inventory'),
-    # ------------------------------
-    path('stock/inventories/<hashid:pk>/items/info/',
-         inventory_info, name='inventory_info'),
-    path('stock/inventories/<hashid:pk>/items/list/',
-         inventory_items, name='inventory_items'),
-    path('stock/inventories/<hashid:pk>/items/create/',
-         create_inventory_item, name='create_inventory_item'),
-    path('stock/inventories/item/<hashid:pk>/edit/',
-         edit_inventory_item, name='edit_inventory_item'),
     # ----------------------------------------------------------------------------
     path('cart/', cart, name='cart'),
     path('sales/', sales, name='sales'),
@@ -96,6 +88,7 @@ urlpatterns = [
     path('sales/pos/clear_cart/', clear_cart, name='clear_cart'),
     path('sales/pos/checkout/', checkout, name='checkout'),
     # ----------------------------------------------------------------------------
+    path('sales/create/', create_sale, name='create_sale'),
     path('sales/<hashid:pk>/', sale_details, name='sale_details'),
     path('sales/<hashid:pk>/edit/', edit_sale, name='edit_sale'),
     path('sales/<hashid:pk>/info/', sale_info, name='sale_info'),
@@ -172,6 +165,21 @@ urlpatterns = [
          cashdesk_details, name='cashdesk_details'),
     path('finances/cashdesks/<hashid:pk>/edit/',
          edit_cashdesk, name='edit_cashdesk'),
+    # --------------------------
+    path('finances/cashdesks/transactions/<hashid:pk>/',
+         desk_transactions, name='desk_transactions'),
+    # --------------------------
+    path('finances/cashdesks/desk_closings/list/<hashid:pk>/',
+         desk_closings_list, name='desk_closings_list'),
+    path('finances/cashdesks/desk_closings/details/<hashid:pk>/',
+         desk_closing_details, name='desk_closing_details'),
+    path('finances/cashdesks/desk_closings/<hashid:pk>/',
+         create_closing_receipt, name='create_closing_receipt'),
+    path('finances/cashdesks/desk_closings/<hashid:pk>/create/',
+         create_desk_closing, name='create_desk_closing'),
+    path('finances/cashdesks/desk_closings/<hashid:pk>/edit/',
+         edit_desk_closing, name='edit_desk_closing'),
+    # --------------------------
     path('finances/credits/list/', credits_list, name='credits_list'),
     path('finances/credits/create/', create_credit, name='create_credit'),
     path('finances/debits/list/', debits_list, name='debits_list'),
@@ -198,6 +206,8 @@ urlpatterns = [
          transaction_details, name='transaction_details'),
     path('finances/transactions/<hashid:pk>/edit/',
          edit_transaction, name='edit_transaction'),
+    path('finances/transactions/create/<hashid:pk>/',
+         create_transaction, name='create_transaction'),
     # --------------------------
     path('finances/payments/create/', create_payment, name='create_payment'),
     path('finances/payments/list/', payments_list, name='payments_list'),

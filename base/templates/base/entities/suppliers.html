@@ -1,0 +1,95 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
+  <div class="flex justify-between items-center">
+    <a
+      id="back-button"
+      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+      href="#"
+      >&larr;</a
+    >
+    <form
+      id="filter"
+      hx-post="{% url 'filter_suppliers' %}"
+      hx-target=".suppliers_list"
+      class="p-1 w-full max-w-3xl flex justify-between items-center gap-1 text-sm"
+    >
+      {% csrf_token %}
+      <section class="w-full flex justify-between items-center gap-1 text-xs">
+        <input
+          hx-post="{% url 'filter_suppliers' %}"
+          hx-target=".suppliers_list"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="Nom"
+          name="name"
+          type="text"
+          class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+        />
+        <input
+          hx-post="{% url 'filter_suppliers' %}"
+          hx-target=".suppliers_list"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="Telephone"
+          name="phone"
+          type="text"
+          class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+        />
+        <input
+          hx-post="{% url 'filter_suppliers' %}"
+          hx-target=".suppliers_list"
+          hx-trigger="keyup changed delay:500ms"
+          placeholder="email"
+          name="email"
+          type="email"
+          class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+        />
+
+        <select
+          name="type"
+          class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+        >
+          <option value="" selected="true" disabled="disabled">
+            Type de Fournisseur
+          </option>
+          <option value="person">Individu</option>
+          <option value="company">Compagnie</option>
+        </select>
+      </section>
+
+      <button
+        class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
+        type="submit"
+      >
+        <i class="fa-solid fa-filter"></i>
+      </button>
+      <button
+        class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded-lg transition duration-200 ease-in"
+        hx-on:click="clearForm('filter')"
+        type="submit"
+      >
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+    </form>
+
+    <button
+      onclick="hide_dialogs()"
+      hx-target="#basic_dialog"
+      hx-get="{% url 'create_supplier' %}"
+      class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
+    >
+      Nouveau
+      <i class="text-sm fa-solid fa-plus ml-2"></i>
+    </button>
+  </div>
+
+  <!--  -->
+
+  <!--  -->
+  <div
+    class="suppliers_list"
+    hx-get="{% url 'suppliers_list' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  ></div>
+</div>
+
+{% endblock %}

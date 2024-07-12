@@ -3,58 +3,58 @@
 <div
   class="py-2 px-4 w-full bg-white hover:bg-gray-100 text-xs lg:text-sm flex flex-col justify-between gap-1 rounded-xl border hover:shadow-lg transition duration-200 ease-in"
 >
+  <div class="w-full flex justify-between items-center">
+    <h3 class="font-bold text-black">{{obj.label}}</h3>
+    <div class="w-fit text-end relative text-gray-700">
+      <button
+        type="button"
+        class="hover:text-black bg-white hover:text-teal-700 px-3 py-1 rounded-full"
+        name="sentry"
+        aria-expanded="false"
+        aria-haspopup="true"
+        onclick="toggleMenu(this,'menu_s_{{obj.id}}')"
+      >
+        <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+      </button>
 
-<div class="w-full flex justify-between items-center">
-  <h3 class="font-bold text-black">{{obj.label}}</h3>
-  <div class="w-fit text-end relative text-gray-700">
-    <button
-      type="button"
-      class="hover:text-black bg-white hover:text-teal-700 px-3 py-1 rounded-full"
-      name="sentry"
-      aria-expanded="false"
-      aria-haspopup="true"
-      onclick="toggleMenu(this,'menu_s_{{obj.id}}')"
-    >
-      <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
-    </button>
-  
-    <div
-      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
-      role="status menu"
-      aria-orientation="vertical"
-      aria-labelledby="status-menu-button"
-      tabindex="-1"
-      id="menu_s_{{obj.id}}"
-    >
-      <!--  -->
-  
-      <button
-        onclick="hide_dialogs()"
-        hx-target="#basic_dialog"
-        hx-get="{% url 'edit_service_purchase' obj.id %}"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-lime-200 rounded-lg w-full text-center cursor-pointer"
+      <div
+        class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+        role="status menu"
+        aria-orientation="vertical"
+        aria-labelledby="status-menu-button"
+        tabindex="-1"
+        id="menu_s_{{obj.id}}"
       >
-        <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
-        Modifier
-      </button>
-  
-      <button
-        onclick="hide_dialogs()"
-        hx-target="#basic_dialog"
-        hx-delete="{% url 'delete_base_object' obj.id 'ServicePurchase' %}"
-        hx-confirm="Voulez vous vraiment suprimmer ceci?"
-        class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
-      >
-        <i class="text-sm fa-solid fa-trash mr-2"></i>
-        Supprimer
-      </button>
-      <!--  -->
+        <!--  -->
+
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'edit_service_purchase' obj.id %}"
+          class="px-4 py-2 flex items-center hover:text-black hover:bg-lime-200 rounded-lg w-full text-center cursor-pointer"
+        >
+          <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+          Modifier
+        </button>
+
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-delete="{% url 'delete_base_object' obj.id 'ServicePurchase' %}"
+          hx-confirm="Voulez vous vraiment suprimmer ceci?"
+          class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+        >
+          <i class="text-sm fa-solid fa-trash mr-2"></i>
+          Supprimer
+        </button>
+        <!--  -->
+      </div>
     </div>
   </div>
-</div>
-  
-  <p>{{obj.description}}</p>
-  
-  <p class="text-red-600"><i class="text-sm fa-solid fa-tag mr-2"></i>{{obj.total}} FCFA</p>
 
+  <p>{{obj.description}}</p>
+
+  <p class="text-red-600">
+    <i class="text-sm fa-solid fa-tag mr-2"></i>{{obj.total}} FCFA
+  </p>
 </div>

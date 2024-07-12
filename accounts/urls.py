@@ -17,4 +17,6 @@ urlpatterns = [
     path('staff/<hashid:pk>/edit/', edit_staff, name='edit_staff'),
     path('staff/<hashid:pk>/profile/edit/',
          edit_staff_profile, name='edit_staff_profile'),
+    path('staff/<hashid:pk>/wallet/create/',
+         create_staff_wallet, name='create_staff_wallet'),
 ]

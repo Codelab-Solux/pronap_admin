@@ -99,3 +99,17 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={'pk': self.pk})
+
+
+class Wallet(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    balance = models.BigIntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.user.last_name} balance {self.balance}'
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    def get_absolute_url(self):
+        return reverse('Wallet', kwargs={'pk': self.pk})

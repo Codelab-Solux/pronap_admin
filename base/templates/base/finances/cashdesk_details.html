@@ -1,11 +1,13 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
-  <a
-    id="back-button"
-    class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
-    href="#"
-    >&larr;</a
-  >
+  <div class="flex justify-between items-center">
+    <button
+      onclick="goBack()"
+      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+    >
+      &larr;
+    </button>
+  </div>
   <!--  -->
   <div class="w-full grid md:grid-cols-2 gap-4">
     <div
@@ -31,6 +33,10 @@
           <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de telephone :
           <span class="text-black">{{curr_obj.phone}} </span>
         </p>
+        <p>
+          <i class="fa-solid fa-tower-cell text-gray-800 mr-3"></i> Opérateur :
+          <span class="text-black">{{curr_obj.get_carrier_display}} </span>
+        </p>
         {% elif curr_obj.type == 'bank' %}
         <p>
           <i class="fa-solid fa-bank text-gray-800 mr-3"></i> Compte bancaire :
@@ -54,25 +60,25 @@
         class="p-2 bg-green-200 rounded-lg text-black flex justify-between items-center gap-2"
       >
         <span>Encaissements : <b>{{ credits|length }}</b></span>
-        <span>Montant total encaissé : <b>{{ credits_aggregate }} Cfa</b></span>
+        <span>Montant total encaissé : <b>{{ credits_aggregate }} CFA</b></span>
       </div>
 
       <div
         class="p-2 bg-orange-200 rounded-lg text-black flex justify-between items-center gap-2"
       >
         <span>Décaissements : <b>{{ debits|length }}</b></span>
-        <span>Montant total décaissé : <b>{{ debits_aggregate }} Cfa</b></span>
+        <span>Montant total décaissé : <b>{{ debits_aggregate }} CFA</b></span>
       </div>
 
       <div class="p-2 bg-gray-200 rounded-lg text-black flex items-center">
-        <span>Solde : <b>{{ balance }} Cfa</b></span>
+        <span>Solde : <b>{{ balance }} CFA</b></span>
       </div>
     </div>
   </div>
 
   <section class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <h3 class="font-bold text-lg">Liste des transactions</h3>
+      <h3 class="font-bold text-lg text-black">Liste des transactions</h3>
       <form
         id="filter"
         hx-post="{% url 'filter_transactions' %}"
@@ -138,10 +144,28 @@
           <i class="fa-solid fa-rotate-right"></i>
         </button>
       </form>
+      <div class="flex gap-2 items-center">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_transaction' curr_obj.id %}"
+          class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+        <a
+          href="{% url 'desk_closings_list' curr_obj.id %}"
+          class="px-4 py-2 flex items-center text-black bg-orange-200 hover:bg-orange-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Arrêtés
+          <i class="fa-solid fa-shop-lock ml-2"></i>
+        </a>
+      </div>
     </div>
     <div
-      class="transactions_list"
-      hx-get="{% url 'transactions_list' %}"
+      class="desk_transactions"
+      hx-get="{% url 'desk_transactions' curr_obj.id %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>

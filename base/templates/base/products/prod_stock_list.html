@@ -1,0 +1,85 @@
+{% if not products %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-boxes-packing text-green-700 text-9xl"></i>
+  <span>Aucun produit trouvé</span>
+</div>
+{% else %}
+<table class="w-full text-left db-table rounded-xl">
+  <thead class="bg-green-700 border border-green-900 text-white">
+    <tr>
+      <th class="px-3 py-4 text-sm">Réf.</th>
+      <th class="px-3 py-4 text-sm">Article</th>
+      <th class="px-3 py-4 text-sm">Marque</th>
+      <th class="px-3 py-4 text-sm">Prix</th>
+      <th class="px-3 py-4 text-sm text-center">Quantité</th>
+      <th class="px-3 py-4 text-sm">Unité de mesure</th>
+      <th class="px-3 py-4 text-sm">Categorie</th>
+      <th class="px-3 py-4 text-sm">Famille</th>
+      <th class="px-3 py-4 text-sm text-center">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody class="border">
+    {% for obj in products %}
+    <tr
+      class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
+    >
+      <td class="px-3 py-1">Stk-000-{{obj.id}}</td>
+      <td class="px-3 py-1">{{obj.product.name}}</td>
+      <td class="px-3 py-1">{{obj.product.brand}}</td>
+      <td class="px-3 py-1">{{obj.price}} CFA</td>
+      <td class="px-3 py-1 text-center">{{obj.quantity}}</td>
+      <td class="px-3 py-1">{{obj.product.get_unit_display}}</td>
+      <td class="px-3 py-1">{{ obj.product.category }}</td>
+      <td class="px-3 py-1">{{obj.product.family}}</td>
+      <td class="px-3 py-1 relative text-center">
+        <div
+          class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"
+        >
+          <button
+            type="button"
+            class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
+            name="sentry"
+            onclick="toggleMenu(this,'prd_stk_{{obj.id}}')"
+          >
+            <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+          </button>
+
+          <div
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+            id="prd_stk_{{obj.id}}"
+          >
+            <!--  -->
+            <a
+              hx-target="#basic_dialog"
+              hx-get="{% url 'prod_stock_details' obj.id %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              ><i class="text-sm fa-solid fa-expand mr-2"></i>
+              Détails
+            </a>
+
+            <button
+              hx-target="#basic_dialog"
+              hx-get="{% url 'edit_prod_stock' obj.id %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+            >
+              <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+              Modifier
+            </button>
+
+            <button
+              hx-confirm="Voulez vous vraiment suprimmer ceci?"
+              hx-delete="{% url 'delete_base_object' obj.id 'ProductStock' %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+            >
+              <i class="text-sm fa-solid fa-trash mr-2"></i>
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}

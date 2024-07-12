@@ -1,8 +1,6 @@
 {% if not receivables %}
 <div class="flex flex-col items-center gap-2 my-20 mx-auto">
-  <i
-    class="fa-solid fa-wallet text-green-700 text-9xl"
-  ></i>
+  <i class="fa-solid fa-wallet text-green-700 text-9xl"></i>
   <span>Aucune créance trouvée</span>
 </div>
 {% else %}
@@ -31,7 +29,7 @@
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1">{{obj.client.name}}</td>
       <td class="px-3 py-1 text-center">{{obj.label}}</td>
-      <td class="px-3 py-1 text-center">{{obj.amount}} Cfa</td>
+      <td class="px-3 py-1 text-center">{{obj.amount}} CFA</td>
       <td class="px-3 py-1 text-center relative">
         <div
           class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"
@@ -58,7 +56,6 @@
               Détails
             </a> -->
 
-            
             <button
               hx-target="#basic_dialog"
               hx-get="{% url 'edit_receivable' obj.id %}"

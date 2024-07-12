@@ -40,7 +40,7 @@ li {
 }
 
 .active {
-  background: #FDBA74;
+  background: #BEF264;
   color: black;
 }
 
@@ -50,12 +50,12 @@ li {
 }
 
 .secondary_color {
-  background: #FDBA74;
+  background: #BEF264;
   color: black;
 }
 
 .text-secondary {
-  color: #FDBA74;
+  color: #BEF264;
 }
 
 .msg_out {

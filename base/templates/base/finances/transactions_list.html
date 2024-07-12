@@ -3,9 +3,7 @@
   <!-- <i
     class="fa-solid fa-up-right-and-down-left-from-center text-green-700 text-9xl"
   ></i> -->
-  <i
-    class="fa-solid fa-scroll text-green-700 text-9xl"
-  ></i>
+  <i class="fa-solid fa-scroll text-green-700 text-9xl"></i>
   <span>Aucune transaction trouvée</span>
 </div>
 {% else %}
@@ -33,13 +31,15 @@
       <td class="px-3 py-1">{{obj.timestamp.time}}</td>
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1 text-center">{{obj.label}}</td>
-      <td class="px-3 py-1 text-center">{{obj.amount}} Cfa</td>
+      <td class="px-3 py-1 text-center">{{obj.amount}} CFA</td>
       {% if obj.type == 'credit' %}
       <td class="px-3 py-1 text-center bg-green-100">
         {{obj.get_type_display}}
       </td>
       {% else %}
-      <td class="px-3 py-1 text-center bg-orange-100">{{obj.get_type_display}}</td>
+      <td class="px-3 py-1 text-center bg-orange-100">
+        {{obj.get_type_display}}
+      </td>
       {% endif %}
       <td class="px-3 py-1 text-center relative">
         <div

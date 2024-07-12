@@ -16,7 +16,7 @@
     alt="image"
     class="w-24 h-24 object-cover"
   />
-  {% endif %} 
+  {% endif %}
   <!--  -->
   {% if obj.product.is_new %}
   <span
@@ -36,7 +36,10 @@
     {% else %}
     <p>{{obj.price}} CFA</p>
     {% endif %}
-    <span class="w-fit text-xs text-black bg-lime-200 rounded-md px-2 py-[0.2em]">{{obj.quantity}} en stock</span>
+    <span
+      class="w-fit text-xs text-black bg-lime-200 rounded-md px-2 py-[0.2em]"
+      >{{obj.quantity}} en stock</span
+    >
   </article>
 </div>
 <!-- Hidden CSRF token input -->

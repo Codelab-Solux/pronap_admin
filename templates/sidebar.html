@@ -1,11 +1,11 @@
 {% load static %}
 <div
-  class="bg-green-950 text-white w-[60px] md:w-20 p-2 md:p-4 xl:w-[300px] min-h-screen fixed overflow-y-auto"
+  class="bg-gray-300 text-black w-[60px] md:w-20 p-2 md:p-4 xl:w-[300px] min-h-screen fixed overflow-y-auto"
 >
   <a class="mb-4 flex items-center" href="{% url 'home' %}" hx-boost="false">
     <img
       class="h-6 xl:h-10 mx-auto xl:mx-0 xl:mr-2"
-      src="{% static 'imgs/icon-w.png' %}"
+      src="{% static 'imgs/logo.png' %}"
       alt="logo"
     />
     <h1 class="hidden xl:inline text-xl font-black">Pronap Store</h1>
@@ -111,7 +111,7 @@
     {% if user.is_superuser %}
     <a
       target="_blank"
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-teal-950 hover:text-white transition ease-in duration-200 w-full"
+      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-green-950 hover:text-white transition ease-in duration-200 w-full"
       href="{% url 'admin:index' %}"
       ><i class="fa-solid fa-lock xl:mr-2 text-sm"></i>
       <span class="hidden xl:inline"> Admin Dashboard </span>

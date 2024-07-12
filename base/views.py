@@ -24,6 +24,76 @@ def home(req):
     return render(req, 'base/index.html', context)
 
 
+EntityTypeForm
+
+# ------------------------------------------------- Entity Types -------------------------------------------------
+
+@login_required(login_url='login')
+def create_entity_type(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    form = EntityTypeForm()
+    if req.method == 'POST':
+        form = EntityTypeForm(req.POST)
+        if user.role.sec_level < 2:
+            form.instance.store = user.profile.store
+            form.instance.initiator = user
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau type'})
+
+
+@login_required(login_url='login')
+def edit_entity_type(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    curr_obj = get_object_or_404(EntityType, id=pk)
+
+    form = EntityTypeForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = EntityTypeForm(req.POST,  instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        messages.success = 'Paiement modifié'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier ce type'})
+
+
+def entity_types_list(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+
+    entity_types = EntityType.objects.all().order_by('name')
+
+    context = {
+        'entity_types': entity_types,
+    }
+    return render(req, 'base/parameters/entity_types_list.html', context)
+
+
+# ------------------------------------------------- Stores -------------------------------------------------
+# stores parameters ---------------------------------------
+@login_required(login_url='login')
+def stores_list(req):
+    stores = Store.objects.all().order_by('name')
+    context = {
+        'stores': stores,
+    }
+    return render(req, 'base/parameters/stores_list.html', context)
+
+
+# stores views ---------------------------------------
 @login_required(login_url='login')
 def stores(req):
     user = req.user
@@ -38,7 +108,8 @@ def stores(req):
         'title': 'Boutiques',
         'personnel': personnel,
     }
-    return render(req, 'base/stores.html', context)
+    return render(req, 'base/stores/index.html', context)
+
 
 @login_required(login_url='login')
 def store_details(req, pk):
@@ -94,17 +165,7 @@ def store_details(req, pk):
         'moov_balance': moov_balance,
         'tmoney_balance': tmoney_balance,
     }
-    return render(req, 'base/store_details.html', context)
-
-
-@login_required(login_url='login')
-def stores_list(req):
-    stores = Store.objects.all().order_by('name')
-    context = {
-        'stores': stores,
-    }
-    return render(req, 'base/partials/parameters/stores_list.html', context)
-
+    return render(req, 'base/stores/store_details.html', context)
 
 
 @login_required(login_url='login')
@@ -144,6 +205,7 @@ def edit_store(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier cette boutique'})
 
 
+
 # ------------------------------------------------- Products -------------------------------------------------
 @login_required(login_url='login')
 def products(req):
@@ -155,16 +217,18 @@ def products(req):
     categories = Category.objects.all().order_by('name')
     families = Family.objects.all().order_by('name')
     stores = Store.objects.all().order_by('name')
+    products = Product.objects.all().order_by('name')
     context = {
         "products": "active",
         'title': 'Produits',
         'categories': categories,
         'families': families,
         'stores': stores,
+        'products': products,
     }
-    return render(req, 'base/products.html', context)
+    return render(req, 'base/products/index.html', context)
 
-
+# products parameters-----------------------------
 @login_required(login_url='login')
 def product_details(req, pk):
     curr_obj = Product.objects.get(id=pk)
@@ -173,7 +237,7 @@ def product_details(req, pk):
         'title': 'Products',
         'curr_obj': curr_obj,
     }
-    return render(req, 'base/product_details.html', context)
+    return render(req, 'base/parameters/product_details.html', context)
 
 
 @login_required(login_url='login')
@@ -220,7 +284,7 @@ def products_list(req):
     context = {
         'products': products,
     }
-    return render(req, 'base/partials/products_list.html', context)
+    return render(req, 'base/parameters/products_list.html', context)
 
 
 @login_required(login_url='login')
@@ -229,7 +293,7 @@ def products_grid(req):
     context = {
         'products': products,
     }
-    return render(req, 'base/partials/products_grid.html', context)
+    return render(req, 'base/parameters/products_grid.html', context)
 
 
 @login_required(login_url='login')
@@ -263,10 +327,10 @@ def filter_products(req):
 
     context = {"products": products}
 
-    return render(req, 'base/partials/products_list.html', context)
+    return render(req, 'base/parameters/products_list.html', context)
 
 
-# ---------- products stock
+# products stocks-----------------------------
 
 @login_required(login_url='login')
 def product_stocks(req):
@@ -285,7 +349,7 @@ def product_stocks(req):
         'families': families,
         'stores': stores,
     }
-    return render(req, 'base/product_stocks.html', context)
+    return render(req, 'base/products/stocks.html', context)
 
 
 @login_required(login_url='login')
@@ -294,7 +358,7 @@ def prod_stock_list(req):
     context = {
         'products': products,
     }
-    return render(req, 'base/partials/prod_stock_list.html', context)
+    return render(req, 'base/products/prod_stock_list.html', context)
 
 @login_required(login_url='login')
 def prod_stocks(req, pk):
@@ -302,7 +366,7 @@ def prod_stocks(req, pk):
     context = {
         'products': products,
     }
-    return render(req, 'base/partials/prod_stocks.html', context)
+    return render(req, 'base/products/prod_stocks.html', context)
 
 
 @login_required(login_url='login')
@@ -316,7 +380,7 @@ def prod_stock_details(req, pk):
     context = {
         'curr_obj': curr_obj,
     }
-    return render(req, 'base/partials/prod_stock_details.html', context)
+    return render(req, 'base/products/prod_stock_details.html', context)
 
 
 @login_required(login_url='login')
@@ -388,7 +452,7 @@ def filter_prod_stock(req):
 
     context = {"products": products}
 
-    return render(req, 'base/partials/prod_stock_list.html', context)
+    return render(req, 'base/products/prod_stock_list.html', context)
 
 
 # ------------------------------------------------- Cart -------------------------------------------------
@@ -406,13 +470,20 @@ def cart(req):
 
     clients = Client.objects.all().order_by('-timestamp')
 
+    if user.role.sec_level < 2:
+        cashdesks = Cashdesk.objects.filter(
+            store=user.profile.store).exclude(type='bank').order_by('name')
+    else :
+        cashdesks = Cashdesk.objects.all().exclude(type='bank').order_by('name')
+
     context = {
         'cart_count': cart_count,
         'cart_items': cart_items,
         'cart_total': cart_total,
         'clients': clients,
+        'cashdesks': cashdesks,
     }
-    return render(req, 'base/partials/cart.html', context)
+    return render(req, 'base/cart.html', context)
 
 
 @login_required(login_url='login')
@@ -485,10 +556,12 @@ def checkout(req):
     if cart_count > 0:
         client_id = req.POST.get('client_id')
         client = Client.objects.filter(id=client_id).first()
+        cashdesk_id = req.POST.get('cashdesk_id') or 1
+        cashdesk = Cashdesk.objects.filter(id=cashdesk_id).first()
         if client:
-            new_sale = Sale(initiator=user, client=client, items=cart_count, total=cart_total)        
+            new_sale = Sale(initiator=user, cashdesk=cashdesk, store = cashdesk.store, client=client, items=cart_count, total=cart_total)        
         else :
-            new_sale = Sale(initiator=user, items=cart_count, total=cart_total)
+            new_sale = Sale(initiator=user, cashdesk=cashdesk, store = cashdesk.store, items=cart_count, total=cart_total)
 
         new_sale.save()
 
@@ -546,7 +619,10 @@ def sale_point(req):
 
     if user.role.sec_level < 2:
         products = ProductStock.objects.filter(store = user.profile.store)
+        cashdesks = Cashdesk.objects.filter(
+            store=user.profile.store).order_by('name')
     else :
+        cashdesks = Cashdesk.objects.all().exclude(type='bank').order_by('name')
         products = ProductStock.objects.all()
 
     name_query = req.GET.get('name', '')
@@ -583,6 +659,7 @@ def sale_point(req):
         "categories": categories,
         "families": families,
         "stores": stores,
+        "cashdesks": cashdesks,
         "products": products,
         "clients": clients,
         "objects": objects,
@@ -590,7 +667,7 @@ def sale_point(req):
         'cart_items': cart_items,
         'cart_total': cart_total,
     }
-    return render(req, 'base/sale_point.html', context)
+    return render(req, 'base/sales/sale_point.html', context)
 
 
 @login_required(login_url='login')
@@ -647,7 +724,7 @@ def sales(req):
         'initiators': initiators,
         'clients': clients,
     }
-    return render(req, 'base/sales.html', context)
+    return render(req, 'base/sales/index.html', context)
 
 
 @login_required(login_url='login')
@@ -665,7 +742,26 @@ def sale_details(req, pk):
         'curr_obj': curr_obj,
         'sale_items': sale_items,
     }
-    return render(req, 'base/sale_details.html', context)
+    return render(req, 'base/sales/sale_details.html', context)
+
+
+@login_required(login_url='login')
+def create_sale(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    form = SaleForm()
+    if req.method == 'POST':
+        form = SaleForm(req.POST)
+        if user.role.sec_level < 2:
+            form.instance.store = user.profile.store
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'form': form, 'form_title': 'Modifier cette vente'})
 
 
 @login_required(login_url='login')
@@ -692,7 +788,7 @@ def sale_info(req, pk):
     context = {
         'curr_obj': curr_obj,
     }
-    return render(req, 'base/partials/sale_info.html', context)
+    return render(req, 'base/sales/sale_info.html', context)
 
 
 def sale_items(req, pk):
@@ -701,7 +797,7 @@ def sale_items(req, pk):
     context = {
         'sale_items': sale_items,
     }
-    return render(req, 'base/partials/sale_items.html', context)
+    return render(req, 'base/sales/sale_items.html', context)
 
 
 def create_sale_item(req, pk):
@@ -781,7 +877,7 @@ def filter_sales(req):
 
     context = {"sales": sales}
 
-    return render(req, 'base/partials/sales_list.html', context)
+    return render(req, 'base/sales/sales_list.html', context)
 
 
 # ------------------------------------------------- Purchases -------------------------------------------------
@@ -796,35 +892,22 @@ def purchases(req):
         "purchases": "active",
         'title': 'Achats',
     }
-    return render(req, 'base/purchases.html', context)
+    return render(req, 'base/purchases/index.html', context)
 
 
 def prod_purchase_details(req, pk):
     curr_obj = get_object_or_404(ProductPurchase, id=pk)
     purchase_items = PurchaseItem.objects.filter(purchase=curr_obj)
-    formset = PurchaseFormSet(instance=curr_obj)
     amount_due = curr_obj.total - curr_obj.amount_paid
 
-    if req.method == 'POST':
-        print('POST req received')
-        formset = PurchaseFormSet(req.POST, instance=curr_obj)
-        if formset.is_valid():
-            print('Formset validated')
-            formset.save()
-            messages.success(req, "Purchase updated successfully!")
-            return redirect('prod_purchase_details', pk=pk)
-        else:
-            print('Formset errors:', formset.errors)
-            messages.error(req, "Form submission failed. Please correct the errors and try again.")
     context = {
         "purchases": "active",
         'title': "Details d'Achat",
         'curr_obj': curr_obj,
-        'formset': formset,
         'amount_due': amount_due,
         'purchase_items': purchase_items,
     }
-    return render(req, 'base/partials/prod_purchase_details.html', context)
+    return render(req, 'base/purchases/prod_purchase_details.html', context)
 
 
 def create_prod_purchase(req):
@@ -853,9 +936,9 @@ def edit_prod_purchase(req, pk):
 
     curr_obj = get_object_or_404(ProductPurchase, id=pk)
 
-    form = ProductPurchaseForm(instance=curr_obj)
+    form = ProductPurchaseForm(instance=curr_obj, curr_obj=curr_obj)
     if req.method == 'POST':
-        form = ProductPurchaseForm(req.POST, instance=curr_obj)
+        form = ProductPurchaseForm(req.POST, instance=curr_obj, curr_obj=curr_obj)
         if form.is_valid():
             form.save()
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
@@ -870,7 +953,7 @@ def prod_purchases_list(req):
         'title': 'Achats',
         'purchases': purchases,
     }
-    return render(req, 'base/partials/prod_purchases_list.html', context)
+    return render(req, 'base/purchases/prod_purchases_list.html', context)
 
 
 # Purchase items ----------------------------------------
@@ -882,7 +965,7 @@ def purchase_info(req, pk):
         'curr_obj': curr_obj,
         'amount_due': amount_due,
     }
-    return render(req, 'base/partials/purchase_info.html', context)
+    return render(req, 'base/purchases/purchase_info.html', context)
 
 def purchase_items(req, pk):
     purchase = get_object_or_404(ProductPurchase, id=pk)
@@ -890,7 +973,7 @@ def purchase_items(req, pk):
     context = {
         'purchase_items': purchase_items,
     }
-    return render(req, 'base/partials/purchase_items.html', context)
+    return render(req, 'base/purchases/purchase_items.html', context)
 
 def create_purchase_item(req, pk):
     user = req.user
@@ -910,7 +993,6 @@ def create_purchase_item(req, pk):
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvel achat de produit'})
-
 
 @login_required(login_url='login')
 def edit_purchase_item(req, pk):
@@ -956,7 +1038,7 @@ def serv_purchase_details(req, pk):
         'title': "Details d'Achat",
         'curr_obj': curr_obj,
     }
-    return render(req, 'base/partials/serv_purchase_details.html', context)
+    return render(req, 'base/purchases/serv_purchase_details.html', context)
 
 
 @login_required(login_url='login')
@@ -984,9 +1066,12 @@ def serv_purchases_list(req):
         'title': 'Achats',
         'purchases': purchases,
     }
-    return render(req, 'base/partials/serv_purchases_list.html', context)
+    return render(req, 'base/purchases/serv_purchases_list.html', context)
+
+
 
 # ------------------------------------------------- Clients-------------------------------------------------
+
 @login_required(login_url='login')
 def clients(req):
     user = req.user
@@ -998,7 +1083,7 @@ def clients(req):
         "clients": "active",
         'title': 'Clients',
     }
-    return render(req, 'base/clients.html', context)
+    return render(req, 'base/entities/clients.html', context)
 
 
 @login_required(login_url='login')
@@ -1019,7 +1104,7 @@ def client_details(req, pk):
         'initiators': initiators,
         'purchases': purchases,
     }
-    return render(req, 'base/client_details.html', context)
+    return render(req, 'base/entities/client_details.html', context)
 
 
 @login_required(login_url='login')
@@ -1031,7 +1116,7 @@ def client_purchases(req, pk):
         'curr_obj': curr_obj,
         'purchases': purchases,
     }
-    return render(req, 'base/partials/client_purchases.html', context)
+    return render(req, 'base/purchases/client_purchases.html', context)
 
 
 @login_required(login_url='login')
@@ -1061,7 +1146,7 @@ def filter_client_purchases(req, pk):
 
     context = {"purchases": purchases}
 
-    return render(req, 'base/partials/client_purchases.html', context)
+    return render(req, 'base/entities/client_purchases.html', context)
 
 
 @login_required(login_url='login')
@@ -1070,7 +1155,7 @@ def clients_list(req):
     context = {
         'clients': clients,
     }
-    return render(req, 'base/partials/clients_list.html', context)
+    return render(req, 'base/entities/clients_list.html', context)
 
 
 @login_required(login_url='login')
@@ -1134,7 +1219,7 @@ def filter_clients(req):
 
     context = {"clients": clients}
 
-    return render(req, 'base/partials/clients_list.html', context)
+    return render(req, 'base/entities/clients_list.html', context)
 
 
 
@@ -1150,7 +1235,7 @@ def suppliers(req):
         "suppliers": "active",
         'title': 'Fournisseurs',
     }
-    return render(req, 'base/suppliers.html', context)
+    return render(req, 'base/entities/suppliers.html', context)
 
 
 @login_required(login_url='login')
@@ -1175,7 +1260,7 @@ def supplier_details(req, pk):
         'received_products': received_products,
         'returned_products': returned_products,
     }
-    return render(req, 'base/supplier_details.html', context)
+    return render(req, 'base/entities/supplier_details.html', context)
 
 
 @login_required(login_url='login')
@@ -1184,7 +1269,7 @@ def suppliers_list(req):
     context = {
         'suppliers': suppliers,
     }
-    return render(req, 'base/partials/suppliers_list.html', context)
+    return render(req, 'base/entities/suppliers_list.html', context)
 
 
 @login_required(login_url='login')
@@ -1227,7 +1312,6 @@ def edit_supplier(req, pk):
 
 
 
-
 @login_required(login_url='login')
 def filter_suppliers(req):
     user = req.user
@@ -1256,7 +1340,7 @@ def filter_suppliers(req):
 
     context = {"suppliers": suppliers}
 
-    return render(req, 'base/partials/suppliers_list.html', context)
+    return render(req, 'base/entities/suppliers_list.html', context)
 
 
 # ------------------------------------------------- Parameters -------------------------------------------------
@@ -1271,7 +1355,7 @@ def parameters(req):
         "parameters": "active",
         'title': 'Parameters',
     }
-    return render(req, 'base/parameters.html', context)
+    return render(req, 'base/parameters/index.html', context)
 
 
 @login_required(login_url='login')
@@ -1280,7 +1364,7 @@ def categories_list(req):
     context = {
         'categories': categories,
     }
-    return render(req, 'base/partials/categories_list.html', context)
+    return render(req, 'base/parameters/categories_list.html', context)
 
 
 @login_required(login_url='login')
@@ -1328,7 +1412,7 @@ def families_list(req):
         'families': families,
         'title': 'title',
     }
-    return render(req, 'base/partials/families_list.html', context)
+    return render(req, 'base/parameters/families_list.html', context)
 
 
 @login_required(login_url='login')
@@ -1386,7 +1470,7 @@ def stock(req):
         "stock": "active",
         'title': 'Stock',
     }
-    return render(req, 'base/stock.html', context)
+    return render(req, 'base/stock/index.html', context)
 
 
 def stock_overview(req):
@@ -1412,7 +1496,7 @@ def stock_overview(req):
         "outputs": outputs,
         "products": products,
     }
-    return render(req, 'base/partials/stock/overview.html', context)
+    return render(req, 'base/stock/overview.html', context)
 
 
 def store_stock(req,pk):
@@ -1425,7 +1509,7 @@ def store_stock(req,pk):
         "outputs": outputs,
         "products": products,
     }
-    return render(req, 'base/partials/stock/overview.html', context)
+    return render(req, 'base/stock/overview.html', context)
 
 # Stock inputs------------------------------------------------- 
 def stock_inputs(req):
@@ -1455,8 +1539,7 @@ def stock_inputs(req):
         "gifts": gifts,
     }
 
-    return render(req, 'base/partials/stock/inputs.html', context)
-
+    return render(req, 'base/stock/inputs.html', context)
 
 
 def create_stock_input(req):
@@ -1508,7 +1591,7 @@ def stock_input_details(req,pk):
         'curr_obj': curr_obj,
         'input_items': input_items,
     }
-    return render(req, 'base/partials/stock/input_details.html', context)
+    return render(req, 'base/stock/input_details.html', context)
 
 
 def stock_input_info(req, pk):
@@ -1516,7 +1599,7 @@ def stock_input_info(req, pk):
     context = {
         'curr_obj': curr_obj,
     }
-    return render(req, 'base/partials/stock/input_info.html', context)
+    return render(req, 'base/stock/input_info.html', context)
 
 
 def stock_input_items(req, pk):
@@ -1525,7 +1608,7 @@ def stock_input_items(req, pk):
     context = {
         'items': items,
     }
-    return render(req, 'base/partials/stock/input_items.html', context)
+    return render(req, 'base/stock/input_items.html', context)
 
 
 def create_stock_input_item(req, pk):
@@ -1594,7 +1677,7 @@ def stock_outputs(req):
         "gifts": gifts,
     }
 
-    return render(req, 'base/partials/stock/outputs.html', context)
+    return render(req, 'base/stock/outputs.html', context)
 
 
 def stock_output_details(req,pk):
@@ -1610,7 +1693,7 @@ def stock_output_details(req,pk):
         'curr_obj': curr_obj,
         'ouput_items': ouput_items,
     }
-    return render(req, 'base/partials/stock/output_details.html', context)
+    return render(req, 'base/stock/output_details.html', context)
 
 
 def create_stock_output(req):
@@ -1653,7 +1736,7 @@ def stock_output_info(req, pk):
     context = {
         'curr_obj': curr_obj,
     }
-    return render(req, 'base/partials/stock/output_info.html', context)
+    return render(req, 'base/stock/output_info.html', context)
 
 
 def stock_output_items(req, pk):
@@ -1662,7 +1745,7 @@ def stock_output_items(req, pk):
     context = {
         'items': items,
     }
-    return render(req, 'base/partials/stock/output_items.html', context)
+    return render(req, 'base/stock/output_items.html', context)
 
 
 def create_stock_output_item(req, pk):
@@ -1702,34 +1785,51 @@ def edit_stock_output_item(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier le produit compté"})
 
 
-# Stock inventories------------------------------------------------- 
+# ------------------------------------------------- Stock inventories -------------------------------------------------
 
-def stock_inventories(req):
+
+def inventories(req):
     inventories = Inventory.objects.all().order_by('-date')
     context = {
-        "inventories": inventories
+        "inventories": inventories,
     }
-    return render(req, 'base/partials/stock/inventories.html', context)
+    return render(req, 'base/stock/inventories.html', context)
 
 
-@login_required(login_url='login')
 def inventory_details(req, pk):
     user = req.user
     if not user.is_staff:
         messages.info(req, "Access denied!!!")
         return redirect('home')
-    
+
     curr_obj = get_object_or_404(Inventory, id=pk)
-    inventory_items = InventoryItem.objects.filter(inventory=curr_obj)
+    items = InventoryItem.objects.filter(
+        inventory=curr_obj).order_by('product_stock__product__name')
+
+    if req.method == 'POST':
+        comment = req.POST.get('comment')
+        for obj in items:
+            qty_found = req.POST.get(f'qty_found_{obj.id}') or 0
+            qty_found = int(qty_found)
+            difference = qty_found - obj.quantity_expected
+            InventoryItem.objects.update_or_create(
+                inventory=curr_obj,
+                product_stock=obj.product_stock,
+                defaults={
+                    'quantity_found': qty_found,
+                    'difference': difference,
+                    'comment': comment,
+                }
+            )
+        return redirect('inventory_details', pk=pk)
 
     context = {
         "stock": "active",
-        'title': 'Inventaire',
-        'curr_obj': curr_obj,
-        'inventory_items': inventory_items,
+        'title': "Details d'inventaire",
+        "curr_obj": curr_obj,
+        "items": items,
     }
-    return render(req, 'base/partials/stock/inventory_details.html', context)
-
+    return render(req, 'base/stock/inventory_details.html', context)
 
 @login_required(login_url='login')
 def create_inventory(req):
@@ -1737,24 +1837,26 @@ def create_inventory(req):
     if not user.is_staff:
         messages.info(req, "Access denied!!!")
         return redirect('home')
-
-    form = InventoryForm()
-    if req.method == 'POST':
-        form = InventoryForm(req.POST)
-        if form.is_valid():
-            form.save()
-        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    
+    if user.role.sec_level < 2:
+        store = user.profile.store or None
     else:
-        return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle inventaire'})
+        store = None
+
+    new_inventory = Inventory(
+        store=store,
+        initiator=user,
+    )
+    new_inventory.save()
+
+    return redirect('inventory_details', pk=new_inventory.id)
 
 
-@login_required(login_url='login')
-def edit_inventory(req,pk):
+def edit_inventory(req,pk):    
     user = req.user
     if not user.is_staff:
         messages.info(req, "Access denied!!!")
         return redirect('home')
-    
     curr_obj = get_object_or_404(Inventory, id=pk)
 
     form = InventoryForm(instance=curr_obj, user=user)
@@ -1764,61 +1866,134 @@ def edit_inventory(req,pk):
             form.save()
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
-        return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier l'inventaire"})
+        return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier cet inventaire"})
 
 
-def inventory_info(req, pk):
-    curr_obj = get_object_or_404(Inventory, id=pk)
-    context = {
-        'curr_obj': curr_obj,
-    }
-    return render(req, 'base/partials/stock/inventory_info.html', context)
+# ------------------------------------------------- Cashdesk Closing -------------------------------------------------
 
-
-def inventory_items(req, pk):
-    inventory = get_object_or_404(Inventory, id=pk)
-    inventory_items = InventoryItem.objects.filter(inventory=inventory)
-    context = {
-        'inventory_items': inventory_items,
-    }
-    return render(req, 'base/partials/stock/inventory_items.html', context)
-
-
-def create_inventory_item(req, pk):
+def desk_closings_list(req, pk):
     user = req.user
     if not user.is_staff:
         messages.info(req, "Access denied!!!")
         return redirect('home')
+    
+    curr_obj = get_object_or_404(Cashdesk, id=pk)
+    desk_closings = CashdeskClosing.objects.filter(
+        cashdesk=curr_obj).order_by('-timestamp')
 
-    inventory = get_object_or_404(Inventory, id=pk)
+    context = {
+        "finances": "active",
+        'desk_closings': desk_closings,
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/accounting/desk_closings_list.html', context)
 
-    form = InventoryItemForm()
+
+
+def desk_closing_details(req, pk):
+    curr_obj = get_object_or_404(CashdeskClosing, id=pk)
+    closing_receipts = ClosingCashReceipt.objects.filter(cashdesk_closing=curr_obj).order_by('-cash_receipt__value')
+
     if req.method == 'POST':
-        form = InventoryItemForm(req.POST)
-        form.instance.inventory = inventory
-        if form.is_valid():
-            form.save()
-        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
-    else:
-        return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau produit compté'})
+        for obj in closing_receipts:
+            count = req.POST.get(f'count_{obj.id}') or 0
+            if count:
+                count = int(count)
+                total_amount = obj.cash_receipt.value * count
+
+                # Update individual instance attributes
+                obj.count = count
+                obj.total_amount = total_amount
+                obj.save()
+                
+        comment = req.POST.get('comment')
+        if comment:
+            curr_obj.comment = comment
+            curr_obj.save()
+
+        return redirect('desk_closing_details', pk=pk)
+
+    context = {
+        "finances": "active",
+        'title': "Details d'Achat",
+        'curr_obj': curr_obj,
+        'closing_receipts': closing_receipts,
+    }
+    return render(req, 'base/accounting/desk_closing_details.html', context)
 
 
 @login_required(login_url='login')
-def edit_inventory_item(req, pk):
+def create_closing_receipt(req, pk):
+    cashdesk_closing = get_object_or_404(CashdeskClosing, id=pk)
+    if req.method == 'POST':
+        form = ClosingCashReceiptForm(req.POST)
+        form.instance.cashdesk_closing = cashdesk_closing
+        if form.is_valid():
+            daily_cash_receipt = form.save(commit=False)
+            daily_cash_receipt.user = req.user
+            daily_cash_receipt.save()
+            return redirect('daily_cash_receipt_list')
+    else:
+        form = ClosingCashReceiptForm()
+    return render(req, 'create_closing_receipt.html', {'form': form})
+
+
+@login_required(login_url='login')
+def create_desk_closing(req, pk):
     user = req.user
     if not user.is_staff:
         messages.info(req, "Access denied!!!")
         return redirect('home')
-    curr_obj = get_object_or_404(InventoryItem, id=pk)
 
-    form = InventoryItemForm(instance=curr_obj)
+    cashdesk = get_object_or_404(Cashdesk, id=pk)
+    new_closing = CashdeskClosing(
+        cashdesk=cashdesk,
+        initiator=user,
+        supervisor=None, 
+        # balance_expected=cashdesk.balance  # Ensure balance_expected is properly set
+    )
+    new_closing.save()  # Save the new CashdeskClosing object to the database
+
+    cash_receipts = CashReceipt.objects.all()
+    for obj in cash_receipts:
+        new_receipt = ClosingCashReceipt(
+            cashdesk_closing = new_closing,
+            cash_receipt=obj,
+        )
+        new_receipt.save()
+
+    return redirect('desk_closing_details', pk=new_closing.id)
+
+
+
+@login_required(login_url='login')
+def edit_desk_closing(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    
+    curr_obj = get_object_or_404(CashdeskClosing, id=pk)
+
+    form = CashdeskClosingForm(instance=curr_obj, user=user)
     if req.method == 'POST':
-        form = InventoryItemForm(req.POST, instance=curr_obj)
+        form = CashdeskClosingForm(req.POST, instance=curr_obj, user=user)
         if form.is_valid():
+            print('valid')
             form.save()
+
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
     else:
-        return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier le produit compté"})
+        return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier l'arrêté de caisse"})
+
+
+def desk_closing_info(req, pk):
+    curr_obj = get_object_or_404(CashdeskClosing, id=pk)
+    context = {
+        'curr_obj': curr_obj,
+    }
+    return render(req, 'base/accounting/closing_info.html', context)
+
 
 # ------------------------------------------------- Finances -------------------------------------------------
 
@@ -1834,11 +2009,23 @@ def finances(req):
         transactions = Transaction.objects.filter(store=store).order_by('-timestamp')
         credits = transactions.filter(type='credit')
         debits = transactions.filter(type='debit')
+        desks = Cashdesk.objects.filter(store=store)
+        cash_desks = desks.filter(type='cash')
+        mobile_desks = desks.filter(type='mobile')
+        bank_desks = desks.filter(type='bank')
+        
     else:
         transactions = Transaction.objects.all().order_by('-timestamp')
         credits = transactions.filter(type='credit')
         debits = transactions.filter(type='debit')
+        desks = Cashdesk.objects.all()
+        cash_desks = desks.filter(type='cash')
+        mobile_desks = desks.filter(type='mobile')
+        bank_desks = desks.filter(type='bank')
 
+    cash_balance = cash_desks.aggregate(totals=Sum('balance'))['totals'] or 0
+    mobile_balance =  mobile_desks.aggregate(totals=Sum('balance'))['totals'] or 0
+    bank_balance = bank_desks.aggregate(totals=Sum('balance'))['totals'] or 0
 
     credits_aggregate = credits.aggregate(totals=Sum('amount'))['totals'] or 0
     debits_aggregate = debits.aggregate(totals=Sum('amount'))['totals'] or 0
@@ -1856,6 +2043,12 @@ def finances(req):
         'debits': debits,
         'store': store,
         'stores': stores,
+        'cash_desks': cash_desks,
+        'cash_balance': cash_balance,
+        'mobile_desks': mobile_desks,
+        'mobile_balance': mobile_balance,
+        'bank_desks': bank_desks,
+        'bank_balance': bank_balance,
         'initiators': initiators,
         'debits_aggregate': debits_aggregate,
         'balance': balance,
@@ -1924,7 +2117,7 @@ def cashdesks_list(req):
     context = {
         'cashdesks': cashdesks,
     }
-    return render(req, 'base/partials/parameters/cashdesks_list.html', context)
+    return render(req, 'base/parameters/cashdesks_list.html', context)
 
 
 @login_required(login_url='login')
@@ -2025,6 +2218,20 @@ def store_transactions(req, pk):
     }
     return render(req, 'base/finances/transactions_list.html', context)
 
+
+def desk_transactions(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    transactions = Transaction.objects.filter(cashdesk_id=pk).order_by('-timestamp')
+        
+    context = {
+        'transactions': transactions,
+    }
+    return render(req, 'base/finances/transactions_list.html', context)
+
 @login_required(login_url='login')
 def transaction_details(req,pk):
     user = req.user
@@ -2039,6 +2246,7 @@ def transaction_details(req,pk):
     }
     return render(req, 'base/finances/transaction_details.html', context)
 
+
 @login_required(login_url='login')
 def transaction_editor(req,pk):
     user = req.user
@@ -2052,6 +2260,31 @@ def transaction_editor(req,pk):
         'curr_obj': curr_obj,
     }
     return render(req, 'base/finances/transactions_editor.html', context)
+
+
+@login_required(login_url='login')
+def create_transaction(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    
+    cashdesk = get_object_or_404(Cashdesk, id=pk)
+    
+    form = TransactionForm(cashdesk=cashdesk)
+    if req.method == 'POST':
+        form = TransactionForm(req.POST, cashdesk=cashdesk)
+        form.instance.cashdesk = cashdesk
+        form.instance.store = cashdesk.store
+        if user.role.sec_level < 2:
+            form.instance.initiator = user
+            form.instance.store = user.profile.store
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle transaction'})
+    
 
 
 @login_required(login_url='login')

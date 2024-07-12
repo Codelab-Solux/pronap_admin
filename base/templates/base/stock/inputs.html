@@ -1,0 +1,114 @@
+<div
+  class="mb-4 p-2 grid md:grid-cols-3 xl:grid-cols-6 gap-2 border border shadow-md rounded-xl text-gray-700 text-sm"
+>
+  <p class="bg-green-950 text-white rounded-lg px-4 py-2 flex items-center">
+    Entrées :
+    <span class="text-lg font-bold ml-2">{{inputs|length}}</span>
+  </p>
+  <p class="bg-green-800 text-white rounded-lg px-4 py-2 flex items-center">
+    Achats :
+    <span class="text-lg font-bold ml-2">{{purchases|length}}</span>
+  </p>
+  <p class="bg-green-600 rounded-lg px-4 py-2 text-white flex items-center">
+    Retours :
+    <span class="text-lg font-bold ml-2">{{returns|length}}</span>
+  </p>
+  <p class="bg-green-400 rounded-lg px-4 py-2 flex items-center">
+    Cadeaux :
+    <span class="text-lg font-bold ml-2 text-black">{{gifts|length}}</span>
+  </p>
+  <p class="bg-green-200 rounded-lg px-4 py-2 flex items-center">
+    <span class="text-3xl mr-2">≠</span> d’inventaire :
+    <span class="text-lg font-bold ml-2 text-black"
+      >{{differences|length}}</span
+    >
+  </p>
+  <p class="bg-gray-200 rounded-lg px-4 py-2 flex items-center">
+    Transfers :
+    <span class="text-lg font-bold ml-2 text-black">{{transfers|length}}</span>
+  </p>
+</div>
+
+{% if not inputs %}
+<div class="flex flex-col items-center gap-2 my-20 mx-auto">
+  <i class="fa-solid fa-arrow-down text-green-700 text-9xl"></i>
+  <span>Aucune entrée de stock trouvée</span>
+</div>
+{% else %}
+
+<!-- <div class="h-full overflow-x-auto overflow-y-hidden rounded-xl"> -->
+<table class="w-full text-left db-table rounded-xl border">
+  <thead class="bg-green-300 text-black">
+    <tr>
+      <th class="px-3 py-4 text-sm">Réf.</th>
+      <th class="px-3 py-4 text-sm">Date</th>
+      <th class="px-3 py-4 text-sm">Initiateur</th>
+      <th class="px-3 py-4 text-sm">Type d'operation</th>
+      <th class="px-3 py-4 text-sm">Description</th>
+      <th class="px-3 py-4 text-sm text-center">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody class="border">
+    {% for obj in inputs %}
+    <tr
+      class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-50"
+    >
+      <td class="px-3 py-1">Ent-000-{{obj.id}}</td>
+      <td class="px-3 py-1">{{obj.timestamp.date}}</td>
+      <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
+      <td class="px-3 py-1">{{obj.get_type_display}}</td>
+      <td class="px-3 py-1">{{obj.description}}</td>
+      <td class="px-3 py-1 relative">
+        <div
+          class="w-fit text-gray-700 mx-auto"
+        >
+          <button
+            type="button"
+            class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
+            name="sentry"
+            onclick="toggleMenu(this,'inp_{{obj.id}}')"
+          >
+            <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+          </button>
+
+          <div
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+            id="inp_{{obj.id}}"
+          >
+            <!--  -->
+            <a
+              hx-boost="false"
+              href="{% url 'stock_input_details' obj.id %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              ><i class="text-sm fa-solid fa-expand mr-2"></i>
+              Détails
+            </a>
+
+            <button
+              hx-target="#basic_dialog"
+              hx-get="{% url 'edit_stock_input' obj.id %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+            >
+              <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
+              Modifier
+            </button>
+
+            <button
+              hx-confirm="Voulez vous vraiment suprimmer ceci?"
+              hx-delete="{% url 'delete_base_object' obj.id 'StockInput' %}"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+            >
+              <i class="text-sm fa-solid fa-trash mr-2"></i>
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- </div> -->
+
+{% endif %}

@@ -61,3 +61,12 @@ def get_purchases_value(pk):
     sales_value = sales.aggregate(totals=Sum('total'))['totals'] or 0
 
     return sales_value
+
+
+@register.filter
+def get_desk_receipt(pk, kp):
+    closing = CashdeskClosing.objects.filter(id=pk).first()
+    cash_receipt = CashReceipt.objects.filter(id=kp).first()
+    result = ClosingCashReceipt.objects.filter(cash_receipt=cash_receipt, CashdeskClosing=closing).first()
+    return result
+

@@ -1,0 +1,200 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
+  <div class="flex flex-col md:flex-row justify-between items-center">
+      <a
+        id="back-button"
+        class="inline-block px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+        href="#"
+        >&larr;</a
+      >
+    <!--------------------------------------- menu tabs buttons --------------------------------------->
+    <div
+      class="flex justify-between gap-2 text-sm tabbar h-fit w-full lg:max-w-[700px] p-2 bg-green-700 rounded-xl"
+    >
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+        onclick="openTab(event, 'cats')"
+        id="defaultTab"
+      >
+        <i class="fa-solid fa-shapes"></i>
+        <span class="ml-2">Catégories</span>
+      </button>
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+        onclick="openTab(event, 'fams')"
+      >
+        <i class="fa-solid fa-layer-group"></i>
+        <span class="ml-2">Familles</span>
+      </button>
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+        onclick="openTab(event, 'prods')"
+      >
+        <i class="fa-solid fa-cubes"></i>
+        <span class="ml-2">Produits</span>
+      </button>
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+        onclick="openTab(event, 'desks')"
+      >
+        <i class="fa-solid fa-cash-register"></i>
+        <span class="ml-2">Caisses</span>
+      </button>
+      <!-- <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+        onclick="openTab(event, 'stores')"
+      >
+        <i class="fa-solid fa-store-alt"></i>
+        <span class="ml-2">Boutiques</span>
+      </button> -->
+      <button
+        class="tabBtn px-4 py-2 bg-white hover:bg-green-700 hover:text-white rounded-lg w-full"
+        onclick="openTab(event, 'types')"
+      >
+        <i class="fa-solid fa-user-group"></i>
+        <span class="ml-2">Types</span>
+      </button>
+    </div>
+  </div>
+
+  <section class="flex flex-col gap-4">
+    <div id="cats" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_category' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="categories_list"
+        hx-get="{% url 'categories_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!--  -->
+    <div id="fams" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_family' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="families_list"
+        hx-get="{% url 'families_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!--  -->
+    <div id="prods" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_product' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau produit
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="products_list"
+        hx-get="{% url 'products_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!--  -->
+    <div id="desks" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_cashdesk' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="cashdesks_list"
+        hx-get="{% url 'cashdesks_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <div id="desks" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_cashdesk' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="cashdesks_list"
+        hx-get="{% url 'cashdesks_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+    <!-- <div id="stores" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_store' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="stores_list"
+        hx-get="{% url 'stores_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div> -->
+    <div id="types" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_entity_type' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="entity_types_list"
+        hx-get="{% url 'entity_types_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      ></div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}

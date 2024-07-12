@@ -22,3 +22,10 @@ def create_default_roles(sender, **kwargs):
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=CustomUser)
+def create_or_update_wallet(sender, instance, **kwargs):
+    if not hasattr(instance, 'wallet'):
+        Wallet.objects.create(user=instance, balance=0)
+
