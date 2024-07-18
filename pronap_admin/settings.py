@@ -15,15 +15,17 @@ SECRET_KEY = 'django-insecure-3$$v4pm96x49eyovw7ja2c%+4_a!m9zrs6c(&e8ij8dopa#s3t
 DEBUG = True
 
 
-# ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = ["127.0.0.1", "62.72.19.182"]
+ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["62.72.19.182", "127.0.0.1",]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://62.72.19.182:8040',
+    "*",
+    # 'http://62.72.19.182:8040',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://62.72.19.182:8040',
+    "*",
+    # 'http://62.72.19.182:8040',
 ]
 
 
