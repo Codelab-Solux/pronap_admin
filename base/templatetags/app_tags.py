@@ -11,9 +11,7 @@ register = template.Library()
 def get_input_count(pk):
     product = ProductStock.objects.get(id=pk)
     items = StockOperationItem.objects.filter(
-        product_stock=product, stock_operation__type='output')
-    # item_count = items.aggregate(total_quantity=Sum('quantity'))[
-    #     'total_quantity'] or 0
+        product_stock=product, stock_operation__type='input')
 
     item_count = 0
     for obj in items:

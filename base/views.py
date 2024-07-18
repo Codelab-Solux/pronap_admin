@@ -550,9 +550,9 @@ def checkout(req):
 
         new_sale.save()
 
-        new_stock_output = StockOperation(initiator=user, type='output', subtype='sale', description='Vente de produit(s)')
+        new_stock_operation = StockOperation(initiator=user, type='output', subtype='sale', description='Vente de produit(s)')
 
-        new_stock_output.save()
+        new_stock_operation.save()
 
         for item in cart_items:
             product_stock = item['product']
@@ -565,7 +565,7 @@ def checkout(req):
             new_sale_item.save()
 
             new_stock_item = StockOperationItem(
-                stock_output = new_stock_output,
+                stock_operation = new_stock_operation,
                 product_stock=product_stock,
                 quantity=quantity,
             )
@@ -756,9 +756,9 @@ def edit_sale(req, pk):
 
     curr_obj = get_object_or_404(Sale, id=pk)
 
-    form = SaleForm(instance=curr_obj)
+    form = SaleForm(instance=curr_obj, curr_obj=curr_obj)
     if req.method == 'POST':
-        form = SaleForm(req.POST, instance=curr_obj)
+        form = SaleForm(req.POST, instance=curr_obj, curr_obj=curr_obj)
         if form.is_valid():
             form.save()
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
@@ -956,9 +956,9 @@ def create_purchase(req, pk):
         messages.info(req, "Access denied!!!")
         return redirect('home')
 
-    form = PurchaseForm()
+    form = PurchaseForm(purchase_type=pk)
     if req.method == 'POST':
-        form = PurchaseForm(req.POST)
+        form = PurchaseForm(req.POST,purchase_type=pk)
         if form.is_valid():
             form.instance.initiator=user
             form.instance.type=pk
@@ -1543,13 +1543,13 @@ def stock_ops(req, pk):
     else:
         operations = StockOperation.objects.filter(type=pk).order_by('-timestamp')
 
-    purchases = operations.filter(type='purchase').order_by('-timestamp')
-    returns = operations.filter(type='return').order_by('-timestamp')
-    transfers = operations.filter(type='transfer').order_by('-timestamp')
-    differences = operations.filter(type='difference').order_by('-timestamp')
-    gifts = operations.filter(type='gift').order_by('-timestamp')
-    sales = operations.filter(type='sale').order_by('-timestamp')
-    usages = operations.filter(type='usage').order_by('-timestamp')
+    purchases = operations.filter(subtype='purchase').order_by('-timestamp')
+    returns = operations.filter(subtype='return').order_by('-timestamp')
+    transfers = operations.filter(subtype='transfer').order_by('-timestamp')
+    differences = operations.filter(subtype='difference').order_by('-timestamp')
+    gifts = operations.filter(subtype='gift').order_by('-timestamp')
+    sales = operations.filter(subtype='sale').order_by('-timestamp')
+    usages = operations.filter(subtype='usage').order_by('-timestamp')
 
     context = {
         "operations": operations,
@@ -1616,7 +1616,7 @@ def stock_ops_details(req, pk):
         messages.info(req, "Access denied!!!")
         return redirect('home')
     curr_obj = get_object_or_404(StockOperation, id=pk)
-    items = StockOperationItem.objects.filter(stock_input=curr_obj)
+    items = StockOperationItem.objects.filter(stock_operation=curr_obj)
 
     context = {
         "stock": "active",
@@ -1636,8 +1636,8 @@ def stock_ops_info(req, pk):
 
 
 def stock_ops_items(req, pk):
-    stock_input = get_object_or_404(StockOperation, id=pk)
-    items = StockOperationItem.objects.filter(stock_input=stock_input)
+    stock_operation = get_object_or_404(StockOperation, id=pk)
+    items = StockOperationItem.objects.filter(stock_operation=stock_operation)
     context = {
         'items': items,
     }
@@ -1650,12 +1650,12 @@ def create_stock_ops_item(req, pk):
         messages.info(req, "Access denied!!!")
         return redirect('home')
 
-    stock_input = get_object_or_404(StockOperation, id=pk)
+    stock_operation = get_object_or_404(StockOperation, id=pk)
 
     form = StockOperationItemForm()
     if req.method == 'POST':
         form = StockOperationItemForm(req.POST)
-        form.instance.stock_input = stock_input
+        form.instance.stock_operation = stock_operation
         if form.is_valid():
             form.save()
         return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})

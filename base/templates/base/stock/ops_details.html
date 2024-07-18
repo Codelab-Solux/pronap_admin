@@ -3,7 +3,7 @@
 {% block content %}
 <div class="flex flex-col gap-4">
   <div
-    class="p-6 bg-green-100 rounded-3xl h-full w-full mx-auto flex flex-col justify-between gap-4"
+    class="w-full mx-auto flex flex-col justify-between gap-4"
   >
     <div class="flex justify-between items-center">
       <a
@@ -13,7 +13,7 @@
       </a>
 
       <div
-        class="flex items-center gap-4 px-3 py-2 rounded bg-green-300 text-black"
+        class="flex items-center gap-4 px-3 py-2 rounded bg-lime-300 text-black"
       >
         {% if curr_obj.type == 'input' %}
         <i class="fa-solid fa-receipt"></i>Entrée N°-<b>000-{{ curr_obj.id}}</b>
@@ -23,7 +23,7 @@
         <button
           hx-target="#basic_dialog"
           hx-get="{% url 'edit_stock_ops' curr_obj.id %}"
-          class="w-fit bg-green-200 hover:bg-green-500 text-xs px-3 py-2 rounded transition duration-200 ease-in"
+          class="w-fit bg-lime-400 hover:bg-lime-500 text-xs px-3 py-2 rounded transition duration-200 ease-in"
         >
           <i class="fa-solid fa-pen-to-square"></i>
         </button>

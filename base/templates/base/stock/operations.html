@@ -77,7 +77,7 @@
             <!--  -->
             <a
               hx-boost="false"
-              href="{% url 'stock_input_details' obj.id %}"
+              href="{% url 'stock_ops_details' obj.id %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
@@ -85,7 +85,7 @@
 
             <button
               hx-target="#basic_dialog"
-              hx-get="{% url 'edit_stock_input' obj.id %}"
+              hx-get="{% url 'edit_stock_ops' obj.id %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
@@ -94,7 +94,7 @@
 
             <button
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
-              hx-delete="{% url 'delete_base_object' obj.id 'StockInput' %}"
+              hx-delete="{% url 'delete_base_object' obj.id 'StockOperation' %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>

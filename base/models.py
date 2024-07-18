@@ -273,12 +273,18 @@ class ClosingCashReceipt(models.Model):
         return self.__class__.__name__
 
 
+transaction_types = (
+    ('credit', "Encaissement"),
+    ('debit', "Décaissement"),
+)
+
 class Payment(models.Model):
     initiator = models.ForeignKey(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
     store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
     cashdesk = models.ForeignKey(
         Cashdesk, blank=True, null=True, on_delete=models.SET_NULL)
+    type = models.CharField(max_length=50, choices=transaction_types)
     amount = models.PositiveIntegerField(default='0', blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
@@ -302,11 +308,6 @@ class Payment(models.Model):
         return reverse('payment_details', kwargs={'pk': self.pk})
 
 
-transaction_types = (
-    ('credit', "Encaissement"),
-    ('debit', "Décaissement"),
-)
-
 audit_statuses = (
     ('pending', "En attente"),
     ('validated', "Validé"),
@@ -315,7 +316,7 @@ audit_statuses = (
 
 
 class Transaction(models.Model):
-    payment = models.ForeignKey(Payment, default=1, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     type = models.CharField(max_length=50, choices=transaction_types)
     amount = models.PositiveIntegerField(default='0', blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
@@ -619,8 +620,6 @@ class Purchase(models.Model):
         ProductStock, through='PurchaseItem', blank=True)
     audit = models.CharField(
         max_length=50, choices=audit_statuses, default='pending')
-    payment_option = models.CharField(
-        max_length=50, choices=payment_options, default='cash')
     payment_status = models.CharField(
         max_length=50, choices=payment_statuses, default='unpaid')
     label = models.CharField(
@@ -701,6 +700,10 @@ class StockOperation(models.Model):
     total = models.IntegerField(default=0)
     description = models.CharField(max_length=500, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    content_type = models.ForeignKey(
+        ContentType, blank=True, null=True, on_delete=models.SET_NULL)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return f'{self.initiator} - {self.type} - {self.subtype} - {self.description}'
@@ -713,6 +716,19 @@ class StockOperation(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+    
+    @classmethod
+    def create_or_update(cls, **kwargs):
+        content_object = kwargs.get('content_object')
+        content_type = ContentType.objects.get_for_model(content_object)
+        object_id = content_object.id
+
+        stock_operation, created = cls.objects.update_or_create(
+            content_type=content_type,
+            object_id=object_id,
+            defaults=kwargs
+        )
+        return stock_operation
 
     @property
     def model_name(self):

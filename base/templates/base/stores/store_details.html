@@ -1,15 +1,21 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
-  <button
+  <!-- <button
     onclick="goBack()"
     class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
   >
     &larr;
-  </button>
+  </button> -->
+        <a
+        id="back-button"
+        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
+        href="#"
+        >&larr;
+      </a>
 
-  <div class="w-full flex gap-4">
+  <div class="w-full flex justify-between gap-4">
     <section
-      class="p-4 w-full max-w-3xl bg-green-200 rounded flex flex-col gap-4"
+      class="p-4 w-full bg-green-200 rounded flex flex-col gap-4"
     >
       <div class="flex flex-col lg:flex-row items-center gap-4">
         <img
@@ -128,8 +134,9 @@
         </button>
       </div>
     </section>
+
     <section
-      class="w-full p-3 h-100 bg-white border text-sm 2xl:text-md text-black rounded shadow-md grid gap-2"
+      class="w-full max-w-md p-3 h-100 bg-white border text-sm 2xl:text-md text-black rounded shadow-md grid gap-2"
     >
       <!-- credits overview -->
 
@@ -201,15 +208,15 @@
         </div>
         <div class="grid grid-cols-3 gap-2">
           <div class="p-2 bg-gray-100 rounded flex flex-col">
-            <span>Solde liquide</span>
+            <span>Espèces</span>
             <b>{{ cash_balance }} CFA</b>
           </div>
           <div class="p-2 bg-gray-200 rounded flex flex-col">
-            <span>Solde T-Money</span>
+            <span>T-Money</span>
             <b>{{ tmoney_balance }} CFA</b>
           </div>
           <div class="p-2 bg-gray-300 rounded flex flex-col">
-            <span>Solde Moov Money</span>
+            <span>Moov Money</span>
             <b>{{ moov_balance }} CFA</b>
           </div>
         </div>

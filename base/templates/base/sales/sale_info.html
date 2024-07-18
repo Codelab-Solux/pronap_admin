@@ -1,69 +1,70 @@
 {% load static %} {% load app_tags %}
 <div class="w-full flex flex-col gap-6">
   <div class="grid lg:grid-cols-2 gap-4">
-    <div class="flex flex-col gap-2">
-      <div
-        id="receipt"
-        class="w-full bg-gray-100 border rounded shadow-md p-3 flex flex-col justify-between text-sm gap-2"
-      >
-        <div class="flex justify-between text-xl text-black">
-          <div class="flex items-center gap-2">
-            <img class="h-10" src="{% static 'imgs/logo.png' %}" alt="logo" />
-            <div class="grid">
-              <span>{{curr_obj.store.name}}</span>
-              <span class="text-xs">Tel : {{curr_obj.store.phone}}</span>
-              <span class="text-xs">Adrs : {{curr_obj.store.address}}</span>
-            </div>
-          </div>
+    <div
+      id="receipt"
+      class="w-full bg-gray-100 border rounded shadow-md p-3 flex flex-col justify-between text-sm gap-2"
+    >
+      <div class="flex justify-between text-xl text-black">
+        <div class="flex items-center gap-2">
+          <img width="40" height="40" src="{% static 'imgs/logo.png' %}" alt="logo" />
           <div class="grid">
-            <h3 class="text-lg text-black">
-              Reçu <b> N°- 000{{curr_obj.id}}</b>
-            </h3>
-            <span class="text-xs">Date : {{ curr_obj.timestamp.date }}</span>
-            <span class="text-xs">Heure : {{ curr_obj.timestamp.time }}</span>
+            <span>{{curr_obj.store.name}}</span>
+            <span class="text-xs">Tel : {{curr_obj.store.phone}}</span>
+            <span class="text-xs">Adrs : {{curr_obj.store.address}}</span>
           </div>
         </div>
-        <div class="grid gap-0">
-          <article
-            class="p-1 border-y bg-gray-300 text-sm flex justify-between"
-          >
-            <span>Article</span>
-            <b>Quantité</b>
-            <span>Prix unitaire </span>
-            <span>Total</span>
-          </article>
-          {% for obj in sale_items %}
-          <article
-            class="p-1 border-y border-gray-400 text-sm flex justify-between"
-          >
-            <span>{{obj.product_stock.product.name}}</span>
-            <b>x {{obj.quantity}}</b>
-            <span
-              >{{obj.product_stock.price}} CFA /
-              <!--  -->
-              {{obj.product_stock.product.unit}}
-            </span>
-            <span>{{obj.get_total}} CFA</span>
-          </article>
-          {% endfor %}
+        <div class="grid">
+          <h3 class="text-lg text-black">
+            Reçu <b> N°- 000{{curr_obj.id}}</b>
+          </h3>
+          <span class="text-xs">Date : {{ curr_obj.timestamp.date }}</span>
+          <span class="text-xs">Heure : {{ curr_obj.timestamp.time }}</span>
         </div>
-        <p class="flex justify-between gap-2">
-          <span>Article(s) : </span> <b>{{ curr_obj.items }}</b>
-        </p>
-        <p class="flex justify-between gap-2">
-          <span>Total dû :</span> <b>{{ curr_obj.total }} CFA</b>
-        </p>
-        <p class="text-black flex justify-between gap-2">
-          <span>Total payé : </span> <b>{{ curr_obj.total_paid }} CFA</b>
-        </p>
       </div>
-      <button
-        onclick="printDiv('receipt')"
-        class="px-4 py-2 flex items-center text-xs text-black bg-orange-200 hover:bg-orange-300 rounded w-fit text-center cursor-pointer"
-      >
-        Imprimer ce reçu
-        <i class="fa-solid fa-print ml-2"></i>
-      </button>
+      <div class="grid gap-0">
+        <article class="p-1 border-y bg-gray-300 text-sm flex justify-between">
+          <span>Article</span>
+          <b>Quantité</b>
+          <span>Prix unitaire </span>
+          <span>Total</span>
+        </article>
+        {% for obj in sale_items %}
+        <article
+          class="p-1 border-y border-gray-400 text-sm flex justify-between"
+        >
+          <span>{{obj.product_stock.product.name}}</span>
+          <b>x {{obj.quantity}}</b>
+          <span
+            >{{obj.product_stock.price}} CFA /
+            <!--  -->
+            {{obj.product_stock.product.unit}}
+          </span>
+          <span>{{obj.get_total}} CFA</span>
+        </article>
+        {% endfor %}
+      </div>
+
+      <p class="flex justify-between gap-2">
+        <span>Article(s) : </span> <b>{{ curr_obj.items }}</b>
+      </p>
+      <p class="flex justify-between gap-2">
+        <span>Montant dû :</span> <b>{{ curr_obj.total }} CFA</b>
+      </p>
+      <p class="text-black flex justify-between gap-2">
+        <span>Montant payé : </span> <b>{{ curr_obj.total_paid }} CFA</b>
+      </p>
+      {% if curr_obj.total > curr_obj.total_paid %}
+      <p class="p-2 bg-orange-200 text-black flex justify-between gap-2">
+        <span>Montant restant : </span>
+        <b>{{curr_obj.total|subtract:curr_obj.total_paid}} CFA</b>
+      </p>
+      {% else %}
+      <p class="p-2 bg-lime-200 text-black flex justify-between gap-2">
+        <span>Montant restant : </span>
+        <b>{{curr_obj.total|subtract:curr_obj.total_paid}} CFA</b>
+      </p>
+      {% endif %}
     </div>
 
     <div class="w-full border rounded p-3 grid gap-2">
@@ -77,7 +78,7 @@
       </p>
       <p>Caisse : <b>{{ curr_obj.cashdesk.name }}</b></p>
       <p>Date : <b>{{ curr_obj.timestamp.date }}</b></p>
-      <!-- <p><b>Observation : </b> {{curr_obj.observation }}</p> -->
+      <p><b>Observation : </b> {{curr_obj.observation }}</p>
     </div>
   </div>
 
@@ -103,7 +104,7 @@
     </div>
     {% else %}
     <table id="items_table" class="bg-white h-fit w-full text-left db-table">
-      <thead class="bg-green-700 border border-green-900 text-white">
+      <thead class="bg-lime-300 border border-lime-400 text-black">
         <tr>
           <th class="px-3 py-2 text-sm">Date</th>
           <th class="px-3 py-2 text-sm">Initiateur</th>
@@ -171,78 +172,4 @@
     </table>
     {% endif %}
   </div>
-
-  <style>
-    /* printer styles */
-    @media print {
-      @page {
-        size: A7; /* Change to A8 if needed */
-        margin: 0;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      .print-container {
-        /* width: 60mm;
-        height: 80mm; */
-        overflow: hidden;
-      }
-    }
-  </style>
-
-  <script>
-    // printer logic-------------------------------------------------
-    function printDiv(divId) {
-      var printContent = document.getElementById(divId).outerHTML;
-
-      // Open a new window
-      var newWin = window.open("", "", "width=600,height=600"); // Adjust size as needed
-
-      newWin.document.write(`
-          <html>
-              <head>
-                  <title>Print</title>
-                  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-                  <style>
-                      @media print {
-                          @page {
-                              size: A7; /* Change to A8 if needed */
-                              margin: 0;
-                          }
-                          body {
-                              margin: 0;
-                              padding: 0;
-                              display: flex;
-                              justify-content: center;
-                              align-items: center;
-                              height: 100vh;
-                          }
-                          .print-container {
-                              width: 74mm; /* A7 width */
-                              height: 105mm; /* A7 height */
-                              overflow: hidden;
-                              display: flex;
-                              justify-content: center;
-                              align-items: center;
-                              padding: 10mm;
-                              box-sizing: border-box;
-                          }
-                      }
-                  </style>
-              </head>
-              <body>
-                  <div class="print-container">
-                      ${printContent}
-                  </div>
-              </body>
-          </html>
-      `);
-
-      newWin.document.close();
-      newWin.focus();
-      newWin.print();
-      newWin.close();
-    }
-  </script>
 </div>

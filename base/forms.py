@@ -276,16 +276,17 @@ class PurchaseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         curr_obj = kwargs.pop('curr_obj', None)
+        purchase_type = kwargs.pop('purchase_type', None)
         super(PurchaseForm, self).__init__(*args, **kwargs)
 
         if user and user.role.sec_level < 3:
             self.fields.pop('store')
         if not curr_obj:
             self.fields.pop('cashdesk')
-            self.fields.pop('amount')
+            # self.fields.pop('amount')
+        if purchase_type == 'product':
             self.fields.pop('total')
-            self.fields.pop('payment_option')
-            self.fields.pop('payment_status')
+
 
     class Meta:
         model = Purchase
@@ -295,9 +296,7 @@ class PurchaseForm(forms.ModelForm):
             'supplier',
             'cashdesk',
             'total',
-            'amount',
-            'payment_option',
-            'payment_status',
+            # 'amount',
             'description',
         )
         exclude = ('audit', 'timestamp',)
@@ -309,18 +308,14 @@ class PurchaseForm(forms.ModelForm):
             'cashdesk': 'Caisse',
             'total': 'Montant à payer',
             'amount': 'Montant Payé',
-            'payment_option': 'Moyen de paiement',
-            'payment_status': 'Status du paiement',
         }
         widgets = {
             'store': forms.Select(attrs={'class': "input_selecto mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
             'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
             'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'total': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded focus:outline-none bg-gray-100 w-full", 'readonly': 'readonly'}),
+            'total': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded focus:outline-none bg-gray-100 w-full",}),
             'amount': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
             'cashdesk': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'payment_option': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'payment_status': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
             'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }

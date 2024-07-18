@@ -42,6 +42,7 @@
     <tr>
       <th class="px-3 py-4 text-sm">Réf.</th>
       <th class="px-3 py-4 text-sm">Date</th>
+      <th class="px-3 py-4 text-sm">Heure</th>
       <th class="px-3 py-4 text-sm">Initiateur</th>
       <th class="px-3 py-4 text-sm">Type d'operation</th>
       <th class="px-3 py-4 text-sm">Description</th>
@@ -56,6 +57,7 @@
     >
       <td class="px-3 py-1">Ent-000-{{obj.id}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
+      <td class="px-3 py-1">{{obj.timestamp.time}}</td>
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1">{{obj.get_type_display}}</td>
       <td class="px-3 py-1">{{obj.description}}</td>
@@ -78,7 +80,7 @@
             <a
               hx-boost="false"
               href="{% url 'stock_ops_details' obj.id %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
             </a>

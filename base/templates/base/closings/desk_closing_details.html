@@ -10,20 +10,33 @@
       >
         &larr;
       </button>
-      <button
-        onclick="exportXlS('closing_details')"
-        class="w-fit px-3 py-2 bg-lime-200 hover:bg-lime-300 rounded transition duration-200 ease-in"
-      >
-        <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
-        <span class="hidden md:inline text-sm"> Extraire en format XLSX </span>
-      </button>
+
+      <div class="flex gap-2 text-black">
+        <button
+          onclick="exportXLSX('closing_table','arrete_de_caisse')"
+          class="w-fit px-3 py-2 bg-lime-200 hover:bg-lime-300 rounded transition duration-200 ease-in"
+        >
+          <i class="inline fa-solid fa-file-excel lg:mr-2"></i>
+          <span class="hidden md:inline text-sm"> Extraire format XLSX </span>
+        </button>
+        <button
+          onclick="exportPDF('closing_details')"
+          class="w-fit px-3 py-2 bg-orange-200 hover:bg-orange-300 rounded transition duration-200 ease-in"
+        >
+          <i class="inline fa-solid fa-file-pdf lg:mr-2"></i>
+          <span class="hidden md:inline text-sm"> Extraire format PDF </span>
+        </button>
+
+      </div>
     </div>
 
     <div
       id="closing_details"
-      class="flex flex-col lg:flex-row justify-between gap-4"
+      class="w-full flex flex-col lg:flex-row justify-between gap-4"
     >
-      {% include 'base/closings/cash_receipt_table.html' %}
+    <div class="w-full">
+      {% include 'base/closings/desk_closing_table.html' %}
+    </div>
 
       <div
         class="p-3 h-100 bg-lime-200 rounded w-full max-w-[400px] flex flex-col gap-2"

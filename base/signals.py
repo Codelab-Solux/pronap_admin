@@ -1,9 +1,11 @@
+from django.db import transaction
 from .models import Payment, Transaction
 from django.db.models.signals import post_save
-from django.db.models.signals import pre_save, post_save, post_delete
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from .models import *
 from django.contrib.contenttypes.models import ContentType
+
 
 # ------------------------------------------ purchase payments signals ------------------------------------------
 @receiver(post_save, sender=PurchaseItem)
@@ -116,7 +118,74 @@ def handle_inventory_item_save(sender, instance, **kwargs):
 #         stock_output.calculate_total()
 
 
+@receiver(post_save, sender=Payment)
+def create_or_update_transaction(sender, instance, created, **kwargs):
+    if instance.content_type and instance.object_id:
+        model_name = instance.content_type.model
 
+        # Determine the transaction type
+        if model_name == 'sale':
+            transaction_type = 'credit'
+        elif model_name in ['servicepurchase', 'purchase']:
+            transaction_type = 'debit'
+        else:
+            print('No matching model found')
+            return  # Skip creating or updating a transaction if it's not related to a sale or purchase
+
+        if created:
+            # Create a new Transaction object
+            Transaction.objects.create(
+                payment=instance,
+                type=transaction_type,
+                amount=abs(instance.amount),  # Ensure amount is positive
+                label=instance.label,
+                audit='pending'
+            )
+            print(
+                f'Transaction created: {transaction_type}, amount: {abs(instance.amount)}')
+        else:
+            # Update the existing Transaction object
+            transaction = Transaction.objects.filter(payment=instance).first()
+            if transaction:
+                # Ensure amount is positive
+                transaction.amount = abs(instance.amount)
+                transaction.label = instance.label
+                transaction.audit = 'pending'
+                transaction.save()
+                print(
+                    f'Transaction updated: {transaction_type}, amount: {abs(instance.amount)}')
+            else:
+                # Create a new Transaction object if none exists (optional safety net)
+                Transaction.objects.create(
+                    payment=instance,
+                    type=transaction_type,
+                    amount=abs(instance.amount),  # Ensure amount is positive
+                    label=instance.label,
+                    audit='pending'
+                )
+                print(
+                    f'Transaction created: {transaction_type}, amount: {abs(instance.amount)}')
+    else:
+        if created:
+            # Create a new Transaction object
+            Transaction.objects.create(
+                payment=instance,
+                type='credit',
+                amount=abs(instance.amount),  # Ensure amount is positive
+                label=instance.label,
+                audit='pending'
+            )
+            print(
+                f'Transaction created: credit, amount: {abs(instance.amount)}')
+
+
+@receiver(pre_delete, sender=Transaction)
+def delete_related_payment(sender, instance, **kwargs):
+    if instance.payment:
+        instance.payment.delete()
+        print(f'Related payment deleted for transaction id: {instance.id}')
+
+        
 # ------------------------------------------ debts and receivables signals ------------------------------------------
 @receiver(post_save, sender=Purchase)
 def create_or_update_debt(sender, instance, **kwargs):
@@ -148,6 +217,7 @@ def create_or_update_debt(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Payment)
 def create_or_update_receivable(sender, instance, **kwargs):
+
     if instance.content_type and instance.object_id:
         content_object = instance.content_object
 
@@ -177,7 +247,7 @@ def create_or_update_receivable(sender, instance, **kwargs):
         print("Content type or object ID is None")
 
 
-# ------------------------------------------ cashdesks and transactions signals------------------------------------------
+# ------------------------------------------ cashdesks signals------------------------------------------
 @receiver(post_save, sender=Transaction)
 def update_cashdesk_on_transaction_save(sender, instance, created, **kwargs):
     cashdesk = instance.payment.cashdesk
@@ -216,58 +286,6 @@ def update_balance_found_on_delete(sender, instance, **kwargs):
     instance.update_cashdesk_closing()
 
 
-@receiver(post_save, sender=Payment)
-def create_or_update_transaction(sender, instance, created, **kwargs):
-    if instance.content_type and instance.object_id:
-        model_name = instance.content_type.model
-
-        # Determine the transaction type
-        if model_name == 'sale':
-            transaction_type = 'credit'
-        elif model_name in ['servicepurchase', 'purchase']:
-            transaction_type = 'debit'
-        else:
-            print('No matching model found')
-            return  # Skip creating or updating a transaction if it's not related to a sale or purchase
-
-    else:
-        transaction_type = 'credit'  # Default type if content_type or object_id is missing
-
-    if created:
-        # Create a new Transaction object
-        Transaction.objects.create(
-            payment=instance,
-            type=transaction_type,
-            amount=abs(instance.amount),  # Ensure amount is positive
-            label=instance.label,
-            audit='pending'
-        )
-        print(
-            f'Transaction created: {transaction_type}, amount: {abs(instance.amount)}')
-    else:
-        # Update the existing Transaction object
-        transaction = Transaction.objects.filter(payment=instance).first()
-        if transaction:
-            # Ensure amount is positive
-            transaction.amount = abs(instance.amount)
-            transaction.label = instance.label
-            transaction.audit = 'pending'
-            transaction.save()
-            print(
-                f'Transaction updated: {transaction_type}, amount: {abs(instance.amount)}')
-        else:
-            # Create a new Transaction object if none exists (optional safety net)
-            Transaction.objects.create(
-                payment=instance,
-                type=transaction_type,
-                amount=abs(instance.amount),  # Ensure amount is positive
-                label=instance.label,
-                audit='pending'
-            )
-            print(
-                f'Transaction created: {transaction_type}, amount: {abs(instance.amount)}')
-
-
 # ------------------------------------------ stocks operations signals------------------------------------------
 @receiver(post_save, sender=StockOperationItem)
 def update_product_stock_on_save(sender, instance, created, **kwargs):
@@ -294,3 +312,116 @@ def update_product_stock_on_delete(sender, instance, **kwargs):
     product_stock.save()
 
     stock_operation.calculate_total()
+
+
+# ------------------------------------------ purchase items signals ------------------------------------------
+@receiver(post_save, sender=Purchase)
+def create_or_update_purchase_stockops(sender, instance, created, **kwargs):
+    if instance.type == 'product':
+        stock_operation = StockOperation.create_or_update(
+            type='input',
+            subtype='purchase',
+            store=instance.store,
+            initiator=instance.initiator,
+            content_object=instance
+        )
+
+        # Optionally handle items if necessary
+        stock_operation.items = instance.purchaseitem_set.count()
+        stock_operation.total = sum(
+            item.quantity for item in instance.purchaseitem_set.all())
+        stock_operation.save()
+
+
+@receiver(post_save, sender=PurchaseItem)
+def update_product_stock_on_save(sender, instance, created, **kwargs):
+    product_stock = instance.product_stock
+
+    with transaction.atomic():
+        if created:
+            # Add the quantity of the new purchase item to the product stock
+            product_stock.quantity += instance.quantity
+        else:
+            try:
+                previous_instance = PurchaseItem.objects.get(pk=instance.pk)
+                quantity_difference = instance.quantity - previous_instance.quantity
+                product_stock.quantity += quantity_difference
+            except PurchaseItem.DoesNotExist:
+                product_stock.quantity += instance.quantity
+
+        product_stock.save()
+
+        # Ensure the StockOperation is created or updated
+        purchase = instance.purchase
+        stock_operation, created = StockOperation.objects.get_or_create(
+            content_type=ContentType.objects.get_for_model(purchase),
+            object_id=purchase.id,
+            type='input',
+            subtype='purchase',
+            store=purchase.store,
+            initiator=purchase.initiator
+        )
+
+        # Create or update the StockOperationItem
+        StockOperationItem.objects.update_or_create(
+            stock_operation=stock_operation,
+            product_stock=product_stock,
+            defaults={'quantity': instance.quantity}
+        )
+
+
+
+# ------------------------------------------ sale items signals ------------------------------------------
+@receiver(post_save, sender=Sale)
+def create_or_update_sale_stockops(sender, instance, created, **kwargs):
+    if instance:
+        stock_operation = StockOperation.create_or_update(
+            type='output',
+            subtype='sale',
+            store=instance.store,
+            initiator=instance.initiator,
+            content_object=instance
+        )
+
+        # Optionally handle items if necessary
+        stock_operation.items = instance.saleitem_set.count()
+        stock_operation.total = sum(
+            item.quantity for item in instance.saleitem_set.all())
+        stock_operation.save()
+
+
+@receiver(post_save, sender=SaleItem)
+def update_product_stock_on_save(sender, instance, created, **kwargs):
+    product_stock = instance.product_stock
+
+    with transaction.atomic():
+        if created:
+            # Remove the quantity of the new sale item from the product stock
+            product_stock.quantity -= instance.quantity
+        else:
+            try:
+                previous_instance = SaleItem.objects.get(pk=instance.pk)
+                quantity_difference = instance.quantity + previous_instance.quantity
+                product_stock.quantity -= quantity_difference
+            except SaleItem.DoesNotExist:
+                product_stock.quantity -= instance.quantity
+
+        product_stock.save()
+
+        # Ensure the StockOperation is created or updated
+        sale = instance.sale
+        stock_operation, created = StockOperation.objects.get_or_create(
+            content_type=ContentType.objects.get_for_model(sale),
+            object_id=sale.id,
+            type='input',
+            subtype='sale',
+            store=sale.store,
+            initiator=sale.initiator
+        )
+
+        # Create or update the StockOperationItem
+        StockOperationItem.objects.update_or_create(
+            stock_operation=stock_operation,
+            product_stock=product_stock,
+            defaults={'quantity': instance.quantity}
+        )

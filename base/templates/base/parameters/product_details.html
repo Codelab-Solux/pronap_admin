@@ -1,37 +1,30 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
   <div
-    class="p-8 bg-green-100 rounded-3xl h-full w-full max-w-7xl mx-auto flex flex-col justify-between gap-4"
+    class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4"
   >
-    <div class="flex justify-between">
       <a
         id="back-button"
-        class="inline-block px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
+        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
         href="#"
         >&larr;</a
       >
-      <span
-        class="flex items-center gap-4 py-2 px-4 rounded bg-lime-300 text-black"
-        ><i class="fa-solid fa-copyright"></i>
-        <!--  -->
-        Marque : {{ curr_obj.brand }}</span
-      >
-    </div>
+
 
     <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
       <div class="flex flex-col gap-4">
-        <div class="bg-white w-full h-full rounded-3xl overflow-hidden">
+        <div class="bg-white w-full h-full border rounded overflow-hidden">
           {% if not curr_obj.image %}
           <img
             src="{% static 'imgs/icon-w.png' %}"
             alt="image"
-            class="w-40 h-40 object-contain"
+            class="w-80 h-80 object-contain"
           />
           {% else %}
           <img
             src="{{curr_obj.image.url}}"
             alt="{{curr_obj.name}}"
-            class="w-full h-full object-contain"
+            class="w-80 h-80 object-contain"
           />
           {% endif %}
         </div>
@@ -39,7 +32,7 @@
 
       <div class="w-full flex flex-col gap-2">
         <div class="flex items-center gap-2">
-          <h2 class="text-4xl font-bold text-black">{{curr_obj.name}}</h2>
+          <h2 class="text-4xl font-bold text-black">{{curr_obj.name}}  <i class="font-light text-xl text-green-700">_{{ curr_obj.brand }}_</i></h2>
           <button
             onclick="closeModal()"
             hx-target="#basic_dialog"
@@ -52,10 +45,12 @@
         <p>Catégorie : <b> {{curr_obj.category }}</b></p>
         <p>Famille : <b> {{curr_obj.family }}</b></p>
         <p>Unité de mesure : <b> {{curr_obj.get_unit_display }}</b></p>
+        <p>Quantité vendue : <b> {{curr_obj.get_total_sold }} 0</b></p>
+        <p>Recette : <b> {{curr_obj.get_total_sold }} 0 CFA</b></p>
         {% if is_favorite %}
         <p>Produit très en demande</p>
         {% endif %}
-        <!-- <p><b>Description : </b> {{curr_obj.description }}</p> -->
+        <p><b>Description : </b> {{curr_obj.description }}</p>
       </div>
     </div>
   </div>

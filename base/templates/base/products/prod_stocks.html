@@ -33,7 +33,7 @@
       <td class="px-3 py-1">{{obj.price}} CFA</td>
       <td class="px-3 py-1 text-center">{{obj.quantity}}</td>
       <td class="px-3 py-1 text-center">{{obj.product.get_unit_display}}</td>
-      <td class="px-3 py-1 text-center">{{ obj.id|get_stock_value }} CFA</td>
+      <td class="px-3 py-1 text-center">{{ obj.price|multiply:obj.quantity }} CFA</td>
       <td class="px-3 py-1 text-center">{{ obj.product.category }}</td>
       <td class="px-3 py-1 text-center">{{obj.product.family}}</td>
       <td class="px-3 py-1 relative text-center">

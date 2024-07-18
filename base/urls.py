@@ -45,15 +45,15 @@ urlpatterns = [
          edit_prod_stock, name='edit_prod_stock'),
     path('stock/products/<hashid:pk>/stocks/', prod_stocks, name='prod_stocks'),
     # ------------------------------
-    path('stock/ops/<str:pk>/', stock_ops, name='stock_ops'),
     path('stock/ops/create/<str:pk>/', create_stock_ops,
          name='create_stock_ops'),
-    path('stock/ops/<hashid:pk>/', stock_ops_details, name='stock_ops_details'),
+    path('stock/ops/<str:pk>/', stock_ops, name='stock_ops'),
+    path('stock/ops/<hashid:pk>/details/', stock_ops_details, name='stock_ops_details'),
     path('stock/ops/<hashid:pk>/edit/',
          edit_stock_ops, name='edit_stock_ops'),
     # ----------------
     path('stock/ops/<hashid:pk>/info/',
-         stock_ops_info, name='stock_input_info'),
+         stock_ops_info, name='stock_ops_info'),
     path('stock/ops/<hashid:pk>/items/',
          stock_ops_items, name='stock_ops_items'),
     path('stock/ops/<hashid:pk>/create/item/',
@@ -95,7 +95,7 @@ urlpatterns = [
     path('purchases/items/<hashid:pk>/edit/',
          edit_purchase_item, name='edit_purchase_item'),
     # --------------------------
-    path('purchases/<hashid:pk>/<str:kp>/payment/create',
+    path('purchases/<hashid:pk>/create/payment/',
          create_purchase_payment, name='create_purchase_payment'),
     path('purchases/<hashid:pk>/',
          purchase_details, name='purchase_details'),

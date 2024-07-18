@@ -5,9 +5,9 @@
   <p><b>Caisse : </b> {{curr_obj.cashdesk.name }}</p>
   <p><b>Moyen de paiement : </b> {{curr_obj.get_payment_option_display }}</p>
   <p><b>Status du paiement : </b> {{curr_obj.get_payment_status_display }}</p>
-  <p><b>Total à payé : </b> {{curr_obj.total }} CFA</p>
+  <p><b>Montant dû : </b> {{curr_obj.total }} CFA</p>
   <p><b>Montant payé : </b> {{curr_obj.amount }} CFA</p>
-  <p><b>Montant dû : </b> {{ amount_due }} CFA</p>
+  <p><b>Montant restant : </b> {{ amount_due }} CFA</p>
   <!-- <p><b>Description : </b> {{curr_obj.description }}</p> -->
   <hr />
   <div class="w-full grid gap-2">
@@ -18,7 +18,7 @@
       {% if curr_obj.type == 'product' %}
       <button
         hx-target="#basic_dialog"
-        hx-get="{% url 'create_purchase_payment' curr_obj.id 'product' %}"
+        hx-get="{% url 'create_purchase_payment' curr_obj.id %}"
         class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
       >
         Nouveau
@@ -27,7 +27,7 @@
       {% elif curr_obj.type == 'service' %}
       <button
         hx-target="#basic_dialog"
-        hx-get="{% url 'create_purchase_payment' curr_obj.id 'service' %}"
+        hx-get="{% url 'create_purchase_payment' curr_obj.id %}"
         class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
       >
         Nouveau
