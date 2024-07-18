@@ -1,6 +1,4 @@
-{% load static %} 
-{% load app_tags %} 
-{% if not items %}
+{% load static %} {% load app_tags %} {% if not items %}
 <div class="flex flex-col items-center gap-2 my-20 mx-auto">
   <i class="fa-solid fa-cubes-stacked text-green-700 text-9xl"></i>
   <span>Aucun produit trouvé</span>
@@ -59,7 +57,7 @@
           </button>
 
           <div
-            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-sm lg:text-sm overflow-hidden"
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-sm lg:text-sm overflow-hidden"
             id="purch_item_{{obj.id}}"
           >
             <!--  -->
@@ -67,7 +65,7 @@
               onclick="hide_dialogs()"
               hx-target="#basic_dialog"
               hx-get="{% url 'edit_stock_input_item' obj.id %}"
-              class="px-3 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-3 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-pen mr-2"></i>
               Modifier
@@ -76,7 +74,7 @@
             <button
               hx-delete="{% url 'delete_base_object' obj.id 'StockInputItem' %}"
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
-              class="px-3 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-3 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>
               Supprimer

@@ -1,9 +1,9 @@
 <div
-  class="border border-orange-300 p-3 bg-orange-100 w-full md:max-w-[350px] md:text-xs xl:text-md h-fit rounded-xl flex flex-col gap-3"
+  class="border border-orange-300 p-3 bg-orange-100 w-full md:max-w-[350px] md:text-xs xl:text-md h-fit rounded flex flex-col gap-3"
 >
   <div
     id="my_cart"
-    class="bg-white border border-orange-400 h-80 rounded-lg overflow-y-auto"
+    class="bg-white border border-orange-400 h-80 rounded overflow-y-auto"
   >
     {% if cart_count == 0 %}
     <div class="flex flex-col items-center gap-2 my-20 mx-auto">
@@ -24,7 +24,7 @@
 
   <!-- totals display -->
   <div
-    class="bg-orange-200 border border-orange-400 flex flex-col px-2 text-sm text-gray-500 rounded-lg"
+    class="bg-orange-200 border border-orange-400 flex flex-col px-2 text-sm text-gray-500 rounded"
   >
     <p class="py-1 flex justify-between items-center">
       Total à payer <span class="text-black font-bold mr-2">37250 XOF</span>
@@ -35,7 +35,7 @@
       Total Réglé
       <input
         id="paid"
-        class="text-right text-green-700 rounded-md py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
+        class="text-right text-green-700 rounded py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
         type="text"
         placeholder="0 XOF"
       />
@@ -47,61 +47,59 @@
   </div>
 
   <!-- keypad -->
-  <div
-    class="bg-green-600 p-2 rounded-xl flex flex-col gap-2 text-xs text-black"
-  >
+  <div class="bg-green-600 p-2 rounded flex flex-col gap-2 text-xs text-black">
     <div class="grid grid-cols-3 gap-2">
       <button
         value="7"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         7
       </button>
       <button
         value="8"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         8
       </button>
       <button
         value="9"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         9
       </button>
       <button
         value="4"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         4
       </button>
       <button
         value="5"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         5
       </button>
       <button
         value="6"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         6
       </button>
       <button
         value="1"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         1
       </button>
       <button
         value="2"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         2
       </button>
       <button
         value="3"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         3
       </button>
@@ -109,27 +107,27 @@
     <div class="grid grid-cols-2 gap-2">
       <button
         value="0"
-        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded-md"
+        class="number-btn bg-green-100 hover:bg-white p-2 w-full text-center rounded"
       >
         0
       </button>
       <button
         id="clear_btn"
-        class="bg-green-700 p-2 w-full text-white text-center rounded-md hover:bg-green-900"
+        class="bg-green-700 p-2 w-full text-white text-center rounded hover:bg-green-900"
       >
         <i class="fa-solid fa-delete-left"></i>
       </button>
     </div>
-    <div class="w-full flex gap-2 p-3 bg-green-700 rounded-xl">
+    <div class="w-full flex gap-2 p-3 bg-green-700 rounded">
       <button
         id="cancel_btn"
-        class="bg-gray-200 p-2 w-1/2 text-center rounded-md border-2 hover:border-red-700 hover:bg-red-100 hover:text-red-600"
+        class="bg-gray-200 p-2 w-1/2 text-center rounded border-2 hover:border-red-700 hover:bg-red-100 hover:text-red-600"
       >
         Annuler
       </button>
       <button
         id="validate_btn"
-        class="bg-orange-100 p-2 w-full text-center rounded-md hover:bg-orange-300"
+        class="bg-orange-100 p-2 w-full text-center rounded hover:bg-orange-300"
       >
         Valider
       </button>

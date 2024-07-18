@@ -2,7 +2,7 @@
 
 <div
   onclick="update_cart('{{ obj.product.id }}', 'add_item')"
-  class="cursor-pointer relative w-full h-full bg-white flex justify-between rounded-xl border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
+  class="cursor-pointer relative w-full h-full bg-white flex justify-between rounded border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
 >
   {% if obj.product.image %}
   <img
@@ -20,7 +20,7 @@
   <!--  -->
   {% if obj.product.is_new %}
   <span
-    class="absolute top-2 left-2 bg-red-600 rounded-md px-2 py-1 text-white text-[0.5rem]"
+    class="absolute top-2 left-2 bg-red-600 rounded px-2 py-1 text-white text-[0.5rem]"
   >
     New
   </span>
@@ -36,8 +36,7 @@
     {% else %}
     <p>{{obj.price}} CFA</p>
     {% endif %}
-    <span
-      class="w-fit text-xs text-black bg-lime-200 rounded-md px-2 py-[0.2em]"
+    <span class="w-fit text-xs text-black bg-lime-200 rounded px-2 py-[0.2em]"
       >{{obj.quantity}} en stock</span
     >
   </article>

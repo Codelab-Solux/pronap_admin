@@ -61,7 +61,7 @@
         <!-- snacbar -->
         <div
           id="snackbar"
-          class="fixed top-[-100px] right-4 p-4 rounded-xl w-80 flex items-center justify-between transition-transform duration-500"
+          class="fixed top-[-100px] right-4 p-4 rounded w-80 flex items-center justify-between transition-transform duration-500"
         >
           <span id="snackbar-message"></span>
           <button onclick="hideSnackbar()">x</button>
@@ -134,8 +134,8 @@
     });
 
     function goBack() {
-    window.history.back();
-}
+      window.history.back();
+    }
 
     //  tabbar navigator ----------------------------------------------------------------------------------------------------
     document.getElementById("defaultTab").click();
@@ -158,13 +158,12 @@
     }
 
     //  show and hide snackbar ----------------------------------------------------------------------------------------------------
-
     function showSnackbar(message, type) {
       const snackbar = document.getElementById("snackbar");
       const snackbarMessage = document.getElementById("snackbar-message");
 
       snackbarMessage.textContent = message;
-      snackbar.className = `fixed top-4 right-4 p-4 rounded-xl w-80 flex items-center justify-between transition-transform duration-500 ${type} show`;
+      snackbar.className = `fixed top-4 right-4 p-4 rounded w-80 flex items-center justify-between transition-transform duration-500 ${type} show`;
 
       setTimeout(hideSnackbar, 3000);
     }

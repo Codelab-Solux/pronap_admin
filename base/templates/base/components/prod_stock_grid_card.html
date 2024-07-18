@@ -1,7 +1,7 @@
 {% load static %}
 
 <div
-  class="relative w-full h-full bg-white flex flex-col justify-between rounded-xl border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
+  class="relative w-full h-full bg-white flex flex-col justify-between rounded border hover:shadow-lg group transition duration-200 ease-in overflow-hidden"
 >
   <!-- <a class="w-full min-h-40" href="{% url 'product_details' obj.id %}"> -->
   {% if obj.product.image %}
@@ -21,7 +21,7 @@
 
   {% if obj.is_new %}
   <span
-    class="absolute top-3 left-3 bg-white rounded-md px-2 py-1 text-green-400 text-sm"
+    class="absolute top-3 left-3 bg-white rounded px-2 py-1 text-green-400 text-sm"
   >
     <i class="fa-solid fa-medal"></i>
   </span>
@@ -40,7 +40,7 @@
     </button>
 
     <div
-      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-0 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs overflow-hidden"
+      class="hidden bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-0 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-xs overflow-hidden"
       role="status menu"
       aria-orientation="vertical"
       aria-labelledby="status-menu-button"
@@ -52,7 +52,7 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'prod_stock_details' obj.id %}"
-        class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+        class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-expand mr-2"></i>
         Détails
@@ -62,7 +62,7 @@
         onclick="hide_dialogs()"
         hx-target="#basic_dialog"
         hx-get="{% url 'edit_prod_stock' obj.id %}"
-        class="px-3 py-1 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+        class="px-3 py-1 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
         Modifier
@@ -73,7 +73,7 @@
         hx-target="#basic_dialog"
         hx-delete="{% url 'delete_base_object' obj.id 'ProductStock' %}"
         hx-confirm="Voulez vous vraiment suprimmer ceci?"
-        class="px-3 py-1 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+        class="px-3 py-1 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
       >
         <i class="text-sm fa-solid fa-trash mr-2"></i>
         Supprimer

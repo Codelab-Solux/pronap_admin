@@ -1,0 +1,19 @@
+{% for item in cart_items %}
+<article class="p-2 border-b border-lime-400 flex justify-between">
+    <span class="flex gap-3">{{item.product.product.name}}</span>
+    <div class="flex gap-2 text-xs">
+        <button onclick="add_to_cart('{{ item.product.id }}')">
+            <i class="fa-solid fa-plus text-green-700"></i>
+        </button>
+        <b>x {{item.quantity}}</b>
+        <button onclick="remove_from_cart('{{ item.product.id }}')">
+            <i class="fa-solid fa-minus text-lime-400"></i>
+        </button>
+    </div>
+    <span class="text-black">{{item.total_price}}</span>
+    <span class="text-black">{{item.product.price}}/{{item.product.product.unit}}</span>
+    <button onclick="clear_from_cart('{{ item.product.id }}')">
+        <i class="fa-solid fa-trash text-red-600"></i>
+    </button>
+</article>
+{% endfor %}

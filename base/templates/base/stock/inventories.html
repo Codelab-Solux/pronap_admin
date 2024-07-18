@@ -5,8 +5,8 @@
 </div>
 {% else %}
 
-<!-- <div class="h-full overflow-x-auto overflow-y-hidden rounded-xl"> -->
-<table class="w-full text-left db-table rounded-xl border">
+<!-- <div class="h-full overflow-x-auto overflow-y-hidden rounded"> -->
+<table class="w-full text-left db-table rounded border">
   <thead class="bg-green-700 text-white">
     <tr>
       <th class="px-3 py-4 text-sm">Réf.</th>
@@ -33,9 +33,7 @@
       <td class="px-3 py-1">Non-validé</td>
       {% endif %}
       <td class="px-3 py-1 relative">
-        <div
-          class="w-fit text-gray-700 mx-auto"
-        >
+        <div class="w-fit text-gray-700 mx-auto">
           <button
             type="button"
             class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
@@ -46,14 +44,14 @@
           </button>
 
           <div
-            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
             id="inv_{{obj.id}}"
           >
             <!--  -->
             <a
               hx-boost="false"
               href="{% url 'inventory_details' obj.id %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
             </a>
@@ -62,7 +60,7 @@
               onclick="hide_dialogs()"
               hx-target="#basic_dialog"
               hx-get="{% url 'edit_inventory' obj.id %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
               Modifier
@@ -71,7 +69,7 @@
             <button
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
               hx-delete="{% url 'delete_base_object' obj.id 'Inventory' %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>
               Supprimer

@@ -1,14 +1,14 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
   <a
-    class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+    class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
     href="{% url 'suppliers' %}"
     >&larr;
   </a>
   <!--  -->
   <div class="w-full grid md:grid-cols-2 gap-4">
     <div
-      class="p-3 w-full bg-green-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
+      class="p-3 w-full bg-green-200 rounded flex flex-col lg:flex-row items-center gap-4"
     >
       {% if not curr_obj.image %}
       <img
@@ -25,6 +25,10 @@
       {% endif %}
       <article class="text-gray-700 grid gap-1 w-full">
         <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
+        <p>
+          <i class="fa-solid fa-user-tie text-gray-800 mr-3"></i> Type :
+          <span class="text-black"> {{curr_obj.type}} </span>
+        </p>
         <p>
           <i class="fa-solid fa-briefcase text-gray-800 mr-3"></i> Secteur :
           <span class="text-black"> {{curr_obj.domain}} </span>
@@ -44,7 +48,7 @@
       </article>
     </div>
 
-    <div class="h-full bg-orange-200 mb-4 p-4 rounded-2xl text-base grid gap-4">
+    <div class="h-full bg-orange-200 mb-4 p-4 rounded text-base grid gap-4">
       <span>En stock : <b>{{ available_products|length }}</b></span>
       <span>En rupture : <b>{{ returned|length }}</b></span>
       <span>Vendus : <b>{{ sold|length }}</b></span>
@@ -71,7 +75,7 @@
             placeholder="Prix min"
             name="min_amount"
             type="number"
-            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           />
           <input
             hx-post="{% url 'filter_transactions' %}"
@@ -80,11 +84,11 @@
             placeholder="Prix max"
             name="max_amount"
             type="number"
-            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           />
           <select
             name="is_promoted"
-            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
             <option value="" selected="true" disabled="disabled">
               En promotion
@@ -95,13 +99,13 @@
         </section>
 
         <button
-          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
+          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded transition duration-200 ease-in"
           type="submit"
         >
           <i class="fa-solid fa-filter"></i>
         </button>
         <button
-          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded-lg transition duration-200 ease-in"
+          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded transition duration-200 ease-in"
           hx-on:click="clearForm('filter')"
           type="submit"
         >

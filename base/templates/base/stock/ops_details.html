@@ -7,19 +7,23 @@
   >
     <div class="flex justify-between items-center">
       <a
-        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
         href="{% url 'stock' %}"
         >&larr;
       </a>
 
       <div
-        class="flex items-center gap-4 px-3 py-2 rounded-xl bg-green-300 text-black"
+        class="flex items-center gap-4 px-3 py-2 rounded bg-green-300 text-black"
       >
+        {% if curr_obj.type == 'input' %}
+        <i class="fa-solid fa-receipt"></i>Entrée N°-<b>000-{{ curr_obj.id}}</b>
+        {% else %}
         <i class="fa-solid fa-receipt"></i>Sortie N°-<b>000-{{ curr_obj.id}}</b>
+        {% endif %}
         <button
           hx-target="#basic_dialog"
-          hx-get="{% url 'edit_stock_output' curr_obj.id %}"
-          class="w-fit bg-green-200 hover:bg-green-500 text-xs px-3 py-2 rounded-md transition duration-200 ease-in"
+          hx-get="{% url 'edit_stock_ops' curr_obj.id %}"
+          class="w-fit bg-green-200 hover:bg-green-500 text-xs px-3 py-2 rounded transition duration-200 ease-in"
         >
           <i class="fa-solid fa-pen-to-square"></i>
         </button>
@@ -27,7 +31,7 @@
     </div>
 
     <div
-      hx-get="{% url 'stock_output_info' curr_obj.id %}"
+      hx-get="{% url 'stock_ops_info' curr_obj.id %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>
@@ -35,19 +39,24 @@
 
   <div class="mb-20 flex flex-col gap-2">
     <div class="flex justify-between items-center gap-2">
+      {% if curr_obj.type == 'input' %}
+      <b class="text-black">Liste des produits entrés</b>
+      {% else %}
       <b class="text-black">Liste des produits sorties</b>
+      {% endif %}
 
       <button
         hx-target="#basic_dialog"
-        hx-get="{% url 'create_stock_output_item' curr_obj.id %}"
-        class="w-fit bg-orange-200 hover:bg-orange-300 text-xs px-3 py-2 rounded-md transition duration-200 ease-in"
+        hx-get="{% url 'create_stock_ops_item' curr_obj.id %}"
+        class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
       >
-        <i class="fa-solid fa-plus"></i>
+        Nouveau
+        <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
     </div>
 
     <div
-      hx-get="{% url 'stock_output_items' curr_obj.id %}"
+      hx-get="{% url 'stock_ops_items' curr_obj.id %}"
       hx-trigger="load, db_changed from:body"
       hx-target="this"
     ></div>

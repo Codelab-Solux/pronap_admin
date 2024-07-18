@@ -1,32 +1,32 @@
 {% if curr_obj %} {% if curr_obj.audit == 'pending' %}
-<span class="py-1 px-4 bg-orange-300 rounded-lg text-black">
+<span class="py-1 px-4 bg-orange-300 rounded text-black">
   <i class="text-sm fa-solid fa-spinner mr-2"></i>
   {{ curr_obj.get_audit_display }}</span
 >
 {% elif curr_obj.audit == 'validated' %}
-<span class="py-1 px-4 bg-red-300 rounded-lg text-black">
+<span class="py-1 px-4 bg-red-300 rounded text-black">
   <i class="text-sm fa-solid fa-ban mr-2"></i>
   {{ curr_obj.get_audit_display }}</span
 >
 {% else %}
-<span class="py-1 px-4 bg-green-300 rounded-lg text-black">
+<span class="py-1 px-4 bg-green-300 rounded text-black">
   <i class="text-sm fa-solid fa-check mr-2"></i>
   {{ curr_obj.get_audit_display }}</span
 >
 {% endif %}
 <!--  -->
 {% else %} {% if obj.audit == 'pending' %}
-<span class="py-1 px-4 bg-orange-300 rounded-lg text-black">
+<span class="py-1 px-4 bg-orange-300 rounded text-black">
   <i class="text-sm fa-solid fa-spinner mr-2"></i>
   {{ obj.get_audit_display }}</span
 >
 {% elif obj.audit == 'validated' %}
-<span class="py-1 px-4 bg-red-300 rounded-lg text-black">
+<span class="py-1 px-4 bg-red-300 rounded text-black">
   <i class="text-sm fa-solid fa-ban mr-2"></i>
   {{ obj.get_audit_display }}</span
 >
 {% else %}
-<span class="py-1 px-4 bg-green-300 rounded-lg text-black">
+<span class="py-1 px-4 bg-green-300 rounded text-black">
   <i class="text-sm fa-solid fa-check mr-2"></i>
   {{ obj.get_audit_display }}</span
 >

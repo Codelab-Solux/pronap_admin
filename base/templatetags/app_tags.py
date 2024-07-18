@@ -6,15 +6,17 @@ from django.db.models import Sum
 
 register = template.Library()
 
+
 @register.filter
 def get_input_count(pk):
     product = ProductStock.objects.get(id=pk)
-    input_items = StockInputItem.objects.filter(product_stock = product)
-    # item_count = input_items.aggregate(total_quantity=Sum('quantity'))[
+    items = StockOperationItem.objects.filter(
+        product_stock=product, stock_operation__type='output')
+    # item_count = items.aggregate(total_quantity=Sum('quantity'))[
     #     'total_quantity'] or 0
 
     item_count = 0
-    for obj in input_items:
+    for obj in items:
         item_count = obj.quantity + item_count
 
     return item_count
@@ -23,8 +25,8 @@ def get_input_count(pk):
 @register.filter
 def get_output_count(pk):
     product = ProductStock.objects.get(id=pk)
-    input_items = StockOutputItem.objects.filter(product_stock = product)
-    item_count = input_items.aggregate(total_quantity=Sum('quantity'))[
+    items = StockOperationItem.objects.filter(product_stock=product, stock_operation__type='output')
+    item_count = items.aggregate(total_quantity=Sum('quantity'))[
         'total_quantity'] or 0
 
     return item_count
@@ -47,17 +49,19 @@ def get_stock_value(pk):
 
     return value
 
+
 @register.filter
 def get_purchases_count(pk):
     client = Client.objects.get(id=pk)
-    sales_count = Sale.objects.filter(client = client).count()
+    sales_count = Sale.objects.filter(client=client).count()
 
     return sales_count
+
 
 @register.filter
 def get_purchases_value(pk):
     client = Client.objects.get(id=pk)
-    sales = Sale.objects.filter(client = client)
+    sales = Sale.objects.filter(client=client)
     sales_value = sales.aggregate(totals=Sum('total'))['totals'] or 0
 
     return sales_value
@@ -67,6 +71,37 @@ def get_purchases_value(pk):
 def get_desk_receipt(pk, kp):
     closing = CashdeskClosing.objects.filter(id=pk).first()
     cash_receipt = CashReceipt.objects.filter(id=kp).first()
-    result = ClosingCashReceipt.objects.filter(cash_receipt=cash_receipt, CashdeskClosing=closing).first()
+    result = ClosingCashReceipt.objects.filter(
+        cash_receipt=cash_receipt, CashdeskClosing=closing).first()
     return result
 
+# in template arithmetic
+
+
+@register.filter
+def add(a, b):
+    try:
+        return int(a) + int(b)
+    except (ValueError, TypeError):
+        return ''
+
+@register.filter
+def subtract(a, b):
+    try:
+        return int(a) - int(b)
+    except (ValueError, TypeError):
+        return ''
+
+@register.filter
+def multiply(a, b):
+    try:
+        return int(a) * int(b)
+    except (ValueError, TypeError):
+        return ''
+    
+@register.filter
+def divide(a, b):
+    try:
+        return int(a) / int(b)
+    except (ValueError, TypeError):
+        return ''

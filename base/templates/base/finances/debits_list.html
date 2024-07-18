@@ -1,12 +1,12 @@
 <div class="mb-4 flex justify-between items-center gap-4">
   <div
-    class="p-2 grid grid-cols-2 gap-2 border border shadow-md rounded-xl text-gray-700 text-sm"
+    class="p-2 grid grid-cols-2 gap-2 border border shadow-md rounded text-gray-700 text-sm"
   >
-    <p class="bg-orange-700 text-white rounded-lg px-4 py-2 flex items-center">
+    <p class="bg-orange-700 text-white rounded px-4 py-2 flex items-center">
       Décaissements effectués :
       <span class="text-lg font-bold ml-2">{{debits|length}}</span>
     </p>
-    <p class="bg-orange-300 text-black rounded-lg px-4 py-2 flex items-center">
+    <p class="bg-orange-300 text-black rounded px-4 py-2 flex items-center">
       Montant total décaissé :
       <span class="text-lg font-bold ml-2">{{debits_aggregate}} CFA</span>
     </p>
@@ -15,7 +15,7 @@
     onclick="hide_dialogs()"
     hx-target="#basic_dialog"
     hx-get="{% url 'create_debit' %}"
-    class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
+    class="bg-lime-200 hover:bg-lime-300 rounded py-2 px-4 text-black flex items-center gap-4 group"
   >
     Nouveau
     <i class="text-sm fa-solid fa-plus ml-2"></i>
@@ -29,9 +29,9 @@
 </div>
 {% else %}
 
-<!-- <div class="h-full overflow-x-auto overflow-y-hidden rounded-xl"> -->
+<!-- <div class="h-full overflow-x-auto overflow-y-hidden rounded"> -->
 
-<table class="w-full text-left db-table rounded-xl border">
+<table class="w-full text-left db-table rounded border">
   <thead class="bg-orange-300 text-black">
     <tr>
       <th class="px-3 py-4 text-sm">Réf.</th>
@@ -69,14 +69,14 @@
           </button>
 
           <div
-            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
             id="outp_{{obj.id}}"
           >
             <!--  -->
             <a
               hx-boost="flase"
               href="{% url 'stock_output_details' obj.id %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
               ><i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
             </a>
@@ -84,7 +84,7 @@
             <button
               hx-target="#basic_dialog"
               hx-get="{% url 'edit_transaction' obj.id %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
               Modifier
@@ -94,7 +94,7 @@
             <button
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
               hx-delete="{% url 'delete_base_object' obj.id 'Transaction' %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>
               Supprimer

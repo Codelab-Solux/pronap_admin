@@ -1,12 +1,116 @@
-<div class="w-full flex flex-col gap-2">
-  <h2 class="text-4xl font-bold text-black">{{curr_obj.label}}</h2>
-
+{% load app_tags %}
+<div class="w-full flex flex-col gap-2 text-black">
+  <h2 class="text-4xl font-bold">{{curr_obj.label}}</h2>
   <p><b>Fournisseur : </b> {{curr_obj.supplier.name }}</p>
   <p><b>Caisse : </b> {{curr_obj.cashdesk.name }}</p>
   <p><b>Moyen de paiement : </b> {{curr_obj.get_payment_option_display }}</p>
   <p><b>Status du paiement : </b> {{curr_obj.get_payment_status_display }}</p>
   <p><b>Total à payé : </b> {{curr_obj.total }} CFA</p>
-  <p><b>Montant payé : </b> {{curr_obj.amount_paid }} CFA</p>
+  <p><b>Montant payé : </b> {{curr_obj.amount }} CFA</p>
   <p><b>Montant dû : </b> {{ amount_due }} CFA</p>
   <!-- <p><b>Description : </b> {{curr_obj.description }}</p> -->
+  <hr />
+  <div class="w-full grid gap-2">
+    <div class="flex justify-between items-center gap-4">
+      <h3 class="text-black font-bold">Liste des paiements</h3>
+      {% if not payment_complete %}
+      <!--  -->
+      {% if curr_obj.type == 'product' %}
+      <button
+        hx-target="#basic_dialog"
+        hx-get="{% url 'create_purchase_payment' curr_obj.id 'product' %}"
+        class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
+      >
+        Nouveau
+        <i class="text-sm fa-solid fa-plus ml-2"></i>
+      </button>
+      {% elif curr_obj.type == 'service' %}
+      <button
+        hx-target="#basic_dialog"
+        hx-get="{% url 'create_purchase_payment' curr_obj.id 'service' %}"
+        class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
+      >
+        Nouveau
+        <i class="text-sm fa-solid fa-plus ml-2"></i>
+      </button>
+      {% endif %}
+      <!--  -->
+      {% endif %}
+    </div>
+
+    {% if not payments %}
+    <div class="flex flex-col items-center gap-2 my-10 mx-auto">
+      <i class="fa-solid fa-hand-holding-dollar text-gray-600 text-xl"></i>
+      <span>Aucun payment trouvé</span>
+    </div>
+    {% else %}
+    <table id="items_table" class="bg-white h-fit w-full text-left db-table">
+      <thead class="bg-green-700 border border-green-900 text-white">
+        <tr>
+          <th class="px-3 py-2 text-sm">Date</th>
+          <th class="px-3 py-2 text-sm">Initiateur</th>
+          <th class="px-3 py-2 text-sm">Montant dû</th>
+          <th class="px-3 py-2 text-sm">Montant payé</th>
+          <th class="px-3 py-2 text-sm">Reste à payer</th>
+          <th class="px-3 py-2 text-sm text-center">Action</th>
+        </tr>
+      </thead>
+
+      <tbody class="">
+        {% for obj in payments %}
+        <tr
+          class="text-gray-600 border text-sm hover:bg-white hover:text-black transition-all duration-300"
+        >
+          <td class="px-3 py-1">{{ obj.timestamp.date }}</td>
+          <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
+          <td class="px-3 py-1">{{ curr_obj.total }} CFA</td>
+          <td class="px-3 py-1">{{ obj.amount }} CFA</td>
+          <td class="px-3 py-1">
+            {{ curr_obj.total|subtract:obj.amount }} CFA
+          </td>
+          <td class="px-3 py-1 text-center relative">
+            <div
+              class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"
+            >
+              <button
+                type="button"
+                class="hover:bg-white hover:text-green-500 px-3 py-1 rounded-full"
+                name="sentry"
+                onclick="toggleMenu(this,'pmt_{{obj.id}}')"
+              >
+                <i class="fa-sharp fa-solid fa-ellipsis-vertical"></i>
+              </button>
+
+              <div
+                class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-sm lg:text-sm overflow-hidden"
+                id="pmt_{{obj.id}}"
+              >
+                <!--  -->
+                <button
+                  onclick="hide_dialogs()"
+                  hx-target="#basic_dialog"
+                  hx-get="{% url 'edit_payment' obj.id %}"
+                  class="px-3 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
+                >
+                  <i class="text-sm fa-solid fa-pen mr-2"></i>
+                  Modifier
+                </button>
+
+                <button
+                  hx-delete="{% url 'delete_base_object' obj.id 'Payement' %}"
+                  hx-confirm="Voulez vous vraiment suprimmer ceci?"
+                  class="px-3 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
+                >
+                  <i class="text-sm fa-solid fa-trash mr-2"></i>
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
 </div>

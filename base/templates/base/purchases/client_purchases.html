@@ -1,11 +1,11 @@
 {% if not purchases %}
 <div class="flex flex-col items-center gap-2 my-20 mx-auto">
-  <i class="fa-solid fa-box-open text-green-900 text-9xl"></i>
+  <i class="fa-solid fa-receipt text-green-900 text-9xl"></i>
   <span>Aucun achat trouvé</span>
 </div>
 {% else %}
 
-<table class="w-full text-left db-table rounded-xl">
+<table class="w-full text-left db-table rounded">
   <thead class="bg-green-700 border border-green-900 text-white">
     <tr>
       <th class="px-3 py-4 text-sm">Réf.</th>
@@ -45,13 +45,13 @@
           </button>
 
           <div
-            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
+            class="hidden z-30 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-12 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-xs lg:text-sm overflow-hidden"
             id="menu_{{obj.id}}"
           >
             <!--  -->
             <a
               href="{% url 'sale_details' obj.id %}"
-              class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
@@ -62,7 +62,7 @@
               hx-target="#basic_dialog"
               hx-delete="{% url 'delete_base_object' obj.id 'Sale' %}"
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
-              class="px-3 py-1 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+              class="px-3 py-1 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>
               Supprimer

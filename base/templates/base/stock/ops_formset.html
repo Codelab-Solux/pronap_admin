@@ -1,11 +1,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<form method="post" action="{% url 'stock_input_details' curr_obj.id %}" class="flex flex-col gap-2">
+<form
+  method="post"
+  action="{% url 'stock_input_details' curr_obj.id %}"
+  class="flex flex-col gap-2"
+>
   {% csrf_token %}
 
   <div class="flex flex-col gap-2">
     {{ formset.management_form }}
-    <div id="formset-container" class="w-full p-2 bg-green-200 rounded-xl grid gap-2 text-sm">
+    <div
+      id="formset-container"
+      class="w-full p-2 bg-green-200 rounded grid gap-2 text-sm"
+    >
       {% for form in formset %}
       <div class="formset-form w-full flex gap-2">
         <div>
@@ -16,21 +23,32 @@
           <h3 class="mb-1">{{ form.quantity.label }}</h3>
           {{ form.quantity }}
         </div>
-        {{ form.id }} <!-- Ensure the hidden id field is included -->
+        {{ form.id }}
+        <!-- Ensure the hidden id field is included -->
       </div>
       {% endfor %}
     </div>
 
-    <button class="w-fit px-4 py-2 bg-orange-200 text-black text-sm hover:bg-orange-300 rounded-lg" type="button" id="add-formset">
+    <button
+      class="w-fit px-4 py-2 bg-orange-200 text-black text-sm hover:bg-orange-300 rounded"
+      type="button"
+      id="add-formset"
+    >
       Ajouter un produit
     </button>
   </div>
 
   <div id="formset_actions" class="flex flex-row-reverse gap-3 items-center">
-    <button class="px-4 py-2 bg-green-700 text-white text-sm hover:bg-green-900 rounded-md" type="submit">
+    <button
+      class="px-4 py-2 bg-green-700 text-white text-sm hover:bg-green-900 rounded"
+      type="submit"
+    >
       Enregistrer
     </button>
-    <button class="px-4 py-2 bg-red-700 text-white text-sm rounded-md" type="reset">
+    <button
+      class="px-4 py-2 bg-red-700 text-white text-sm rounded"
+      type="reset"
+    >
       Annuler
     </button>
   </div>
@@ -40,10 +58,14 @@
   document.addEventListener("DOMContentLoaded", function () {
     const formsetContainer = document.getElementById("formset-container");
     const addButton = document.getElementById("add-formset");
-    const totalForms = document.getElementById("id_stockinputitem_set-TOTAL_FORMS");
+    const totalForms = document.getElementById(
+      "id_stockinputitem_set-TOTAL_FORMS"
+    );
 
     addButton.addEventListener("click", function () {
-      const newForm = formsetContainer.querySelector(".formset-form").cloneNode(true);
+      const newForm = formsetContainer
+        .querySelector(".formset-form")
+        .cloneNode(true);
       const formCount = parseInt(totalForms.value);
 
       // Update the total number of forms
@@ -51,12 +73,15 @@
 
       // Update the new form's elements to have unique names and IDs
       const formRegex = new RegExp(`stockinputitem_set-(\\d+)-`, "g");
-      newForm.innerHTML = newForm.innerHTML.replace(formRegex, `stockinputitem_set-${formCount}-`);
+      newForm.innerHTML = newForm.innerHTML.replace(
+        formRegex,
+        `stockinputitem_set-${formCount}-`
+      );
 
       // Clear the input values of the cloned form
       const inputs = newForm.querySelectorAll("input, select, textarea");
-      inputs.forEach(input => {
-        if (input.type !== 'hidden') {
+      inputs.forEach((input) => {
+        if (input.type !== "hidden") {
           input.value = "";
         }
       });

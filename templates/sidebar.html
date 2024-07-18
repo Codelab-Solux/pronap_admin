@@ -12,45 +12,45 @@
   </a>
 
   <ul
-    class="h-[calc(100vh-70px)] w-full flex flex-col gap-2 mx-auto items-center xl:items-start overflow-y-auto"
+    class="h-[calc(100vh-70px)] w-full flex flex-col gap-1 mx-auto items-center xl:items-start overflow-y-auto"
   >
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{home}}"
       href="{% url 'home' %}"
     >
       <i class="fa-solid fa-home xl:mr-2"></i>
       <span class="hidden xl:inline"> Accueil </span>
     </a>
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{product_stocks}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{product_stocks}}"
       href="{% url 'product_stocks' %}"
     >
       <i class="fa-solid fa-boxes-packing xl:mr-2"></i>
       <span class="hidden xl:inline"> Produits </span>
     </a>
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{sale_point}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{sale_point}}"
       href="{% url 'sale_point' %}"
     >
       <i class="fa-sharp fa-solid fa-cash-register xl:mr-2"></i>
       <span class="hidden xl:inline"> Point de ventes </span>
     </a>
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{sales}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{sales}}"
       href="{% url 'sales' %}"
     >
       <i class="fa-solid fa-tags xl:mr-2"></i>
       <span class="hidden xl:inline"> Ventes </span>
     </a>
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{purchases}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{purchases}}"
       href="{% url 'purchases' %}"
     >
       <i class="fa-solid fa-receipt xl:mr-2"></i>
       <span class="hidden xl:inline"> Achats </span>
     </a>
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{stock}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{stock}}"
       href="{% url 'stock' %}"
     >
       <i class="fa-solid fa-cubes-stacked xl:mr-2"></i>
@@ -58,7 +58,7 @@
     </a>
     <div class="hidde flex flex-col gap-1 w-full">
       <a
-        class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{clients}}"
+        class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{clients}}"
         href="{% url 'clients' %}"
       >
         <i class="fa-solid fa-users xl:mr-2 text-sm"></i>
@@ -66,14 +66,14 @@
       </a>
       {% if user.role.sec_level >= 2 %}
       <a
-        class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{staff}}"
+        class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{staff}}"
         href="{% url 'staff' %}"
       >
         <i class="fa-solid fa-user-tie xl:mr-2 text-sm"></i>
         <span class="hidden xl:inline"> Personnel </span>
       </a>
       <a
-        class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{suppliers}}"
+        class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{suppliers}}"
         href="{% url 'suppliers' %}"
       >
         <i class="fa-solid fa-dolly xl:mr-2 text-sm"></i>
@@ -83,7 +83,7 @@
     </div>
     <!--  -->
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{finances}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{finances}}"
       href="{% url 'finances' %}"
     >
       <i class="fa-solid fa-coins xl:mr-2 text-sm"></i>
@@ -91,7 +91,7 @@
     </a>
     {% if user.role.sec_level >= 3 %}
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{stores}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{stores}}"
       href="{% url 'stores' %}"
     >
       <i class="fa-solid fa-store xl:mr-2 text-sm"></i>
@@ -101,7 +101,7 @@
     <!--  -->
 
     <a
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-white hover:text-black transition ease-in duration-200 w-full {{parameters}}"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-white hover:text-black transition ease-in duration-200 w-full {{parameters}}"
       href="{% url 'parameters' %}"
     >
       <i class="fa-solid fa-gears xl:mr-2 text-sm"></i>
@@ -111,18 +111,18 @@
     {% if user.is_superuser %}
     <a
       target="_blank"
-      class="px-1 xl:px-3 py-2 text-center xl:text-left rounded-lg hover:bg-green-950 hover:text-white transition ease-in duration-200 w-full"
+      class="px-1 xl:px-3 py-[.35em] text-center xl:text-left rounded hover:bg-green-950 hover:text-white transition ease-in duration-200 w-full"
       href="{% url 'admin:index' %}"
       ><i class="fa-solid fa-lock xl:mr-2 text-sm"></i>
       <span class="hidden xl:inline"> Admin Dashboard </span>
     </a>
     {% endif %}
     <div
-      class="w-full px-1 py-2 xl:p-2 flex flex-col xl:flex-row items-center gap-1 xl:gap-2 mb-2 xl:bg-white sm:text-sm xl:text-md rounded-lg cursor-pointer"
+      class="w-full px-1 py-2 xl:p-2 flex flex-col xl:flex-row items-center gap-1 xl:gap-2 mb-2 xl:bg-white sm:text-sm xl:text-md rounded cursor-pointer"
     >
       {% if not user.profile.image %}
       <img
-        class=" xl:inline h-10 w-10 rounded-full object-cover"
+        class="xl:inline h-10 w-10 rounded-full object-cover"
         src="{% static 'imgs/anon.png' %}"
         alt="welcome image"
       />
@@ -142,7 +142,7 @@
       <div class="relative">
         <button
           type="button"
-          class="bg-white hover:bg-orange-200 text-gray-500 hover:text-black px-4 py-2 rounded-lg"
+          class="bg-white hover:bg-orange-200 text-gray-500 hover:text-black px-4 py-2 rounded"
           name="dropdownBtn"
           id="dropdownBtn"
           aria-expanded="false"
@@ -153,7 +153,7 @@
         </button>
 
         <div
-          class="mb-4 w-full xl:p-2 hidden absolute right-0 top-12 origin-top-left bg-white z-30 rounded-lg xl:w-40 grid gap-2 overflow-hidden"
+          class="mb-4 w-full xl:p-2 hidden absolute right-0 top-12 origin-top-left bg-white z-30 rounded xl:w-40 grid gap-2 overflow-hidden"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
@@ -161,7 +161,7 @@
         >
           <a
             href="{% url 'staff_details' user.id %}"
-            class="px-3 py-2 flex text-sm text-gray-700 hover:text-black hover:bg-orange-200 xl:rounded-lg w-full"
+            class="px-3 py-2 flex text-sm text-gray-700 hover:text-black hover:bg-orange-200 xl:rounded w-full"
           >
             <i class="fa-solid fa-user xl:mr-2 text-sm"></i>
             <span class="hidden xl:inline">Mon Profile</span>
@@ -170,7 +170,7 @@
             hx-confirm="Voulez vous vraiment vous deconnecter?"
             hx-boost="true"
             href="{% url 'logout' %}"
-            class="px-3 py-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white xl:rounded-lg w-full"
+            class="px-3 py-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white xl:rounded w-full"
           >
             <i class="fa-solid fa-right-from-bracket xl:mr-2 text-sm"></i>
             <span class="hidden xl:inline">Deconnexion</span>

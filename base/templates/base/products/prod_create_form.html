@@ -4,7 +4,7 @@
   <form
     hx-post="{{ request.path }}"
     action=""
-    class="w-full max-w-3xl mx-auto p-4 bg-lime-200 rounded-xl flex flex-col gap-3 text-sm"
+    class="w-full max-w-3xl mx-auto p-4 bg-lime-200 rounded flex flex-col gap-3 text-sm"
     enctype="multipart/form-data"
   >
     {% csrf_token %}
@@ -25,7 +25,7 @@
             onclick="hide_dialogs()"
             hx-target="#basic_dialog"
             hx-get="{% url 'create_category' %}"
-            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded-md w-fit text-center cursor-pointer"
+            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded w-fit text-center cursor-pointer"
           >
             <i class="text-sm fa-solid fa-plus"></i>
           </button>
@@ -39,7 +39,7 @@
             onclick="hide_dialogs()"
             hx-target="#basic_dialog"
             hx-get="{% url 'create_family' %}"
-            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded-md w-fit text-center cursor-pointer"
+            class="px-2 py-[.05em] flex items-center text-xs text-black bg-lime-400 hover:bg-lime-500 rounded w-fit text-center cursor-pointer"
           >
             <i class="text-sm fa-solid fa-plus"></i>
           </button>
@@ -63,7 +63,7 @@
 
     <div class="flex flex-row-reverse gap-2 items-end text-xs">
       <button
-        class="px-4 py-2 bg-green-700 hover:bg-green-900 text-white rounded-md"
+        class="px-4 py-2 bg-green-700 hover:bg-green-900 text-white rounded"
         type="submit"
       >
         {% if not curr_obj %} Ajouter {% else %} Enregistrer {% endif %}
@@ -71,7 +71,7 @@
       <button
         onclick="close_modal()"
         type="button"
-        class="modal_closer px-4 py-2 bg-white text-black hover:bg-red-300 rounded-md"
+        class="modal_closer px-4 py-2 bg-white text-black hover:bg-red-300 rounded"
       >
         Annuler
       </button>

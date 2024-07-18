@@ -22,6 +22,10 @@ class EntityType(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
     def get_absolute_url(self):
         return reverse('entity_details', kwargs={'pk': self.pk})
 
@@ -44,6 +48,10 @@ class Supplier(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('supplier_details', kwargs={'pk': self.pk})
@@ -71,6 +79,10 @@ class Client(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('client_details', kwargs={'pk': self.pk})
@@ -107,6 +119,10 @@ class Store(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
     def get_absolute_url(self):
         return reverse('store_details', kwargs={'pk': self.pk})
 
@@ -134,12 +150,12 @@ class Cashdesk(models.Model):
     name = models.CharField(max_length=500)
     phone = models.CharField(max_length=500, blank=True, null=True)
     acc_number = models.CharField(max_length=500, blank=True, null=True)
-    debits = models.IntegerField(default=0, blank=True, null=True)
-    credits = models.IntegerField(default=0, blank=True, null=True)
+    debits = models.PositiveIntegerField(default=0, blank=True, null=True)
+    credits = models.PositiveIntegerField(default=0, blank=True, null=True)
     balance = models.IntegerField(default=0, blank=True, null=True)
 
     def calculate_balance(self):
-        return self.credits - self.debits
+        return abs(self.credits - self.debits)
 
     def save(self, *args, **kwargs):
         self.balance = self.calculate_balance()
@@ -150,6 +166,10 @@ class Cashdesk(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('cashdesk_details', kwargs={'pk': self.pk})
@@ -175,7 +195,7 @@ class CashdeskClosing(models.Model):
         self.balance_expected = self.cashdesk.balance  # Use balance from Cashdesk
         self.balance_found = sum(
             item.total_amount for item in self.closingcashreceipt_set.all())
-        self.difference = self.balance_expected - self.balance_found
+        self.difference = abs(self.balance_expected - self.balance_found)
 
         # Save again to update balance_found and difference
         super().save(*args, **kwargs)
@@ -185,6 +205,10 @@ class CashdeskClosing(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
 
 cash_receipt_types = (
@@ -203,6 +227,10 @@ class CashReceipt(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('cash_receipt', kwargs={'pk': self.pk})
@@ -240,6 +268,10 @@ class ClosingCashReceipt(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
 
 class Payment(models.Model):
     initiator = models.ForeignKey(
@@ -247,13 +279,13 @@ class Payment(models.Model):
     store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
     cashdesk = models.ForeignKey(
         Cashdesk, blank=True, null=True, on_delete=models.SET_NULL)
-    amount = models.IntegerField(default='0', blank=True, null=True)
+    amount = models.PositiveIntegerField(default='0', blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
     content_type = models.ForeignKey(
         ContentType, blank=True, null=True, on_delete=models.SET_NULL)
-    object_id = models.PositiveIntegerField(blank=True, null=True,)
+    object_id = models.PositiveIntegerField(blank=True, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
@@ -261,6 +293,10 @@ class Payment(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('payment_details', kwargs={'pk': self.pk})
@@ -279,65 +315,51 @@ audit_statuses = (
 
 
 class Transaction(models.Model):
-    initiator = models.ForeignKey(
-        CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
-    cashdesk = models.ForeignKey(
-        Cashdesk, blank=True, null=True, on_delete=models.SET_NULL)
-    type = models.CharField(
-        max_length=50, choices=transaction_types)
-    amount = models.IntegerField(default='0', blank=True, null=True)
+    payment = models.ForeignKey(Payment, default=1, on_delete=models.CASCADE)
+    type = models.CharField(max_length=50, choices=transaction_types)
+    amount = models.PositiveIntegerField(default='0', blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
-    description = models.CharField(max_length=500, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
     audit = models.CharField(
         max_length=50, choices=audit_statuses, default='pending')
-    content_type = models.ForeignKey(
-        ContentType, blank=True, null=True, on_delete=models.SET_NULL)
-    object_id = models.PositiveIntegerField(blank=True, null=True,)
-    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
-        return f'{self.store} - {self.amount}'
+        return f'{self.payment.store} - {self.amount}'
 
     def get_hashid(self):
         return h_encode(self.id)
 
-    def get_origin(self):
-        if self.content_type.model == "servicepurchase":
-            obj = ServicePurchase.objects.get(id=self.object_id)
-        elif self.content_type.model == "productpurchase":
-            obj = ProductPurchase.objects.get(id=self.object_id)
-        elif self.content_type.model == "sale":
-            obj = Sale.objects.get(id=self.object_id)
-        else:
-            obj = None
-        return obj
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
 
     def get_absolute_url(self):
         return reverse('transaction_details', kwargs={'pk': self.pk})
 
 
 class Receivable(models.Model):
-    initiator = models.ForeignKey(
-        CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
+    sale = models.ForeignKey('Sale', on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
     label = models.CharField(max_length=100, blank=True, null=True)
-    description = models.CharField(max_length=500, blank=True, null=True)
     due_date = models.DateField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     content_type = models.ForeignKey(
         ContentType, blank=True, null=True, on_delete=models.SET_NULL)
     object_id = models.PositiveIntegerField(blank=True, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
+    is_fully_paid = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.client} owes {self.amount}'
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('receivable_details', kwargs={'pk': self.pk})
@@ -357,12 +379,17 @@ class Debt(models.Model):
         ContentType, blank=True, null=True, on_delete=models.SET_NULL)
     object_id = models.PositiveIntegerField(blank=True, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
+    is_fully_paid = models.BooleanField(default=False)
 
     def __str__(self):
         return f'Owes {self.supplier} {self.amount}'
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('debt_details', kwargs={'pk': self.pk})
@@ -382,6 +409,10 @@ class Category(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
     def get_absolute_url(self):
         return reverse('prod_category_details', kwargs={'pk': self.pk})
 
@@ -396,6 +427,10 @@ class Family(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('prod_family_details', kwargs={'pk': self.pk})
@@ -412,6 +447,10 @@ class Lot(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
     def get_absolute_url(self):
         return reverse('prod_lot_details', kwargs={'pk': self.pk})
@@ -446,6 +485,10 @@ class Product(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
     def get_absolute_url(self):
         return reverse('product_details', kwargs={'pk': self.pk})
 
@@ -456,8 +499,8 @@ class Product(models.Model):
 
 
 class ProductStock(models.Model):
-    # lot = models.ForeignKey(
-    #     Lot, blank=True, null=True, on_delete=models.SET_NULL)
+    lot = models.ForeignKey(
+        Lot, blank=True, null=True, on_delete=models.SET_NULL)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     supplier = models.ForeignKey(
         Supplier, default=1, blank=True, null=True, on_delete=models.SET_NULL)
@@ -476,11 +519,26 @@ class ProductStock(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
     def get_absolute_url(self):
         return reverse('product_stock_details', kwargs={'pk': self.pk})
 
 
 # ----------------------------------- Sales -----------------------------------
+payment_options = (
+    ('bank', "Banque"),
+    ('cash', "Espèce"),
+    ('mobil', "Mobile"),
+)
+
+payment_statuses = (
+    ('unpaid', "Impayé"),
+    ('partly_paid', "Payé en partie"),
+    ('paid', "Payé en totalité"),
+)
 
 class Sale(models.Model):
     store = models.ForeignKey(
@@ -494,12 +552,17 @@ class Sale(models.Model):
         max_length=50, choices=audit_statuses, default='pending')
     items = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
+    total_paid = models.IntegerField(default=0)
     discount = models.IntegerField(default=0, blank=True, null=True)
     observation = models.CharField(max_length=500, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'Vente : {self.total} - Caisse : {self.cashdesk}'
+
+    @property
+    def total_due(self):
+        return self.total - self.total_paid
 
     def calculate_total(self):
         self.total = sum(item.get_total for item in self.saleitem_set.all())
@@ -508,6 +571,10 @@ class Sale(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
 
 class SaleItem(models.Model):
@@ -527,29 +594,29 @@ class SaleItem(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
 
 # ----------------------------------- Purchases -----------------------------------
-payment_options = (
-    ('bank', "Banque"),
-    ('cash', "Espèce"),
-    ('mobil', "Mobile"),
-)
-
-payment_statuses = (
-    ('unpaid', "Impayé"),
-    ('partly_paid', "Payé en partie"),
-    ('paid', "Payé en totalité"),
+purchase_types = (
+    ('product', "Produit"),
+    ('service', "Service"),
 )
 
 
-class ProductPurchase(models.Model):
+class Purchase(models.Model):
+    initiator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
     supplier = models.ForeignKey(
         Supplier, default=1, blank=True, null=True, on_delete=models.SET_NULL)
     cashdesk = models.ForeignKey(
         Cashdesk, default=1, blank=True, null=True, on_delete=models.SET_NULL)
+    type = models.CharField(
+        max_length=10, choices=purchase_types, default='product')
     product_stocks = models.ManyToManyField(
-        ProductStock, through='PurchaseItem')
+        ProductStock, through='PurchaseItem', blank=True)
     audit = models.CharField(
         max_length=50, choices=audit_statuses, default='pending')
     payment_option = models.CharField(
@@ -557,14 +624,14 @@ class ProductPurchase(models.Model):
     payment_status = models.CharField(
         max_length=50, choices=payment_statuses, default='unpaid')
     label = models.CharField(
-        max_length=200, default='Achat de produit(s)', blank=True, null=True)
+        max_length=200, default='Achat', blank=True, null=True)
     total = models.IntegerField(default=0)
-    amount_paid = models.IntegerField(default=0, blank=True, null=True)
+    amount = models.IntegerField(default=0, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'Achat : {self.total} - Caisse : {self.cashdesk}'
+        return f'Achat : {self.label} - Total : {self.total} - Caisse : {self.cashdesk}'
 
     def calculate_total(self):
         self.total = sum(
@@ -574,12 +641,15 @@ class ProductPurchase(models.Model):
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
 
 class PurchaseItem(models.Model):
-    purchase = models.ForeignKey(
-        ProductPurchase, on_delete=models.SET_NULL, null=True)
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE)
     product_stock = models.ForeignKey(
-        ProductStock, on_delete=models.SET_NULL, null=True)
+        ProductStock, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField(default=0)
 
@@ -589,130 +659,69 @@ class PurchaseItem(models.Model):
         return total
 
     def __str__(self):
-        return f'Achat de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
+        if self.product_stock:
+            return f'Achat de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
+        return f'Achat de service - {self.purchase.label}'
 
     def get_hashid(self):
         return h_encode(self.id)
 
-
-class ServicePurchase(models.Model):
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE)
-    supplier = models.ForeignKey(
-        Supplier, default=1, blank=True, null=True, on_delete=models.SET_NULL)
-    cashdesk = models.ForeignKey(
-        Cashdesk, default=1, blank=True, null=True, on_delete=models.SET_NULL)
-    audit = models.CharField(
-        max_length=50, choices=audit_statuses, default='pending')
-    payment_option = models.CharField(
-        max_length=50, choices=payment_options, default='cash')
-    payment_status = models.CharField(
-        max_length=50, choices=payment_statuses, default='unpaid')
-    label = models.CharField(
-        max_length=200, default='Achat de service(s)', blank=True, null=True)
-    description = models.CharField(max_length=200, blank=True, null=True)
-    total = models.PositiveIntegerField(default=0)
-    amount_paid = models.IntegerField(default=0, blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f'Achat de service(s) {self.label} : {self.total} - Caisse : {self.cashdesk}'
-
-    def get_hashid(self):
-        return h_encode(self.id)
-
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
 # ----------------------------------- Stock -----------------------------------
-stock_input_types = (
+operation_types = (
+    ('input', "Entrée"),
+    ('output', "Sortie"),
+)
+
+operation_subtypes = (
     ('purchase', "Achat"),
     ('return', "Retour"),
     ('transfer', "Transfer"),
     ('difference', "Difference d’inventaire"),
-    ('gift', "Cadeau"),
-)
-
-
-class StockInput(models.Model):
-    initiator = models.ForeignKey(
-        CustomUser, on_delete=models.SET_NULL, blank=True, null=True)
-    store = models.ForeignKey(
-        Store, on_delete=models.SET_NULL, blank=True, null=True)
-    type = models.CharField(
-        max_length=50, choices=stock_input_types, default='purchase')
-    product_stocks = models.ManyToManyField(
-        ProductStock, through='StockInputItem')
-    items = models.IntegerField(default=0)
-    total = models.IntegerField(default=0)
-    description = models.CharField(max_length=200, blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.initiator} - {self.type} - {self.description}'
-
-    def calculate_total(self):
-        self.total = sum(
-            item.get_total for item in self.stockinputitem_set.all())
-        self.items = self.stockinputitem_set.count()
-        self.save()
-
-    def get_hashid(self):
-        return h_encode(self.id)
-
-
-class StockInputItem(models.Model):
-    stock_input = models.ForeignKey(StockInput, on_delete=models.CASCADE)
-    product_stock = models.ForeignKey(ProductStock, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
-
-    @property
-    def get_total(self):
-        total = self.product_stock.price * self.quantity
-        return total
-
-    def __str__(self):
-        return f'Entrée de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
-
-    def get_hashid(self):
-        return h_encode(self.id)
-
-
-stock_output_types = (
+    ('gift', "Cadeau/Don"),
     ('sale', "Vente"),
     ('usage', "Utilisation interne"),
-    ('transfer', "Transfer"),
-    ('difference', "Difference d’inventaire"),
-    ('gift', "Don"),
 )
 
 
-class StockOutput(models.Model):
+class StockOperation(models.Model):
     store = models.ForeignKey(
         Store, on_delete=models.SET_NULL, blank=True, null=True)
     initiator = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, blank=True, null=True)
     type = models.CharField(
-        max_length=50, choices=stock_output_types, default='sale')
+        max_length=10, choices=operation_types, default='input')
+    subtype = models.CharField(max_length=50, choices=operation_subtypes)
     product_stocks = models.ManyToManyField(
-        ProductStock, through='StockOutputItem')
+        ProductStock, through='StockOperationItem')
     items = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
     description = models.CharField(max_length=500, blank=True, null=True)
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.initiator} - {self.type} - {self.description}'
+        return f'{self.initiator} - {self.type} - {self.subtype} - {self.description}'
 
     def calculate_total(self):
         self.total = sum(
-            item.get_total for item in self.stockoutputitem_set.all())
-        self.items = self.stockoutputitem_set.count()
+            item.get_total for item in self.stockoperationitem_set.all())
+        self.items = self.stockoperationitem_set.count()
         self.save()
 
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
-class StockOutputItem(models.Model):
-    stock_output = models.ForeignKey(StockOutput, on_delete=models.CASCADE)
+
+class StockOperationItem(models.Model):
+    stock_operation = models.ForeignKey(
+        StockOperation, on_delete=models.SET_NULL, blank=True, null=True)
     product_stock = models.ForeignKey(ProductStock, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
 
@@ -722,11 +731,14 @@ class StockOutputItem(models.Model):
         return total
 
     def __str__(self):
-        return f'Sortie de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
+        return f'{self.stock_operation.operation_type.capitalize()} de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
 
     def get_hashid(self):
         return h_encode(self.id)
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
 # ----------------------------------- Inventory -----------------------------------
 
@@ -745,6 +757,10 @@ class Inventory(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
 
 
 class InventoryItem(models.Model):
@@ -767,3 +783,7 @@ class InventoryItem(models.Model):
 
     def get_hashid(self):
         return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__

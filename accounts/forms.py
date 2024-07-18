@@ -18,8 +18,8 @@ class SignupForm(UserCreationForm):
             self.fields.pop('password2')
         else:
             # Apply custom attributes to password fields
-            self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
-            self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+            self.fields['password1'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+            self.fields['password2'].widget.attrs['class'] = "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
             self.fields['password1'].label = "Mot de pass"
             self.fields['password2'].label = "Confirmez votre mot de pass"
 
@@ -37,12 +37,12 @@ class SignupForm(UserCreationForm):
             'last_name': 'Nom',
         }
         widgets = {
-            'role': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'role': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
         }
 
 
@@ -72,12 +72,12 @@ class EditUserForm(forms.ModelForm):
             'phone': 'Téléphone',
         }
         widgets = {
-            'role': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'role': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'email': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'first_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'last_name': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'username': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
         }
 
 
@@ -93,16 +93,16 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude=('user',)
+        exclude = ('user',)
         labels = {
             'sex': 'Sexe',
             'store': 'Boutique',
             'phone': 'Téléphone',
         }
         widgets = {
-            'sex': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'store': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'sex': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
         }
 
 
@@ -118,11 +118,11 @@ class WalletForm(forms.ModelForm):
     class Meta:
         model = Wallet
         fields = '__all__'
-        exclude=('user',)
+        exclude = ('user',)
         labels = {
             'balance': 'Solde',
         }
         widgets = {
-            'user': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
-            'balance': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'user': forms.Select(attrs={'class': "input_selector mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
+            'balance': forms.TextInput(attrs={'class': "mb-2 px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"}),
         }

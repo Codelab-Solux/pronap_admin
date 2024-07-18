@@ -2,27 +2,33 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(EntityType)
+admin.site.register(Client)
+admin.site.register(Supplier)
 admin.site.register(Store)
+# finances
 admin.site.register(Cashdesk)
 admin.site.register(CashdeskClosing)
 admin.site.register(CashReceipt)
 admin.site.register(ClosingCashReceipt)
-admin.site.register(Category)
+admin.site.register(Transaction)
+admin.site.register(Payment)
+admin.site.register(Debt)
+admin.site.register(Receivable)
+# products
 admin.site.register(Lot)
+admin.site.register(Category)
 admin.site.register(Family)
 admin.site.register(Product)
 admin.site.register(ProductStock)
-admin.site.register(Client)
-admin.site.register(Supplier)
+# sales
 admin.site.register(Sale)
 admin.site.register(SaleItem)
-admin.site.register(ProductPurchase)
+# purchases
+admin.site.register(Purchase)
 admin.site.register(PurchaseItem)
-admin.site.register(ServicePurchase)
-admin.site.register(StockInput)
-admin.site.register(StockInputItem)
-admin.site.register(StockOutput)
-admin.site.register(StockOutputItem)
+# stock operations
+admin.site.register(StockOperation)
+admin.site.register(StockOperationItem)
+# inventories
 admin.site.register(Inventory)
 admin.site.register(InventoryItem)
-admin.site.register(Transaction)

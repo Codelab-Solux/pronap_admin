@@ -1,14 +1,17 @@
-{% extends 'main_plain.html' %} {% block content %}
+{% extends 'main_plain.html' %} {% load static %} {% block content %}
 <section
   class="bg-white p-4 lg:p-6 w-full max-w-5xl rounded-3xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8"
 >
-  <i
+  <!-- <i
     class="fa-solid fa-arrow-right-to-bracket text-green-700 text-9xl mx-auto"
-  ></i>
+  ></i> -->
+  <img
+    class="h-40 mx-auto mx-auto"
+    src="{% static 'imgs/logo.png' %}"
+    alt="logo"
+  />
 
-  <div
-    class="bg-gray-100 rounded-2xl p-6 flex-col h-fit w-full max-w-md shadow-md"
-  >
+  <div class="bg-gray-100 rounded p-6 flex-col h-fit w-full max-w-md shadow-md">
     <h1 class="mb-4 text-black text-3xl font-bold">Connexion</h1>
     <form method="POST" class="w-full text-sm">
       {% csrf_token %}
@@ -17,7 +20,7 @@
         <input
           type="email"
           name="username"
-          class="px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+          class="px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
           placeholder="Email"
           required
         />
@@ -27,7 +30,7 @@
         <input
           type="password"
           name="password"
-          class="px-4 py-2 rounded-lg border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+          class="px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
           placeholder="Mots de passe"
           required
         />
@@ -40,7 +43,7 @@
         <input
           type="submit"
           value="Se connecter"
-          class="mt-2 px-8 py-2 primary_color hover:shadow-md text-sm text-white rounded-lg cursor-pointer"
+          class="mt-2 px-8 py-2 bg-lime-200 hover:bg-lime-300 text-black rounded cursor-pointer"
         />
         <p class="mt-2">
           Mots de pass oublié?

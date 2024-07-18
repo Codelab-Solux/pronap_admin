@@ -12,6 +12,7 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 
+# ------------------------------------------ Entity forms ------------------------------------------------------
 class EntityTypeForm(forms.ModelForm):
     class Meta:
         model = EntityType
@@ -21,12 +22,64 @@ class EntityTypeForm(forms.ModelForm):
             'name': 'Nom',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = '__all__'
+        exclude = ('is_new',)
+
+        labels = {
+            'name': 'Nom',
+            'phone': 'Telephone',
+            'address': 'Adresse',
+            'domain': 'Secteur',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'address': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'email': forms.EmailInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'domain': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+
+        }
+
+
+class ClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+        labels = {
+            'name': 'Nom',
+            'type': 'Type',
+            'sex': 'Sexe',
+            'phone': 'Telephone',
+            'address': 'Adresse',
+            'domain': 'Secteur',
+        }
+        widgets = {
+            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'address': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'email': forms.EmailInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'sex': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'domain': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+
+        }
+
+
+
+# ------------------------------------------ Store forms ------------------------------------------------------
 class StoreForm(forms.ModelForm):
     class Meta:
         model = Store
@@ -44,27 +97,29 @@ class StoreForm(forms.ModelForm):
             'opening_time': "Heure de fermeture",
         }
         widgets = {
-            'type': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'manager': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'address': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'email': forms.EmailInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'city': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'opening_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'closing_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded-md border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'type': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'manager': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'address': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'email': forms.EmailInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'city': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'opening_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'closing_time': TimeInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-purple-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
+
+# ------------------------------------------ Product forms ------------------------------------------------------
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ('__all__')
         labels = {'name': 'Nom', 'is_featured': 'En vedette'}
         widgets = {
-            'name': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
         }
 
 
@@ -74,8 +129,8 @@ class FamilyForm(forms.ModelForm):
         fields = ('__all__')
         labels = {'name': 'Nom', 'category': 'Catégorie', }
         widgets = {
-            'category': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'name': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'category': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
         }
 
 
@@ -97,17 +152,17 @@ class ProductForm(forms.ModelForm):
             'is_favorite': "Très en demande",
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'brand': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'category': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'family': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'unit': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'price': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'promo_price': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'brand': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'category': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'family': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'unit': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'quantity': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'price': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'promo_price': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
@@ -143,68 +198,20 @@ class ProductStockForm(forms.ModelForm):
             'expiration_date': 'Expire le',
         }
         widgets = {
-            'product': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'lot': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'price': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'observation': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'production_date': DateInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'expiration_date': DateInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'product': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'lot': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'price': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'observation': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'production_date': DateInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'expiration_date': DateInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
-class SupplierForm(forms.ModelForm):
-    class Meta:
-        model = Supplier
-        fields = '__all__'
-        exclude = ('is_new',)
 
-        labels = {
-            'name': 'Nom',
-            'phone': 'Telephone',
-            'address': 'Adresse',
-            'domain': 'Secteur',
-        }
-        widgets = {
-            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'address': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'email': forms.EmailInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'domain': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-
-        }
-
-
-class ClientForm(forms.ModelForm):
-    class Meta:
-        model = Client
-        fields = '__all__'
-
-        labels = {
-            'name': 'Nom',
-            'type': 'Type',
-            'sex': 'Sexe',
-            'phone': 'Telephone',
-            'address': 'Adresse',
-            'domain': 'Secteur',
-        }
-        widgets = {
-            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'address': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'email': forms.EmailInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'sex': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'domain': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-
-        }
-
-
+# ------------------------------------------ Sale forms ------------------------------------------------------
 class SaleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -220,7 +227,6 @@ class SaleForm(forms.ModelForm):
             self.fields.pop('discount')
             self.fields.pop('observation')
 
-
     class Meta:
         model = Sale
         observation = models.CharField(max_length=500, blank=True, null=True)
@@ -234,12 +240,12 @@ class SaleForm(forms.ModelForm):
             'discount': 'Remise',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'client': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'cashdesk': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'discount': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'observation': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'client': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'cashdesk': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'discount': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'observation': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
@@ -256,89 +262,44 @@ class SaleItemForm(forms.ModelForm):
             'quantity': 'Quantité',
         }
         widgets = {
-            'sale': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'sale': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
-class ServicePurchaseForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super(ServicePurchaseForm, self).__init__(*args, **kwargs)
-
-        if user and user.role.sec_level < 3:
-            self.fields.pop('store')
-
-    class Meta:
-        model = ServicePurchase
-        fields = (
-            'store',
-            'label',
-            'supplier',
-            'total',
-            'cashdesk',
-            'amount_paid',
-            'payment_option',
-            'payment_status',
-            'description',)
-        exclude = ('audit', 'timestamp',)
-
-        labels = {
-            'store': 'Boutique',
-            'label': 'Libelé',
-            'supplier': 'Fournisseur',
-            'cashdesk': 'Caisse',
-            'total': 'Montant à payer',
-            'amount_paid': 'Montant Payé',
-            'payment_option': 'Moyen de paiement',
-            'payment_status': 'Status du paiement',
-        }
-        widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'total': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'cashdesk': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'amount_paid': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'payment_option': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'payment_status': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-
-        }
-
-
-class ProductPurchaseForm(forms.ModelForm):
+# ------------------------------------------ Purchase forms ------------------------------------------------------
+class PurchaseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         curr_obj = kwargs.pop('curr_obj', None)
-        super(ProductPurchaseForm, self).__init__(*args, **kwargs)
+        super(PurchaseForm, self).__init__(*args, **kwargs)
 
         if user and user.role.sec_level < 3:
             self.fields.pop('store')
         if not curr_obj:
             self.fields.pop('cashdesk')
-            self.fields.pop('amount_paid')
+            self.fields.pop('amount')
             self.fields.pop('total')
             self.fields.pop('payment_option')
             self.fields.pop('payment_status')
 
     class Meta:
-        model = ProductPurchase
+        model = Purchase
         fields = (
             'store',
             'label',
             'supplier',
             'cashdesk',
             'total',
-            'amount_paid',
+            'amount',
             'payment_option',
             'payment_status',
             'description',
-            )
+        )
         exclude = ('audit', 'timestamp',)
 
         labels = {
@@ -347,20 +308,20 @@ class ProductPurchaseForm(forms.ModelForm):
             'supplier': 'Fournisseur',
             'cashdesk': 'Caisse',
             'total': 'Montant à payer',
-            'amount_paid': 'Montant Payé',
+            'amount': 'Montant Payé',
             'payment_option': 'Moyen de paiement',
             'payment_status': 'Status du paiement',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'total': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg focus:outline-none bg-gray-100 w-full", 'readonly': 'readonly'}),
-            'amount_paid': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'cashdesk': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'payment_option': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'payment_status': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selecto mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supplier': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'total': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded focus:outline-none bg-gray-100 w-full", 'readonly': 'readonly'}),
+            'amount': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'cashdesk': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'payment_option': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'payment_status': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
@@ -378,45 +339,50 @@ class PurchaseItemForm(forms.ModelForm):
             'price': 'Prix',
         }
         widgets = {
-            'purchase': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'price': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'purchase': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'price': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
-class StockInputForm(forms.ModelForm):
+
+# ------------------------------------------ Stock forms ------------------------------------------------------
+class StockOperationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(StockInputForm, self).__init__(*args, **kwargs)
+        super(StockOperationForm, self).__init__(*args, **kwargs)
 
+        self.fields.pop('type')
         if user and user.role.sec_level < 3:
             self.fields.pop('store')
             self.fields.pop('initiator')
 
     class Meta:
-        model = StockInput
-        fields = ['store', 'initiator', 'type', 'description']
+        model = StockOperation
+        fields = ['store', 'initiator', 'type','subtype', 'description']
 
         labels = {
             'store': "Boutique",
-            'type': "Type d'entrée",
+            'type': "Type d'operation",
+            'subtype': "Sous-type d'operation",
             'initiator': 'Initiateur',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'subtype': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
-class StockInputItemForm(forms.ModelForm):
+class StockOperationItemForm(forms.ModelForm):
     class Meta:
-        model = StockInputItem
+        model = StockOperationItem
         fields = ('product_stock', 'quantity',)
 
         labels = {
@@ -424,55 +390,13 @@ class StockInputItemForm(forms.ModelForm):
             'quantity': 'Quantité',
         }
         widgets = {
-            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
         }
 
 
-class StockOutputForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super(StockOutputForm, self).__init__(*args, **kwargs)
-
-        if user and user.role.sec_level < 3:
-            self.fields.pop('store')
-
-    class Meta:
-        model = StockOutput
-        fields = ['store', 'initiator', 'type', 'description']
-
-        labels = {
-            'store': "Boutique",
-            'type': "Type de sortie",
-            'initiator': 'Initiateur',
-        }
-        widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'type': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-
-        }
-
-
-class StockOutputItemForm(forms.ModelForm):
-    class Meta:
-        model = StockOutputItem
-        fields = ('product_stock', 'quantity')
-
-        labels = {
-            'product_stock': 'Produit',
-            'quantity': 'Quantité',
-        }
-        widgets = {
-            'product_stock': forms.Select(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'comment': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-
-        }
-
-
+# ------------------------------------------ Inventory form ------------------------------------------------------
 class InventoryForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -487,13 +411,12 @@ class InventoryForm(forms.ModelForm):
     class Meta:
         model = Inventory
         fields = (
-            'store', 
-            'initiator', 
+            'store',
+            'initiator',
             'supervisor',
-            'date', 
+            'date',
             # 'is_valid',
-            )
-
+        )
 
         labels = {
             'store': "Boutique",
@@ -502,10 +425,13 @@ class InventoryForm(forms.ModelForm):
             'is_valid': 'Validé',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supervisor': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supervisor': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'date': DateInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+
         }
+
 
 class InventoryItemForm(forms.ModelForm):
 
@@ -520,9 +446,8 @@ class InventoryItemForm(forms.ModelForm):
     class Meta:
         model = InventoryItem
         fields = (
-            # 'supervisor', 'initiator', 
+            # 'supervisor', 'initiator',
             'quantity_expected', 'quantity_found', 'comment')
-
 
         labels = {
             'supervisor': "Superviseur",
@@ -532,23 +457,30 @@ class InventoryItemForm(forms.ModelForm):
             'comment': 'Commentaire',
         }
         widgets = {
-            'supervisor': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'quantity_expected': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg focus:border-none focus:outline-none  bg-gray-100 w-full", 'readonly': 'readonly'}),
-            'quantity_found': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'comment': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supervisor': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'quantity_expected': forms.NumberInput(attrs={'class': "mb-1 px-3 py-2 rounded focus:border-none focus:outline-none  bg-gray-100 w-full", 'readonly': 'readonly'}),
+            'quantity_found': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'comment': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
+
+# ------------------------------------------ Finance form ------------------------------------------------------
 class PaymentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(PaymentForm, self).__init__(*args, **kwargs)
 
+        self.fields.pop('store')
+        self.fields.pop('initiator')
+        self.fields.pop('cashdesk')
+
         if user and user.role.sec_level < 3:
-            self.fields.pop('store')
+            # self.fields.pop('cashdesk')
+            self.fields.pop('description')
 
     class Meta:
         model = Payment
@@ -563,45 +495,29 @@ class PaymentForm(forms.ModelForm):
             'label': 'Libelé',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'cashdesk': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'cashdesk': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
 
 class TransactionForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        cashdesk = kwargs.pop('cashdesk', None)
-        super(TransactionForm, self).__init__(*args, **kwargs)
-
-        if user and user.role.sec_level < 3:
-            self.fields.pop('store')
-        if cashdesk:
-            self.fields.pop('store')
-            self.fields.pop('cashdesk')
-
     class Meta:
         model = Transaction
-        fields = ('store', 'cashdesk', 'label', 'amount', 'description')
+        fields = ('label', 'amount')
 
         labels = {
-            'store': "Boutique",
-            'cashdesk': "Caisse",
             'label': 'Libelé',
             'amount': 'Montant',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'cashdesk': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'amount': forms.NumberInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
 
@@ -613,31 +529,30 @@ class ReceivableForm(forms.ModelForm):
         super(ReceivableForm, self).__init__(*args, **kwargs)
 
         if user and user.role.sec_level < 2:
-            self.fields.pop('store')
-            self.fields.pop('initiator')
+            self.fields.pop('sale')
+            self.fields.pop('client')
 
         if user and user.role.sec_level < 3:
-            self.fields.pop('store')
+            self.fields.pop('client')
 
     class Meta:
         model = Receivable
-        fields = ('store', 'initiator', 'client',
-                  'amount', 'label', 'description')
+        fields = ('sale',
+                  'client',
+                  'label',
+                  'amount',
+                  )
 
         labels = {
-            'store': "Boutique",
-            'initiator': "Initiateur",
+            'sale': "Vente",
             'amount': 'Montant',
             'label': 'Libelé',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'client': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-
+            'sale': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'client': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
         }
 
 
@@ -666,17 +581,16 @@ class DebtForm(forms.ModelForm):
             'label': 'Libelé',
         }
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supplier': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supplier': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'amount': forms.TextInput(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'label': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'description': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
         }
 
 
-
-# 
+# ------------- cashdesks
 class CashdeskForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -689,10 +603,10 @@ class CashdeskForm(forms.ModelForm):
     class Meta:
         model = Cashdesk
         fields = ('store',
-                  'type', 
+                  'type',
                   'carrier',
-                  'name', 
-                  'phone', 
+                  'name',
+                  'phone',
                   'acc_number',
                   )
         labels = {'store': 'Boutique',
@@ -705,13 +619,14 @@ class CashdeskForm(forms.ModelForm):
                   }
         exclude = ['debits', 'credits']
         widgets = {
-            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'type': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'carrier': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'balance': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'phone': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'acc_number': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'store': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'type': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'carrier': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'balance': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'phone': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'acc_number': forms.TextInput(attrs={'class': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
         }
+
 
 class CashdeskClosingForm(forms.ModelForm):
 
@@ -727,14 +642,14 @@ class CashdeskClosingForm(forms.ModelForm):
     class Meta:
         model = CashdeskClosing
         fields = (
-                #   'initiator',
-                #   'supervisor',
-                #   'cashdesk',
-                  'balance_expected',
-                  'balance_found',
-                #   'difference',
-                  'comment',
-                  )
+            #   'initiator',
+            #   'supervisor',
+            #   'cashdesk',
+            'balance_expected',
+            'balance_found',
+            #   'difference',
+            'comment',
+        )
         labels = {'initiator': 'Initiateur',
                   'supervisor': 'Superviseur',
                   'cashdesk': 'Caisse',
@@ -745,14 +660,15 @@ class CashdeskClosingForm(forms.ModelForm):
                   }
         exclude = ['debits', 'credits']
         widgets = {
-            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'supervisor': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'cashdesk': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'balance_expected': forms.NumberInput(attrs={'id': 'exptd_field', 'class': "mb-1 px-3 py-2 rounded-lg focus:border-none focus:outline-none  bg-gray-100 w-full", 'readonly': 'readonly'}),
-            'balance_found': forms.NumberInput(attrs={'id': 'found_field','class ': "mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
-            'difference': forms.NumberInput(attrs={'id': 'diff_field', 'class': "mb-1 px-3 py-2 rounded-lg focus:border-none focus:outline-none  bg-gray-100 w-full", 'readonly': 'readonly'}),
-            'comment': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded-xl border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'initiator': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'supervisor': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'cashdesk': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'balance_expected': forms.NumberInput(attrs={'id': 'exptd_field', 'class': "mb-1 px-3 py-2 rounded focus:border-none focus:outline-none  bg-gray-100 w-full", 'readonly': 'readonly'}),
+            'balance_found': forms.NumberInput(attrs={'id': 'found_field', 'class ': "mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'difference': forms.NumberInput(attrs={'id': 'diff_field', 'class': "mb-1 px-3 py-2 rounded focus:border-none focus:outline-none  bg-gray-100 w-full", 'readonly': 'readonly'}),
+            'comment': forms.Textarea(attrs={"rows": "5", 'class': "mb-2 px-4 py-2 rounded border focus:border-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
         }
+
 
 class CashReceiptForm(forms.ModelForm):
     class Meta:
@@ -764,11 +680,12 @@ class CashReceiptForm(forms.ModelForm):
             'value': 'Valeur',
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'value': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
-            'type': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded-lg border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'value': forms.NumberInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'type': forms.Select(attrs={'class': "input_selector mb-1 px-3 py-2 rounded border focus:border-none focus:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 w-full"}),
 
         }
+
 
 class ClosingCashReceiptForm(forms.ModelForm):
     class Meta:

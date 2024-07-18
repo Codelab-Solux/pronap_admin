@@ -2,12 +2,12 @@
   {% if objects.has_previous %}
   <a
     href="?page=1"
-    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    class="px-4 py-2 rounded border bg-white hover:shadow-md hover:text-sky-600 text-xs"
     >Première</a
   >
   <a
     href="?page={{ objects.previous_page_number }}"
-    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    class="px-4 py-2 rounded border bg-white hover:shadow-md hover:text-sky-600 text-xs"
     >{{ objects.previous_page_number }}</a
   >
   {% endif %}
@@ -19,12 +19,12 @@
   {% if objects.has_next %}
   <a
     href="?page={{ objects.next_page_number }}"
-    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    class="px-4 py-2 rounded border bg-white hover:shadow-md hover:text-sky-600 text-xs"
     >{{ objects.next_page_number }}</a
   >
   <a
     href="?page={{ objects.paginator.num_pages }}"
-    class="px-4 py-2 rounded-lg border bg-white hover:shadow-md hover:text-sky-600 text-xs"
+    class="px-4 py-2 rounded border bg-white hover:shadow-md hover:text-sky-600 text-xs"
     >Dernière</a
   >
   {% endif %}

@@ -3,7 +3,7 @@
   <div class="flex justify-between items-center">
     <button
       onclick="goBack()"
-      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
     >
       &larr;
     </button>
@@ -11,7 +11,7 @@
   <!--  -->
   <div class="w-full grid md:grid-cols-2 gap-4">
     <div
-      class="p-3 w-full bg-green-200 rounded-2xl flex flex-col lg:flex-row items-center gap-4"
+      class="p-3 w-full bg-green-200 rounded flex flex-col lg:flex-row items-center gap-4"
     >
       <img
         class="h-40 w-40 bg-white rounded-full object-cover"
@@ -53,24 +53,22 @@
       </article>
     </div>
 
-    <div
-      class="h-full bg-white border mb-4 p-3 rounded-2xl shadow-md grid gap-2"
-    >
+    <div class="h-full bg-white border mb-4 p-3 rounded shadow-md grid gap-2">
       <div
-        class="p-2 bg-green-200 rounded-lg text-black flex justify-between items-center gap-2"
+        class="p-2 bg-green-200 rounded text-black flex justify-between items-center gap-2"
       >
         <span>Encaissements : <b>{{ credits|length }}</b></span>
         <span>Montant total encaissé : <b>{{ credits_aggregate }} CFA</b></span>
       </div>
 
       <div
-        class="p-2 bg-orange-200 rounded-lg text-black flex justify-between items-center gap-2"
+        class="p-2 bg-orange-200 rounded text-black flex justify-between items-center gap-2"
       >
         <span>Décaissements : <b>{{ debits|length }}</b></span>
         <span>Montant total décaissé : <b>{{ debits_aggregate }} CFA</b></span>
       </div>
 
-      <div class="p-2 bg-gray-200 rounded-lg text-black flex items-center">
+      <div class="p-2 bg-gray-200 rounded text-black flex items-center">
         <span>Solde : <b>{{ balance }} CFA</b></span>
       </div>
     </div>
@@ -91,7 +89,7 @@
           <!-- transaction initiator -->
           <select
             name="initiator"
-            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
             <option value="" selected="true" disabled="disabled">
               Initiateurs
@@ -108,7 +106,7 @@
             placeholder="Min"
             name="min_amount"
             type="number"
-            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           />
           <input
             hx-post="{% url 'filter_transactions' %}"
@@ -117,12 +115,12 @@
             placeholder="Max"
             name="max_amount"
             type="number"
-            class="px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           />
           <!-- transaction type -->
           <select
             name="type"
-            class="hidden sm:flex px-3 py-2 rounded-md border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
           >
             <option value="" selected="true" disabled="disabled">Type</option>
             <option value="debit">Débit</option>
@@ -131,13 +129,13 @@
         </section>
 
         <button
-          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded-lg transition duration-200 ease-in"
+          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded transition duration-200 ease-in"
           type="submit"
         >
           <i class="fa-solid fa-filter"></i>
         </button>
         <button
-          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded-lg transition duration-200 ease-in"
+          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded transition duration-200 ease-in"
           hx-on:click="clearForm('filter')"
           type="submit"
         >
@@ -149,14 +147,14 @@
           onclick="hide_dialogs()"
           hx-target="#basic_dialog"
           hx-get="{% url 'create_transaction' curr_obj.id %}"
-          class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+          class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
         >
           Nouveau
           <i class="text-sm fa-solid fa-plus ml-2"></i>
         </button>
         <a
           href="{% url 'desk_closings_list' curr_obj.id %}"
-          class="px-4 py-2 flex items-center text-black bg-orange-200 hover:bg-orange-300 rounded-lg w-fit text-center cursor-pointer"
+          class="px-4 py-2 flex items-center text-black bg-orange-200 hover:bg-orange-300 rounded w-fit text-center cursor-pointer"
         >
           Arrêtés
           <i class="fa-solid fa-shop-lock ml-2"></i>

@@ -3,7 +3,7 @@
     onclick="hide_dialogs()"
     hx-target="#basic_dialog"
     hx-get="{% url 'create_cashdesk' %}"
-    class="bg-lime-200 hover:bg-lime-300 rounded-lg py-2 px-4 text-black flex items-center gap-4 group"
+    class="bg-lime-200 hover:bg-lime-300 rounded py-2 px-4 text-black flex items-center gap-4 group"
   >
     Nouveau
     <i class="text-sm fa-solid fa-plus ml-2"></i>
@@ -19,23 +19,21 @@
   {% else %}
 
   <div
-    class="p-2 bg-green-50 border-2 border-green-300 rounded-xl flex flex-col justify-evenly gap-2"
+    class="p-2 bg-green-50 border-2 border-green-300 rounded flex flex-col justify-evenly gap-2"
   >
-    <p
-      class="p-2 bg-green-100 rounded-lg flex justify-between items-center gap-2"
-    >
+    <p class="p-2 bg-green-100 rounded flex justify-between items-center gap-2">
       <span>Caisse : <b>{{ obj.name }}</b></span>
     </p>
     <div class="grid grid-cols-3 gap-2">
-      <div class="p-2 bg-green-200 rounded-md flex flex-col">
+      <div class="p-2 bg-green-200 rounded flex flex-col">
         <span>Encaissements</span>
         <b>{{ cash_credits }} CFA</b>
       </div>
-      <div class="p-2 bg-green-300 rounded-md flex flex-col">
+      <div class="p-2 bg-green-300 rounded flex flex-col">
         <span>Décaissements</span>
         <b>{{ tmoney_credits }} CFA</b>
       </div>
-      <div class="p-2 bg-green-400 rounded-md flex flex-col">
+      <div class="p-2 bg-green-400 rounded flex flex-col">
         <span>Moov Money</span>
         <b>{{ moov_credits }} CFA</b>
       </div>

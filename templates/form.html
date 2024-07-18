@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="mx-auto w-full rounded-md">
+<div class="mx-auto w-full rounded">
   <form
     class="w-full flex flex-col gap-2 text-sm"
     hx-post="{{ request.path }}"
@@ -9,7 +9,7 @@
   >
     {% csrf_token %}
     <h2
-      class="px-4 py-2 bg-green-700 rounded-lg mb-4 text-center text-sm text-white"
+      class="px-4 py-2 bg-green-700 rounded mb-4 text-center text-sm text-white"
     >
       {{ form_title }}
     </h2>
@@ -25,7 +25,7 @@
 
     <div class="flex flex-row-reverse gap-2 items-end text-xs">
       <button
-        class="px-4 py-2 bg-green-700 text-white hover:bg-green-900 rounded-md"
+        class="px-4 py-2 bg-green-700 text-white hover:bg-green-900 rounded"
         type="submit"
       >
         {% if not curr_obj %} Ajouter {% else %} Enregistrer {% endif %}
@@ -33,7 +33,7 @@
       <button
         onclick="close_modal()"
         type="button"
-        class="modal_closer px-4 py-2 bg-gray-100 text-black hover:bg-red-300 rounded-md"
+        class="modal_closer px-4 py-2 bg-gray-100 text-black hover:bg-red-300 rounded"
       >
         Annuler
       </button>

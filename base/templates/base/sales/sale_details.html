@@ -2,36 +2,33 @@
 <!--  -->
 {% block content %}
 <div class="flex flex-col gap-4">
-  <div
-    class="p-6 bg-green-100 rounded-3xl h-full w-full mx-auto flex flex-col justify-between gap-4"
-  >
+  <div class="w-full flex flex-col justify-between gap-4">
     <div class="flex justify-between items-center">
       <a
-        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded-lg transition-all duration-300"
+        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
         href="{% url 'sales' %}"
         >&larr;
       </a>
 
       <div
-        class="flex items-center gap-4 px-3 py-2 rounded-xl bg-green-300 text-black"
+        class="flex items-center gap-4 px-3 py-2 rounded bg-lime-200 text-black"
       >
-        <i class="fa-solid fa-receipt"></i>Vente N°-<b>000-{{ curr_obj.id}}</b>
+        <i class="fa-solid fa-tags"></i>Vente N°-<b>000-{{ curr_obj.id}}</b>
         <button
           hx-target="#basic_dialog"
           hx-get="{% url 'edit_sale' curr_obj.id %}"
-          class="w-fit bg-green-200 hover:bg-green-500 text-xs px-3 py-2 rounded-md transition duration-200 ease-in"
+          class="w-fit bg-lime-400 hover:bg-lime-500 text-xs px-3 py-2 rounded transition duration-200 ease-in"
         >
           <i class="fa-solid fa-pen-to-square"></i>
         </button>
       </div>
     </div>
-
-    <div
-      hx-get="{% url 'sale_info' curr_obj.id %}"
-      hx-trigger="load, db_changed from:body"
-      hx-target="this"
-    ></div>
   </div>
+  <div
+    hx-get="{% url 'sale_info' curr_obj.id %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  ></div>
 
   <div class="mb-20 flex flex-col gap-2">
     <div class="flex justify-between items-center gap-2">
@@ -40,7 +37,7 @@
       <button
         hx-target="#basic_dialog"
         hx-get="{% url 'create_sale_item' curr_obj.id %}"
-        class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded-lg w-fit text-center cursor-pointer"
+        class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
       >
         Nouveau
         <i class="text-sm fa-solid fa-plus ml-2"></i>

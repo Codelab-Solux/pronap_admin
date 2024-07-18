@@ -1,16 +1,8 @@
 {% load static %}
 <!--  -->
 <div
-  class="relative h-full flex items-center border bg-white hover:shadow-md rounded-xl overflow-hidden"
+  class="h-full flex items-center border bg-white hover:shadow-md rounded overflow-hidden"
 >
-  <button
-    onclick="closeModal()"
-    hx-target="#basic_dialog"
-    hx-get="{% url 'edit_staff' obj.id %}"
-    class="absolute top-1 left-1 w-fit bg-green-700 hover:bg-green-900 text-white px-2 py-1 text-xs rounded-md transition duration-200 ease-in"
-  >
-    <i class="fa-solid fa-pen-to-square"></i>
-  </button>
   {% if not obj.profile.image %}
   <img
     class="h-20 w-20 mx-auto rounded-full object-cover"
@@ -31,7 +23,7 @@
     class="bg-lime-200 bg-white p-3 h-full w-full flex flex-col gap-1 text-left cursor-pointer"
   >
     <h4 class="text-black font-bold">{{obj.last_name}} {{obj.first_name}}</h4>
-    <p class="rounded-md flex gap-2 items-center text-black text-xs">
+    <p class="rounded flex gap-2 items-center text-black text-xs">
       {{obj.role.name}}
     </p>
     <p class="text-sm">{{obj.profile.bio|truncatechars:50}}</p>

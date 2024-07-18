@@ -1,7 +1,7 @@
 {% load static %}
 
 <div
-  class="p-2 relative w-full h-full bg-white text-sm grid grid-cols-6 justify-between items-center rounded-xl border hover:shadow-lg transition duration-200 ease-in"
+  class="p-2 relative w-full h-full bg-white text-sm grid grid-cols-6 justify-between items-center rounded border hover:shadow-lg transition duration-200 ease-in"
 >
   <p>Date : {{obj.timestamp.date}}</p>
   <p>Heure : {{obj.timestamp.time}}</p>
@@ -9,22 +9,19 @@
 
   <p>
     Total :
-    <span
-      class="w-fit text-xs text-black bg-green-200 rounded-md px-2 py-[0.2em]"
-    >
+    <span class="w-fit text-xs text-black bg-green-200 rounded px-2 py-[0.2em]">
       {{obj.total}} CFA</span
     >
   </p>
   <p>
     Remise :
-    <span
-      class="w-fit text-xs text-black bg-orange-200 rounded-md px-2 py-[0.2em]"
+    <span class="w-fit text-xs text-black bg-orange-200 rounded px-2 py-[0.2em]"
       >{{obj.discount}} CFA</span
     >
   </p>
   <button
     type="button"
-    class="hover:text-black bg-white rounded-lg hover:text-green-400 px-2 py-1 text-sm"
+    class="hover:text-black bg-white rounded hover:text-green-400 px-2 py-1 text-sm"
     name="sentry"
     aria-expanded="false"
     aria-haspopup="true"
@@ -34,7 +31,7 @@
   </button>
 
   <div
-    class="hidden absolute top-3 right-3 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-0 origin-top-left bg-white z-10 rounded-xl flex flex-col items-center gap-2 text-xs overflow-hidden"
+    class="hidden absolute top-3 right-3 bg-gray-50 w-40 shadow-md lg:w-[180px] p-2 absolute right-0 top-0 origin-top-left bg-white z-10 rounded flex flex-col items-center gap-2 text-xs overflow-hidden"
     role="status menu"
     aria-orientation="vertical"
     aria-labelledby="status-menu-button"
@@ -45,7 +42,7 @@
     <a
       hx-boost="false"
       href="{% url 'sale_details' obj.id %}"
-      class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded-lg w-full text-center cursor-pointer"
+      class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
     >
       <i class="text-sm fa-solid fa-expand mr-2"></i>
       Détails
@@ -56,7 +53,7 @@
       hx-target="#basic_dialog"
       hx-delete="{% url 'delete_base_object' obj.id 'Sale' %}"
       hx-confirm="Voulez vous vraiment suprimmer ceci?"
-      class="px-3 py-1 flex items-center hover:text-black hover:bg-red-200 rounded-lg w-full text-center cursor-pointer"
+      class="px-3 py-1 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
     >
       <i class="text-sm fa-solid fa-trash mr-2"></i>
       Supprimer
