@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: >
+      gunicorn -b 0.0.0.0:8000 pronap_admin.wsgi:application
+    environment:
+      - ALLOWED_HOSTS=62.72.19.182,administration23wer21.pronap.store
+    ports:
+      - "8000:8000"
