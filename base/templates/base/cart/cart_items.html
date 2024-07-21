@@ -1,19 +1,77 @@
-{% for item in cart_items %}
-<article class="p-2 border-b border-lime-400 flex justify-between">
-    <span class="flex gap-3">{{item.product.product.name}}</span>
-    <div class="flex gap-2 text-xs">
-        <button onclick="add_to_cart('{{ item.product.id }}')">
-            <i class="fa-solid fa-plus text-green-700"></i>
-        </button>
-        <b>x {{item.quantity}}</b>
-        <button onclick="remove_from_cart('{{ item.product.id }}')">
-            <i class="fa-solid fa-minus text-lime-400"></i>
-        </button>
+{% if not cart_items %}
+<div
+  class="h-full flex flex-col justify-center items-center gap-3 bg-white border border-lime-400 rounded"
+>
+  <i class="fa-solid fa-shopping-cart text-green-700 text-5xl"></i>
+  <span>Le panier est vide</span>
+</div>
+{% else %}
+<form
+  id="sale_parameters_form"
+  action="{% url 'checkout' %}"
+  method="post"
+  class="w-full flex justify-between items-center gap-2 text-sm"
+>
+  {% csrf_token %}
+  <select
+    name="client_id"
+    class="flex px-3 py-1 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500 w-full cursor-pointer"
+  >
+    <option value="" selected="true" disabled="disabled">Client</option>
+    {% for obj in clients %}
+    <option value="{{obj.id}}">{{obj.name}} (tel:{{obj.phone}})</option>
+    {% endfor %}
+  </select>
+  <select
+    name="cashdesk_id"
+    class="flex px-3 py-1 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500 w-full cursor-pointer"
+  >
+    <option value="" selected="true" disabled="disabled">Caisse</option>
+    {% for obj in cashdesks %}
+    <option value="{{obj.id}}">{{obj.name}} (tel:{{obj.phone}})</option>
+    {% endfor %}
+  </select>
+  <input name="sale_payment" id="sale_payment" type="number" hidden>
+</form>
+<div
+  id="cart_items"
+  class="h-full bg-white border border-lime-400 rounded overflow-y-auto"
+>
+  {% for item in cart_items %}
+  <article class="p-2 border-b border-lime-400 flex justify-between items-center">
+    <span>{{item.product.product.name}}</span>
+    <div class="flex items-center gap-2 text-xs">
+      <button
+        hx-post="{% url 'add_to_cart' %}"
+        hx-include="[name='csrfmiddlewaretoken']"
+        hx-vals='{"product_id": {{ item.product.id }}, "action": "post"}'
+        class="bg-gray-100 p-1 rounded"
+      >
+        <i class="fa-solid fa-plus text-lime-500"></i>
+      </button>
+      <b>x {{item.quantity}}</b>
+      <button
+        hx-post="{% url 'remove_from_cart' %}"
+        hx-include="[name='csrfmiddlewaretoken']"
+        hx-vals='{"product_id": {{ item.product.id }}, "action": "post"}'
+        class="bg-gray-100 p-1 rounded"
+      >
+        <i class="fa-solid fa-minus text-orange-500"></i>
+      </button>
     </div>
     <span class="text-black">{{item.total_price}}</span>
-    <span class="text-black">{{item.product.price}}/{{item.product.product.unit}}</span>
-    <button onclick="clear_from_cart('{{ item.product.id }}')">
-        <i class="fa-solid fa-trash text-red-600"></i>
+    <span class="text-black"
+      >{{item.product.price}}/{{item.product.product.unit}}</span
+    >
+    <button
+      hx-post="{% url 'clear_item' %}"
+      hx-include="[name='csrfmiddlewaretoken']"
+      hx-vals='{"product_id": {{ item.product.id }}, "action": "post"}'
+      class="p-[0.05em]"
+    >
+      <i class="fa-solid fa-trash text-red-600"></i>
     </button>
-</article>
-{% endfor %}
+  </article>
+  {% endfor %}
+</div>
+{% endif %}

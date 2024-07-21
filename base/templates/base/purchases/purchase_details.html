@@ -1,9 +1,7 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 
 <div class="flex flex-col gap-4">
-  <div
-    class="w-full mx-auto flex flex-col justify-between gap-4"
-  >
+  <div class="w-full mx-auto flex flex-col justify-between gap-4">
     <div class="flex justify-between items-center">
       <a
         class="inline-block px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
@@ -15,7 +13,7 @@
         class="flex items-center gap-4 px-3 py-2 rounded bg-lime-200 text-black"
       >
         <i class="fa-solid fa-receipt"></i>Achat N°-<b>000-{{ curr_obj.id}}</b>
-        {% if curr_obj.type == 'product' %}
+
         <button
           hx-target="#basic_dialog"
           hx-get="{% url 'edit_purchase' curr_obj.id %}"
@@ -23,31 +21,14 @@
         >
           <i class="fa-solid fa-pen-to-square"></i>
         </button>
-        {% elif curr_obj.type == 'service' %}
-        <button
-          hx-target="#basic_dialog"
-          hx-get="{% url 'edit_purchase' curr_obj.id %}"
-          class="w-fit bg-lime-400 hover:bg-lime-500 text-xs px-3 py-2 rounded transition duration-200 ease-in"
-        >
-          <i class="fa-solid fa-pen-to-square"></i>
-        </button>
-        {% endif %}
       </div>
     </div>
   </div>
-  {% if curr_obj.type == 'product' %}
   <div
     hx-get="{% url 'purchase_info' curr_obj.id  %}"
     hx-trigger="load, db_changed from:body"
     hx-target="this"
   ></div>
-  {% elif curr_obj.type == 'service' %}
-  <div
-    hx-get="{% url 'purchase_info' curr_obj.id  %}"
-    hx-trigger="load, db_changed from:body"
-    hx-target="this"
-  ></div>
-  {% endif %}
   <!--  -->
   {% if curr_obj.type == 'product' %}
   <div class="mb-20 flex flex-col gap-2">

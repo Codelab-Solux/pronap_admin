@@ -2,58 +2,48 @@
 <div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
   <a
     class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
-    href="{% url 'clients' %}"
+    href="{% url 'parameters' %}"
     >&larr;
   </a>
   <!--  -->
   <div class="w-full grid md:grid-cols-2 gap-4">
     <div
-      class="p-3 w-full bg-green-200 rounded flex flex-col lg:flex-row items-center gap-4"
+      class="p-3 w-full bg-green-700 text-white rounded flex flex-col lg:flex-row items-center gap-4"
     >
-      {% if not curr_obj.image %}
       <img
         class="h-40 w-40 bg-white rounded-full object-cover"
-        src="{% static 'imgs/anon.png' %}"
+        src="{% static 'imgs/icon-w.png' %}"
         alt="image"
       />
-      {% else %}
-      <img
-        class="h-40 w-40 bg-white rounded-full object-cover"
-        src="{{curr_obj.image.url}}"
-        alt="image"
-      />
-      {% endif %}
-      <article class="text-gray-700 grid gap-1 w-full">
-        <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
+      <article class="text-gray-300 grid gap-1 w-full">
+        <h4 class="text-white text-2xl font-bold">{{curr_obj.name}}</h4>
         <p>
-          <i class="fa-solid fa-user-tie text-gray-800 mr-3"></i> Type :
-          <span class="text-black"> {{curr_obj.type}} </span>
+          <i class="fa-solid fa-store-alt text-gray-300 mr-3"></i> Boutique :
+          <span class="text-white"> {{curr_obj.store.name}} </span>
         </p>
         <p>
-          <i class="fa-solid fa-phone text-gray-800 mr-3"></i> N° de telephone :
-          <span class="text-black">{{curr_obj.phone}} </span>
+          <i class="fa-solid fa-calendar-days text-gray-300 mr-3"></i> Date :
+          <span class="text-white"> {{curr_obj.timestamp.date}} </span>
         </p>
         <p>
-          <i class="fa-solid fa-envelope-open text-gray-800 mr-3"></i> Email :
-          <span class="text-black">{{curr_obj.email}} </span>
-        </p>
-        <p>
-          <i class="fa-solid fa-location-dot text-gray-800 mr-3"></i> Adresse :
-          <span class="text-black">{{curr_obj.address}} </span>
+          <i class="fa-solid fa-clock text-gray-300 mr-3"></i> Heure :
+          <span class="text-white">{{curr_obj.timestamp.time}} </span>
         </p>
       </article>
     </div>
 
-    <div class="h-full bg-orange-200 mb-4 p-4 rounded text-base grid gap-4">
+    <div class="h-full bg-lime-200 mb-4 p-4 rounded text-base grid gap-4">
       <span>Achats : <b>{{ purchases|length }}</b></span>
       <span>Retours : <b>{{ returned|length }}</b></span>
-      <span>Dons : <b>{{ gifts|length }}</b></span>
+      <span>Dons/Cadeaux : <b>{{ gifts|length }}</b></span>
+      <span>Utilisations : <b>{{ gifts|length }}</b></span>
+      <span>Dommages : <b>{{ gifts|length }}</b></span>
     </div>
   </div>
 
   <section class="mb-20 flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <h3 class="font-bold text-lg text-black">Liste des achats du client</h3>
+      <h3 class="font-bold text-lg text-black">Liste des produits du lot</h3>
       <form
         id="filter"
         hx-post="{% url 'filter_client_purchases' curr_obj.id %}"
@@ -124,19 +114,8 @@
       </form>
     </div>
 
-    <div
-      class="client_purchases h-full w-full"
-      hx-get="{% url 'client_purchases' curr_obj.id %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      >
-        <p
-          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
-        >
-          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
-        </p></div>
+    {% include 'base/products/prod_stock_list.html' %}
   </section>
 </div>
-
 
 {% endblock %}

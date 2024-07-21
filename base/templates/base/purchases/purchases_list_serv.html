@@ -34,8 +34,20 @@
       <td class="px-3 py-1">{{obj.label}}</td>
       <!-- <td class="px-3 py-1">{{obj.get_payment_status_display}}</td> -->
       <td class="px-3 py-1">{{obj.total}} CFA</td>
-      <td class="px-3 py-1">{{obj.amount}} CFA</td>
-      <td class="px-3 py-1">{{ obj.total|subtract:obj.amount }} CFA</td>
+      <td class="px-3 py-1">{{obj.total_paid}} CFA</td>
+      {% if obj.total_paid == obj.total %}
+      <td
+        class="px-3 py-1 text-center text-black bg-lime-100 border border-lime-300"
+      >
+        {{ obj.total|subtract:obj.total_paid }} CFA
+      </td>
+      {% else %}
+      <td
+        class="px-3 py-1 text-center text-black bg-orange-100 border border-orange-300"
+      >
+        {{ obj.total|subtract:obj.total_paid }} CFA
+      </td>
+      {% endif %}
       <td class="px-3 py-1 relative">
         <div class="w-fit text-gray-700 mx-auto">
           <button

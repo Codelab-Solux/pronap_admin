@@ -29,15 +29,15 @@
       <td class="px-3 py-1">Trs-000-{{obj.id}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
       <td class="px-3 py-1">{{obj.timestamp.time}}</td>
-      <td class="px-3 py-1">{{obj.payment.initiator.get_full_name}}</td>
+      <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1 text-center">{{obj.label}}</td>
       <td class="px-3 py-1 text-center">{{obj.amount}} CFA</td>
       {% if obj.type == 'credit' %}
-      <td class="px-3 py-1 text-center bg-green-100">
+      <td class="px-3 py-1 text-center text-black  bg-lime-100 border border-lime-300">
         {{obj.get_type_display}}
       </td>
       {% else %}
-      <td class="px-3 py-1 text-center bg-orange-100">
+      <td class="px-3 py-1 text-center text-black bg-orange-100 border border-orange-300">
         {{obj.get_type_display}}
       </td>
       {% endif %}
@@ -59,19 +59,19 @@
             id="trs_{{obj.id}}"
           >
             <!--  -->
-            <a
+            <!-- <a
               hx-boost="false"
               href="{% url 'transaction_details' obj.id %}"
-              class="px-3 py-1 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
+              class="px-3 py-1 flex items-center hover:text-black hover:bg-lime-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-expand mr-2"></i>
               Détails
-            </a>
+            </a> -->
 
             <button
               hx-target="#basic_dialog"
               hx-get="{% url 'edit_transaction' obj.id %}"
-              class="px-4 py-2 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
+              class="px-3 py-1 flex items-center hover:text-black hover:bg-orange-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-pen-to-square mr-2"></i>
               Modifier

@@ -1,12 +1,12 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
   <div class="flex justify-between items-center">
-        <button
-        onclick="goBack()"
-        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
-      >
-        &larr;
-      </button>
+    <button
+      onclick="goBack()"
+      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
+    >
+      &larr;
+    </button>
 
     <form
       id="filter"
@@ -61,11 +61,15 @@
   </div>
 
   <div
-    class="clients_list"
+    class="clients_list w-full h-full"
     hx-get="{% url 'clients_list' %}"
     hx-trigger="load, db_changed from:body"
     hx-target="this"
-  ></div>
+  >
+    <p class="h-full w-full flex justify-center items-center text-lime-500 p-4">
+      <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+    </p>
+  </div>
 </div>
 
 <script>

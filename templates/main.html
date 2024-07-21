@@ -221,8 +221,9 @@
         html2canvas: { scale: 2 },
         jsPDF: {
           unit: "in",
-          format: [80 / 25.4, 297 / 25.4],
-          orientation: "portrait",
+          // format: [80 / 25.4, 297 / 25.4],
+          // orientation: "portrait",
+          orientation: "landscape",
         },
       };
       html2pdf().from(element).set(opt).save();

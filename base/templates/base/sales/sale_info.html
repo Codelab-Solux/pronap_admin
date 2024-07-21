@@ -85,10 +85,10 @@
   <div class="w-full grid gap-2">
     <div class="flex justify-between items-center gap-4">
       <h3 class="text-black font-bold">Liste des paiements</h3>
-      {% if not payment_complete %}
+      {% if not is_fully_paid %}
       <button
         hx-target="#basic_dialog"
-        hx-get="{% url 'create_sale_payment' curr_obj.id %}"
+        hx-get="{% url 'create_sale_transaction' curr_obj.id %}"
         class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
       >
         Nouveau
@@ -97,36 +97,32 @@
       {% endif %}
     </div>
 
-    {% if not payments %}
+    {% if not transactions %}
     <div class="flex flex-col items-center gap-2 my-10 mx-auto">
       <i class="fa-solid fa-hand-holding-dollar text-gray-600 text-xl"></i>
-      <span>Aucun payment trouvé</span>
+      <span>Aucun transaction trouvé</span>
     </div>
     {% else %}
     <table id="items_table" class="bg-white h-fit w-full text-left db-table">
       <thead class="bg-lime-300 border border-lime-400 text-black">
         <tr>
           <th class="px-3 py-2 text-sm">Date</th>
+          <th class="px-3 py-2 text-sm">Heure</th>
           <th class="px-3 py-2 text-sm">Initiateur</th>
-          <!-- <th class="px-3 py-2 text-sm">Montant dû</th> -->
           <th class="px-3 py-2 text-sm">Montant payé</th>
-          <!-- <th class="px-3 py-2 text-sm">Reste à payer</th> -->
           <th class="px-3 py-2 text-sm text-center">Action</th>
         </tr>
       </thead>
 
       <tbody class="border">
-        {% for obj in payments %}
+        {% for obj in transactions %}
         <tr
           class="text-gray-600 text-sm hover:bg-white hover:text-black transition-all duration-300"
         >
           <td class="px-3 py-1">{{ obj.timestamp.date }}</td>
+          <td class="px-3 py-1">{{ obj.timestamp.time }}</td>
           <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
-          <!-- <td class="px-3 py-1">{{ curr_obj.total }} CFA</td> -->
           <td class="px-3 py-1">{{ obj.amount }} CFA</td>
-          <!-- <td class="px-3 py-1">
-            {{ curr_obj.total|subtract:obj.amount }} CFA
-          </td> -->
           <td class="px-3 py-1 text-center relative">
             <div
               class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"
@@ -148,7 +144,7 @@
                 <button
                   onclick="hide_dialogs()"
                   hx-target="#basic_dialog"
-                  hx-get="{% url 'edit_payment' obj.id %}"
+                  hx-get="{% url 'edit_transaction' obj.id %}"
                   class="px-3 py-2 flex items-center hover:text-black hover:bg-green-200 rounded w-full text-center cursor-pointer"
                 >
                   <i class="text-sm fa-solid fa-pen mr-2"></i>
@@ -156,7 +152,7 @@
                 </button>
 
                 <button
-                  hx-delete="{% url 'delete_base_object' obj.id 'Payement' %}"
+                  hx-delete="{% url 'delete_base_object' obj.id 'Transaction' %}"
                   hx-confirm="Voulez vous vraiment suprimmer ceci?"
                   class="px-3 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
                 >

@@ -110,7 +110,7 @@ def staff_details(req, pk):
 
     sales = Sale.objects.filter(initiator=curr_obj)
     sales_aggregate = sales.aggregate(totals=Sum('total'))['totals'] or 0
-    transactions = Transaction.objects.filter(payment__initiator=curr_obj)
+    transactions = Transaction.objects.filter(initiator=curr_obj)
     trans_aggregate = transactions.aggregate(
         totals=Sum('amount'))['totals'] or 0
     stocks = StockOperation.objects.filter(initiator=curr_obj)

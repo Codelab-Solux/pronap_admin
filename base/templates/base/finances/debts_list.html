@@ -1,4 +1,4 @@
-{% if not debts %}
+{% load app_tags %} {% if not debts %}
 <div class="flex flex-col items-center gap-2 my-20 mx-auto">
   <i class="fa-solid fa-file-invoice-dollar text-green-700 text-9xl"></i>
   <span>Aucune dette trouvée</span>
@@ -13,7 +13,9 @@
       <th class="px-3 py-4 text-sm">Initiateur</th>
       <th class="px-3 py-4 text-sm">Fournisseur</th>
       <th class="px-3 py-4 text-sm text-center">Libelé</th>
-      <th class="px-3 py-4 text-sm text-center">Montant</th>
+      <th class="px-3 py-4 text-sm text-center">Montant à payer</th>
+      <th class="px-3 py-4 text-sm text-center">Montant payé</th>
+      <th class="px-3 py-4 text-sm text-center">Montant restant</th>
       <th class="px-3 py-4 text-sm text-center">Actions</th>
     </tr>
   </thead>
@@ -30,6 +32,24 @@
       <td class="px-3 py-1">{{obj.supplier.name}}</td>
       <td class="px-3 py-1 text-center">{{obj.label}}</td>
       <td class="px-3 py-1 text-center">{{obj.amount}} CFA</td>
+      <td class="px-3 py-1 text-center">{{obj.id|get_debt_payments}} CFA</td>
+      {% with total_paid=obj.id|get_debt_payments %}
+      <!--  -->
+      {% if total_paid == obj.amount %}
+      <td
+        class="px-3 py-1 text-center text-black bg-lime-100 border border-lime-300"
+      >
+        {{obj.amount|subtract:total_paid}} CFA
+      </td>
+      {% else %}
+      <td
+        class="px-3 py-1 text-center text-black bg-orange-100 border border-orange-300"
+      >
+        {{obj.amount|subtract:total_paid}} CFA
+      </td>
+      {% endif %}
+      <!--  -->
+      {% endwith %}
       <td class="px-3 py-1 text-center relative">
         <div
           class="w-fit flex gap-3 justify-end items-end text-end text-gray-700 mx-auto"

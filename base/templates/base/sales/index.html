@@ -101,6 +101,15 @@
   </div>
 
   <!--  -->
-  {% include 'base/sales/sales_table.html' %}
+  <div
+    class="sales_table w-full h-full"
+    hx-get="{% url 'sales_table' %}"
+    hx-trigger="load, db_changed from:body"
+    hx-target="this"
+  >
+    <p class="h-full w-full flex justify-center items-center text-lime-500 p-4">
+      <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+    </p>
+  </div>
 </div>
 {% endblock %}

@@ -73,8 +73,29 @@ def get_desk_receipt(pk, kp):
         cash_receipt=cash_receipt, CashdeskClosing=closing).first()
     return result
 
-# in template arithmetic
 
+@register.filter
+def get_debt_payments(pk):
+    content_type = ContentType.objects.get_for_model(Purchase)
+    debt = Debt.objects.filter(id=pk).first()
+    pay_transactions = Transaction.objects.filter(content_type=content_type, object_id=debt.purchase.id)
+    pay_aggregate = pay_transactions.aggregate(
+        amount=models.Sum('amount'))['amount'] or 0
+    return pay_aggregate
+
+@register.filter
+def get_receivable_payments(pk):
+    content_type = ContentType.objects.get_for_model(Sale)
+    receivable = Receivable.objects.filter(id=pk).first()
+    pay_transactions = Transaction.objects.filter(content_type=content_type, object_id=receivable.purchase.id)
+    pay_aggregate = pay_transactions.aggregate(
+        amount=models.Sum('amount'))['amount'] or 0
+    return pay_aggregate
+
+
+
+
+# in template arithmetic----------------------------------------
 
 @register.filter
 def add(a, b):

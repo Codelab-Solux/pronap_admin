@@ -88,31 +88,33 @@
     <div
       class="overflow-y-auto border bg-gray-100 w-full h-full min-h-80 rounded flex flex-col"
     >
-      <div class="p-3">
-        {% if not products %}
-        <div
-          class="flex flex-col justify-center items-center gap-2 my-20 mx-auto"
+      <div
+        class="sale_point_grid h-full w-full"
+        hx-get="{% url 'sale_point_grid' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
         >
-          <i class="fa-solid fa-box-open text-green-700 text-9xl"></i>
-          <span>Aucun produit trouvé</span>
-        </div>
-        {% else %}
-        <div class="grid lg:grid-cols-2 gap-2 lg:grid-cols-2 xl:grid-cols-3">
-          {% for obj in products %}
-          <!--  -->
-          {% include 'base/components/product_sale_card.html' %}
-          <!--  -->
-          {% endfor %}
-        </div>
-
-        {% include 'paginator.html' %}
-        <!--  -->
-        {% endif %}
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
       </div>
     </div>
     <!-- cart -->
-    <div id="cart" class="w-full h-full lg:max-w-[300px] 2xl:max-w-[350px]">
-      {% include 'base/cart.html' %}
+    <div class="w-full h-full lg:max-w-[300px] 2xl:max-w-[350px]">
+      <div
+        class="cart h-full w-full"
+        hx-get="{% url 'cart' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
   </section>
 </div>

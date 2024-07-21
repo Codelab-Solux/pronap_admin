@@ -26,26 +26,25 @@
           <i class="inline fa-solid fa-file-pdf lg:mr-2"></i>
           <span class="hidden md:inline text-sm"> Extraire format PDF </span>
         </button>
-
       </div>
     </div>
 
-    <div
+    <section
       id="closing_details"
       class="w-full flex flex-col lg:flex-row justify-between gap-4"
     >
-    <div class="w-full">
-      {% include 'base/closings/desk_closing_table.html' %}
-    </div>
+      <div class="w-full">
+        {% include 'base/closings/desk_closing_table.html' %}
+      </div>
 
       <div
-        class="p-3 h-100 bg-lime-200 rounded w-full max-w-[400px] flex flex-col gap-2"
+        class="p-3 h-100 bg-lime-200 rounded text-sm w-full max-w-[300px] flex flex-col gap-2"
       >
         <div
-          class="flex items-center gap-4 px-3 py-2 rounded bg-lime-400 text-black"
+          class="flex items-center justify-center gap-4 px-3 py-2 rounded bg-lime-400 text-black"
         >
           <i class="fa-solid fa-shop-closed"></i>Arrêté de caisse N°-<b
-            >000-{{ curr_obj.id}}</b
+            >0-{{ curr_obj.id}}</b
           >
           <button
             hx-target="#basic_dialog"
@@ -74,7 +73,7 @@
         </a>
         {% endif %}
       </div>
-    </div>
+    </section>
   </div>
 </div>
 

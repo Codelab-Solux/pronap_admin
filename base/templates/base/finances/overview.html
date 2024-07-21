@@ -170,38 +170,62 @@
         </form>
       </div>
       <div
-        class="transactions_list"
+        class="transactions_list w-full h-full"
         hx-get="{% url 'transactions_list' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
     <!--  -->
     <div id="credits" class="tabcontent w-full flex flex-col gap-2">
       <div
-        class="credits_list"
+        class="credits_list w-full h-full"
         hx-get="{% url 'credits_list' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
     <!--  -->
     <div id="debits" class="tabcontent w-full flex flex-col gap-2">
       <div
-        class="debits_list"
+        class="debits_list w-full h-full"
         hx-get="{% url 'debits_list' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
     <!--  -->
     <div id="desks" class="tabcontent w-full flex flex-col gap-2">
       <div
-        class="cashdesks_list"
+        class="cashdesks_list w-full h-full"
         hx-get="{% url 'cashdesks_list' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
   </section>
 </div>

@@ -1,17 +1,26 @@
-<div class="py-1 flex justify-between items-center">
-  Total à payer
-  <span class="text-black font-bold mr-2">{{cart_total}} CFA</span>
-</div>
-<p class="py-1 flex justify-between items-center border-y border-lime-400">
-  Total Réglé
-  <input
-    id="paid"
-    class="text-right text-green-700 rounded py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
-    type="text"
-    placeholder="0 CFA"
-  />
-</p>
-<p class="py-1 flex justify-between items-center">
-  Reliquat
-  <span id="balance" class="text-black font-bold mr-2">0 CFA</span>
-</p>
+    <div
+      id="cart_totals"
+      class="bg-lime-200 border border-lime-400 flex flex-col px-2 text-xs xl:text-sm text-gray-500 rounded"
+    >
+      <div class="py-1 flex justify-between items-center">
+        Total à payer
+        <span id="cart_total" class="text-black font-bold mr-2"
+          >{{cart_total}} XOF</span
+        >
+      </div>
+      <p
+        class="py-1 flex justify-between items-center border-y border-lime-400"
+      >
+        Total Réglé
+        <input
+          id="total_paid"
+          class="text-right text-green-700 rounded py-1 px-2 focus:outline-none focus:ring-1 focus:ring-green-700"
+          type="text"
+          placeholder="0 XOF"
+        />
+      </p>
+      <p class="py-1 flex justify-between items-center">
+        Reliquat
+        <span id="total_due" class="text-black font-bold mr-2">0 XOF</span>
+      </p>
+    </div>

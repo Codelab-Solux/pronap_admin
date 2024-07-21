@@ -1,11 +1,13 @@
 {% load static %}
 
 <div
+  {% if obj.quantity >= 1 %}
   hx-target=".cart"
   hx-post="{% url 'add_to_cart' %}"
   hx-include="[name='csrfmiddlewaretoken']"
   hx-vals='{"product_id": {{ obj.product.id }}, "action": "post"}'
-  class="relative w-full h-full bg-white flex justify-between items-center rounded border hover:shadow-lg group transition duration-200 ease-in overflow-hidden {% if obj.quantity < 1 %} bg-gray-100 cursor-disabled{% else %}cursor-pointer{% endif %}"
+  {% endif %}
+  class="relative w-full h-full bg-white flex justify-between items-center rounded border hover:shadow-lg group transition duration-200 ease-in overflow-hidden {% if obj.quantity < 1 %} bg-gray-100 cursor-not-allowed{% else %}cursor-pointer{% endif %}"
 >
   {% if obj.product.image %}
   <img
@@ -32,26 +34,25 @@
   <article
     class="p-2 w-full h-100 border-l flex flex-col justify-center gap-1 text-sm"
   >
-    <h3 class="font-bold text-black text-sm">{{obj.product.name}}</h3>
-    <p class="text-xs">{{obj.product.brand}}</p>
+    <h3 class="font-bold text-black text-sm">{{ obj.product.name }}</h3>
+    <p class="text-xs">{{ obj.product.brand }}</p>
     {% if obj.is_promoted %}
-    <p>{{obj.promo_price}} CFA</p>
+    <p>{{ obj.promo_price }} CFA</p>
     {% else %}
-    <p>{{obj.price}} CFA</p>
+    <p>{{ obj.price }} CFA</p>
     {% endif %}
     <!--  -->
     {% if obj.quantity < 1 %}
-    <span class="w-fit text-xs text-black bg-gray-200 rounded px-2 py-[0.2em]"
-      >{{obj.quantity}} en stock</span
-    >
+    <span class="w-fit text-xs text-black bg-gray-200 rounded px-2 py-[0.2em]">
+      {{ obj.quantity }} en stock
+    </span>
     {% else %}
-    <span class="w-fit text-xs text-black bg-lime-200 rounded px-2 py-[0.2em]"
-      >{{obj.quantity}} en stock</span
-    >
+    <span class="w-fit text-xs text-black bg-lime-200 rounded px-2 py-[0.2em]">
+      {{ obj.quantity }} en stock
+    </span>
     {% endif %}
   </article>
 </div>
 
 <!-- Hidden CSRF token input -->
 <input type="hidden" id="csrf_token" value="{{ csrf_token }}" />
-

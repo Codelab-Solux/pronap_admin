@@ -1,22 +1,14 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
-  <!-- <button
+  <button
     onclick="goBack()"
     class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
   >
     &larr;
-  </button> -->
-        <a
-        id="back-button"
-        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
-        href="#"
-        >&larr;
-      </a>
+  </button>
 
   <div class="w-full flex justify-between gap-4">
-    <section
-      class="p-4 w-full bg-green-200 rounded flex flex-col gap-4"
-    >
+    <section class="p-4 w-full bg-gray-200 rounded flex flex-col gap-4">
       <div class="flex flex-col lg:flex-row items-center gap-4">
         <img
           class="h-40 w-40 bg-white rounded-full object-cover"
@@ -24,13 +16,13 @@
           alt="image"
         />
 
-        <div class="w-full bg-green-300 p-4 rounded">
+        <div class="w-full bg-gray-300 p-4 rounded">
           <div class="relative w-full flex justify-between items-center">
             <h4 class="text-black text-2xl font-bold">{{curr_obj.name}}</h4>
             <div class="w-fit text-gray-700">
               <button
                 type="button"
-                class="hover:bg-green-400 px-3 py-1 rounded"
+                class="hover:bg-gray-400 px-3 py-1 rounded"
                 name="sentry"
                 onclick="toggleMenu(this,'menu_{{curr_obj.id}}')"
               >
@@ -125,13 +117,6 @@
           <i class="fa-solid fa-file-invoice-dollar"></i>
           <span class="ml-2">Dettes</span>
         </button>
-        <button
-          class="tabBtn px-2 py-2 bg-white hover:bg-green-700 hover:text-white rounded w-full"
-          onclick="openTab(event, 'pays')"
-        >
-          <i class="fa-solid fa-hand-holding-dollar"></i>
-          <span class="ml-2">Paiements</span>
-        </button>
       </div>
     </section>
 
@@ -141,10 +126,10 @@
       <!-- credits overview -->
 
       <div
-        class="p-2 bg-green-50 border-2 border-green-300 rounded flex flex-col justify-evenly gap-2"
+        class="p-2 bg-lime-50 border-2 border-lime-300 rounded flex flex-col justify-evenly gap-2"
       >
         <div
-          class="p-2 bg-green-100 rounded flex flex-col xl:flex-row justify-between items-center gap-2"
+          class="p-2 bg-lime-100 rounded flex flex-col xl:flex-row justify-between items-center gap-2"
         >
           <span>Encaissements : <b>{{ credits|length }}</b></span>
           <span
@@ -152,15 +137,15 @@
           >
         </div>
         <div class="grid grid-cols-3 gap-2">
-          <div class="p-2 bg-green-200 rounded flex flex-col">
+          <div class="p-2 bg-lime-200 rounded flex flex-col">
             <span>Espèces</span>
             <b>{{ cash_credits }} CFA</b>
           </div>
-          <div class="p-2 bg-green-300 rounded flex flex-col">
+          <div class="p-2 bg-lime-300 rounded flex flex-col">
             <span>T-Money</span>
             <b>{{ tmoney_credits }} CFA</b>
           </div>
-          <div class="p-2 bg-green-400 rounded flex flex-col">
+          <div class="p-2 bg-lime-400 rounded flex flex-col">
             <span>Moov Money</span>
             <b>{{ moov_credits }} CFA</b>
           </div>
@@ -300,11 +285,17 @@
         </form>
       </div>
       <div
-        class="store_stock"
+        class="store_stock w-full h-full"
         hx-get="{% url 'store_stock' curr_obj.id %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
     <!--  -->
     <div id="trans" class="tabcontent w-full flex flex-col gap-2">
@@ -359,11 +350,17 @@
         </form>
       </div>
       <div
-        class="store_transactions"
+        class="store_transactions w-full h-full"
         hx-get="{% url 'store_transactions' curr_obj.id %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
     <!--  -->
     <div id="recevs" class="tabcontent w-full flex flex-col gap-2">
@@ -380,11 +377,17 @@
       </div>
 
       <div
-        class="store_receivables"
+        class="store_receivables w-full h-full"
         hx-get="{% url 'store_receivables' curr_obj.id %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
     <!--  -->
     <div id="debts" class="tabcontent w-full flex flex-col gap-2">
@@ -400,32 +403,40 @@
         </button>
       </div>
       <div
-        class="store_debts"
+        class="store_debts w-full h-full"
         hx-get="{% url 'store_debts' curr_obj.id %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
-    </div>
-    <!--  -->
-    <div id="pays" class="tabcontent w-full flex flex-col gap-2">
-      <div class="mb-4 flex items-center justify-between">
-        <h3 class="font-bold text-black text-lg">Liste des paiements</h3>
-        <button
-          hx-target="#basic_dialog"
-          hx-get="{% url 'create_payment' %}"
-          class="px-4 py-2 flex items-center text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
         >
-          Nouveau
-          <i class="text-sm fa-solid fa-plus ml-2"></i>
-        </button>
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
       </div>
-      <div
-        class="store_payments"
-        hx-get="{% url 'store_payments' curr_obj.id %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      ></div>
     </div>
   </section>
 </div>
+
+<script>
+  //  tabbar navigator ----------------------------------------------------------------------------------------------------
+  document.getElementById("defaultTab").click();
+  function openTab(event, tabName) {
+    var i, tabcontent, tabBtn;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tabBtn = document.getElementsByClassName("tabBtn");
+    for (i = 0; i < tabBtn.length; i++) {
+      tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+    var minitabs = document.getElementsByClassName("minitabcontent");
+    if (minitabs.length != 0) {
+      minitabs = tabcontent.children;
+    }
+  }
+</script>
 {% endblock %}

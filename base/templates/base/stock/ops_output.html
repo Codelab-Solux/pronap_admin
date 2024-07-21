@@ -44,7 +44,8 @@
       <th class="px-3 py-4 text-sm">Date</th>
       <th class="px-3 py-4 text-sm">Heure</th>
       <th class="px-3 py-4 text-sm">Initiateur</th>
-      <th class="px-3 py-4 text-sm">Type d'operation</th>
+      <th class="px-3 py-4 text-sm">Operation</th>
+      <th class="px-3 py-4 text-sm">Type</th>
       <th class="px-3 py-4 text-sm">Description</th>
       <th class="px-3 py-4 text-sm text-center">Actions</th>
     </tr>
@@ -60,6 +61,7 @@
       <td class="px-3 py-1">{{obj.timestamp.time}}</td>
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1">{{obj.get_type_display}}</td>
+      <td class="px-3 py-1">{{obj.get_subtype_display}}</td>
       <td class="px-3 py-1">{{obj.description}}</td>
       <td class="px-3 py-1 relative">
         <div class="w-fit text-gray-700 mx-auto">
@@ -93,14 +95,14 @@
               Modifier
             </button>
 
-            <button
+            <!-- <button
               hx-confirm="Voulez vous vraiment suprimmer ceci?"
               hx-delete="{% url 'delete_base_object' obj.id 'StockOperation' %}"
               class="px-4 py-2 flex items-center hover:text-black hover:bg-red-200 rounded w-full text-center cursor-pointer"
             >
               <i class="text-sm fa-solid fa-trash mr-2"></i>
               Supprimer
-            </button>
+            </button> -->
           </div>
         </div>
       </td>

@@ -52,7 +52,19 @@
         <td class="px-3 py-1">{{obj.cashdesk.get_type_display}}</td>
         <td class="px-3 py-1">{{obj.balance_expected}} CFA</td>
         <td class="px-3 py-1">{{obj.balance_found}} CFA</td>
-        <td class="px-3 py-1">{{obj.difference}}</td>
+        {% if obj.difference == 0 %}
+        <td
+          class="px-3 py-1 text-black bg-lime-100 border border-lime-300"
+        >
+          {{ obj.difference}} CFA
+        </td>
+        {% else %}
+        <td
+          class="px-3 py-1 text-black bg-orange-100 border border-orange-300"
+        >
+          {{ obj.difference}} CFA
+        </td>
+        {% endif %}
         <!-- <td class="px-3 py-1 text-center">{{ obj.comment }} </td> -->
         <td class="px-3 py-1 relative text-center">
           <a

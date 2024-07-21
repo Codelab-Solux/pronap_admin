@@ -11,7 +11,6 @@ admin.site.register(CashdeskClosing)
 admin.site.register(CashReceipt)
 admin.site.register(ClosingCashReceipt)
 admin.site.register(Transaction)
-admin.site.register(Payment)
 admin.site.register(Debt)
 admin.site.register(Receivable)
 # products

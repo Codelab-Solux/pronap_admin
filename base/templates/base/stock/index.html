@@ -8,7 +8,6 @@
       >&larr;</a
     >
 
-
     <!--------------------------------------- menu tabs buttons --------------------------------------->
     <div
       class="flex justify-between gap-2 text-xs tabbar h-fit w-full lg:max-w-[550px] p-2 bg-green-700 rounded"
@@ -49,10 +48,17 @@
   <section class="flex flex-col gap-4">
     <div id="overview" class="tabcontent w-full flex flex-col gap-2">
       <div
+        class="stock_overview w-full h-full"
         hx-get="{% url 'stock_overview' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
 
     <div id="inputs" class="tabcontent w-full flex flex-col gap-2">
@@ -66,11 +72,17 @@
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
       <div
-        class="stock_inputs"
+        class="stock_inputs w-full h-full"
         hx-get="{% url 'stock_ops' 'input' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
 
     <div id="outputs" class="tabcontent w-full flex flex-col gap-2">
@@ -84,11 +96,17 @@
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </button>
       <div
-        class="stock_outputs"
+        class="stock_outputs w-full h-full"
         hx-get="{% url 'stock_ops' 'output' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
 
     <div id="inventory" class="tabcontent w-full flex flex-col gap-2">
@@ -100,11 +118,17 @@
         <i class="text-sm fa-solid fa-plus ml-2"></i>
       </a>
       <div
-        class="inventories"
+        class="inventories w-full h-full"
         hx-get="{% url 'inventories' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"
-      ></div>
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
     </div>
   </section>
 </div>

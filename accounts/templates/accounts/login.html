@@ -1,58 +1,133 @@
-{% extends 'main_plain.html' %} {% load static %} {% block content %}
-<section
-  class="bg-white p-4 lg:p-6 w-full max-w-5xl rounded-3xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8"
->
-  <!-- <i
-    class="fa-solid fa-arrow-right-to-bracket text-green-700 text-9xl mx-auto"
-  ></i> -->
-  <img
-    class="h-40 mx-auto mx-auto"
-    src="{% static 'imgs/logo.png' %}"
-    alt="logo"
-  />
+{% load static %}
 
-  <div class="bg-gray-100 rounded p-6 flex-col h-fit w-full max-w-md shadow-md">
-    <h1 class="mb-4 text-black text-3xl font-bold">Connexion</h1>
-    <form method="POST" class="w-full text-sm">
-      {% csrf_token %}
-      <div class="flex flex-col mb-2">
-        <label for="username">Email</label>
-        <input
-          type="email"
-          name="username"
-          class="px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
-          placeholder="Email"
-          required
-        />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.8"
+      integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/f601cf3e61.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'cart.js' %}" defer="true"></script>
+    <script src="{% static 'main.js' %}" defer="true"></script>
+    <link href="{% static 'styles.css' %}" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"> -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Helvetica:wght@400;700&display=swap"
+    />
+    <link
+      rel="shortcut icon"
+      href="{% static 'imgs/logo.png' %}"
+      type="image/x-icon"
+    />
+
+    <style>
+      body {
+        /* font-family: 'Noto Sans', sans-serif; */
+        font-family: "Helvetica", sans-serif;
+        /* font-family: 'Roboto', sans-serif; */
+      }
+    </style>
+    {% if title %}
+    <title>Distroplace - {{title}}</title>
+    {% else %}
+    <title>Distroplace</title>
+    {% endif %}
+  </head>
+  <body
+    hx-boost="false"
+    hx-headers='{"X-CSRFToken" : "{{ csrf_token }}"}'
+    class="h-screen flex flex-col justify-center items-center bg-gray-100"
+  >
+    {% csrf_token %}
+    <!--  -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+        {{ message }}
       </div>
-      <div class="flex flex-col mb-4">
-        <label for="password">Mots de passe</label>
-        <input
-          type="password"
-          name="password"
-          class="px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
-          placeholder="Mots de passe"
-          required
-        />
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <section
+      class="bg-white p-4 lg:p-6 w-full max-w-5xl rounded mx-auto flex flex-col md:flex-row items-center justify-center gap-8"
+    >
+      <!-- <i
+      class="fa-solid fa-arrow-right-to-bracket text-green-700 text-9xl mx-auto"
+    ></i> -->
+      <img
+        class="h-40 mx-auto mx-auto"
+        src="{% static 'imgs/logo.png' %}"
+        alt="logo"
+      />
+
+      <div
+        class="bg-gray-100 rounded p-6 flex-col h-fit w-full max-w-md shadow-md"
+      >
+        <h1 class="mb-4 text-black text-3xl font-bold">Connexion</h1>
+        <form method="POST" class="w-full text-sm">
+          {% csrf_token %}
+          <div class="flex flex-col mb-2">
+            <label for="username">Email</label>
+            <input
+              type="email"
+              name="username"
+              class="px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="flex flex-col mb-4">
+            <label for="password">Mots de passe</label>
+            <input
+              type="password"
+              name="password"
+              class="px-4 py-2 rounded border border-gray-200 focus:border-none focus:outline-none focus:ring-1 focus:ring-lime-300 w-full"
+              placeholder="Mots de passe"
+              required
+            />
+          </div>
+          <!-- redirects to intended page -->
+          {% if request.GET.next %}
+          <input type="hidden" name="next" value="{{request.GET.next}}" />
+          {% endif %}
+          <div class="flex justify-between items-center gap-2">
+            <input
+              type="submit"
+              value="Se connecter"
+              class="mt-2 px-8 py-2 bg-green-700 hover:bg-green-900 text-white rounded cursor-pointer"
+            />
+            <p class="mt-2">
+              Mots de pass oublié?
+              <a
+                href="{% url 'signup' %}"
+                class="text-orange-500 hover:underline"
+                >Cliquez ici</a
+              >
+            </p>
+          </div>
+        </form>
       </div>
-      <!-- redirects to intended page -->
-      {% if request.GET.next %}
-      <input type="hidden" name="next" value="{{request.GET.next}}" />
-      {% endif %}
-      <div class="flex justify-between items-center gap-2">
-        <input
-          type="submit"
-          value="Se connecter"
-          class="mt-2 px-8 py-2 bg-lime-200 hover:bg-lime-300 text-black rounded cursor-pointer"
-        />
-        <p class="mt-2">
-          Mots de pass oublié?
-          <a href="{% url 'signup' %}" class="text-orange-500 hover:underline"
-            >Cliquez ici</a
-          >
-        </p>
-      </div>
-    </form>
-  </div>
-</section>
-{% endblock %}
+    </section>
+  </body>
+</html>
