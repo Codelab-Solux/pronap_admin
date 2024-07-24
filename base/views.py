@@ -87,6 +87,62 @@ def entity_types_list(req):
     return render(req, 'base/parameters/entity_types_list.html', context)
 
 
+
+# ------------------------------------------------- Units of measurement -------------------------------------------------
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def create_unit(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    form = UnitForm()
+    if req.method == 'POST':
+        form = UnitForm(req.POST)
+        if form.is_valid():
+            form.save()
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle unité de mesure'})
+
+
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def edit_unit(req, pk):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+    curr_obj = get_object_or_404(Unit, id=pk)
+
+    form = UnitForm(instance=curr_obj)
+    if req.method == 'POST':
+        form = UnitForm(req.POST,  instance=curr_obj)
+        if form.is_valid():
+            form.save()
+        messages.success = 'Unité modifié'
+        return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
+    else:
+        return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier cette  unité de mesure'})
+
+
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def units_list(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    units = Unit.objects.all().order_by('name')
+
+    context = {
+        'units': units,
+    }
+    return render(req, 'base/parameters/units_list.html', context)
+
+
 # ------------------------------------------------- Stores -------------------------------------------------
 # stores parameters ---------------------------------------
 @cache_page(60 * 15)
@@ -523,7 +579,7 @@ def edit_prod_stock(req, pk):
 
 @cache_page(60 * 15)
 @login_required(login_url='login')
-def filter_prod_stock(req):
+def filter_prod_stock(req, pk=None):
     name_query = req.POST.get('name')
     brand_query = req.POST.get('brand')
     min_quantity = req.POST.get('min_quantity')
@@ -531,9 +587,10 @@ def filter_prod_stock(req):
     category_query = req.POST.get('category')
     family_query = req.POST.get('family')
     store_query = req.POST.get('store')
-
     base_query = ProductStock.objects.all().order_by('product__name')
 
+    if store_query:
+        base_query = base_query.filter(product__store=store_query)
     if name_query:
         base_query = base_query.filter(name=name_query)
     if brand_query:
@@ -553,7 +610,44 @@ def filter_prod_stock(req):
 
     context = {"products": products}
 
-    return render(req, 'base/products/prod_stock_list.html', context)
+    # if pk == 'sale':
+    #     return render(req, 'base/sales/sale_point_grid.html', context)
+    # elif pk == 'list':
+    #     return render(req, 'base/products/prod_stocks.html', context)
+    # else:
+    #     return render(req, 'base/products/product_stock_grid.html', context)
+    
+    return render(req, 'base/products/prod_stocks.html', context)
+
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def filter_sale_stock(req):
+    name_query = req.POST.get('name')
+    brand_query = req.POST.get('brand')
+    category_query = req.POST.get('category')
+    family_query = req.POST.get('family')
+    store_query = req.POST.get('store')
+    base_query = ProductStock.objects.all().order_by('product__name')
+
+    if store_query:
+        base_query = base_query.filter(product__store=store_query)
+    if name_query:
+        base_query = base_query.filter(name=name_query)
+    if brand_query:
+        base_query = base_query.filter(product__brand=brand_query)
+    if category_query:
+        base_query = base_query.filter(product__category__id=category_query)
+    if family_query:
+        base_query = base_query.filter(product__family__id=family_query)
+    if store_query:
+        base_query = base_query.filter(product__store__id=store_query)
+
+    products = base_query
+
+    print('.......................................')
+
+    context = {"products": products}
+    return render(req, 'base/sales/sale_point_grid.html', context)
 
 
 # ------------------------------------------------- Cart views -------------------------------------------------

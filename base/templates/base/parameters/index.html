@@ -35,6 +35,13 @@
       </button>
       <button
         class="tabBtn px-4 py-2 flex justify-center items-center gap-2 bg-white hover:bg-green-700 hover:text-white rounded w-full"
+        onclick="openTab(event, 'units')"
+      >
+        <i class="fa-solid fa-weight-scale"></i>
+        <span class="ml-2">Unités</span>
+      </button>
+      <button
+        class="tabBtn px-4 py-2 flex justify-center items-center gap-2 bg-white hover:bg-green-700 hover:text-white rounded w-full"
         onclick="openTab(event, 'prods')"
       >
         <i class="fa-solid fa-cubes"></i>
@@ -142,6 +149,32 @@
       </div>
     </div>
     <!--  -->
+    <div id="units" class="tabcontent w-full flex flex-col gap-2">
+      <div class="w-full flex justify-between items-center mb-4">
+        <button
+          onclick="hide_dialogs()"
+          hx-target="#basic_dialog"
+          hx-get="{% url 'create_unit' %}"
+          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
+        >
+          Nouveau
+          <i class="text-sm fa-solid fa-plus ml-2"></i>
+        </button>
+      </div>
+      <div
+        class="units_list w-full h-full"
+        hx-get="{% url 'units_list' %}"
+        hx-trigger="load, db_changed from:body"
+        hx-target="this"
+      >
+        <p
+          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
+        >
+          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
+        </p>
+      </div>
+    </div>
+    <!--  -->
     <div id="prods" class="tabcontent w-full flex flex-col gap-2">
       <div class="w-full flex justify-between items-center mb-4">
         <button
@@ -168,31 +201,6 @@
       </div>
     </div>
     <!--  -->
-    <div id="desks" class="tabcontent w-full flex flex-col gap-2">
-      <div class="w-full flex justify-between items-center mb-4">
-        <button
-          onclick="hide_dialogs()"
-          hx-target="#basic_dialog"
-          hx-get="{% url 'create_cashdesk' %}"
-          class="px-4 py-2 flex items-center text-sm text-black bg-lime-200 hover:bg-lime-300 rounded w-fit text-center cursor-pointer"
-        >
-          Nouveau
-          <i class="text-sm fa-solid fa-plus ml-2"></i>
-        </button>
-      </div>
-      <div
-        class="cashdesks_list w-full h-full"
-        hx-get="{% url 'cashdesks_list' %}"
-        hx-trigger="load, db_changed from:body"
-        hx-target="this"
-      >
-        <p
-          class="h-full w-full flex justify-center items-center text-lime-500 p-4"
-        >
-          <i class="m-auto fas fa-spinner fa-spin text-3xl animate-spin"></i>
-        </p>
-      </div>
-    </div>
     <div id="desks" class="tabcontent w-full flex flex-col gap-2">
       <div class="w-full flex justify-between items-center mb-4">
         <button

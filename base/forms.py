@@ -42,6 +42,19 @@ class LotForm(forms.ModelForm):
             'store': forms.Select(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
         }
 
+class UnitForm(forms.ModelForm):
+    class Meta:
+        model = Unit
+        fields = '__all__'
+
+        labels = {
+            'name': 'Nom',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+            'abbreviation': forms.TextInput(attrs={'class': "mb-2 px-3 py-2 rounded border focus:border-none focus:outline-none focus:bg-gray-50 focus:ring-1 focus:ring-green-400 w-full"}),
+        }
+
 
 class SupplierForm(forms.ModelForm):
     class Meta:
@@ -153,6 +166,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('__all__')
+        exclude =('timestamp','is_favorite','is_new',)
 
         labels = {
             'name': 'Article',

@@ -45,7 +45,7 @@
         <td class="px-3 py-1" id="qty_expected_{{ obj.id }}">
           {{ obj.quantity_expected }}
           <!--  -->
-          {{ obj.product_stock.product.get_unit_display }}
+          {{ obj.product_stock.product.unit.abbreviation }}
         </td>
         <td class="px-3 text-black">
           <input

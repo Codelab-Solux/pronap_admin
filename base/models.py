@@ -39,7 +39,8 @@ class Supplier(models.Model):
     address = models.CharField(max_length=255)
     domain = models.CharField(max_length=255)
     is_new = models.BooleanField(default=True)
-    timestamp = models.DateTimeField(auto_now_add=True,  blank=True, null=True, db_index=True)
+    timestamp = models.DateTimeField(
+        auto_now_add=True,  blank=True, null=True, db_index=True)
     type = models.ForeignKey(EntityType, blank=True,
                              null=True, on_delete=models.SET_NULL)
     description = models.CharField(max_length=500, blank=True, null=True)
@@ -70,7 +71,7 @@ class Client(models.Model):
         unique=True, max_length=255, blank=True, null=True)
     email = models.EmailField(unique=True, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-    
+
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
     type = models.ForeignKey(EntityType, blank=True,
                              null=True, on_delete=models.SET_NULL)
@@ -102,7 +103,8 @@ class Store(models.Model):
     type = models.CharField(max_length=50, choices=store_types)
     manager = models.ForeignKey(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL, related_name='store_manager', db_index=True)
-    name = models.CharField(max_length=255, default='', null=True, blank=True, db_index=True)
+    name = models.CharField(max_length=255, default='',
+                            null=True, blank=True, db_index=True)
     address = models.CharField(max_length=255, default='',)
     city = models.CharField(max_length=255, default='',)
     country = models.CharField(max_length=255, default='',)
@@ -187,7 +189,7 @@ class CashdeskClosing(models.Model):
     balance_found = models.BigIntegerField(default=0, blank=True, null=True)
     difference = models.BigIntegerField(default=0)
     comment = models.CharField(max_length=500, blank=True, null=True)
-    
+
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
     def save(self, *args, **kwargs):
@@ -245,7 +247,7 @@ class ClosingCashReceipt(models.Model):
     cash_receipt = models.ForeignKey(CashReceipt, on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=0)
     total_amount = models.PositiveIntegerField(default=0)
-    
+
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
     def save(self, *args, **kwargs):
@@ -292,14 +294,15 @@ audit_statuses = (
 class Transaction(models.Model):
     initiator = models.ForeignKey(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE, db_index=True)
+    store = models.ForeignKey(
+        Store, default=1, on_delete=models.CASCADE, db_index=True)
     cashdesk = models.ForeignKey(
         Cashdesk, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
     type = models.CharField(max_length=50, choices=transaction_types)
     amount = models.PositiveIntegerField(default='0', blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
-    
+
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
     audit = models.CharField(
         max_length=50, choices=audit_statuses, default='pending')
@@ -323,16 +326,12 @@ class Transaction(models.Model):
 
 
 class Receivable(models.Model):
-    sale = models.ForeignKey('Sale', on_delete=models.CASCADE)
+    sale = models.OneToOneField('Sale', on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, db_index=True)
     amount = models.IntegerField(default=0)
     label = models.CharField(max_length=100, blank=True, null=True)
     due_date = models.DateField(blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
-    content_type = models.ForeignKey(
-        ContentType, blank=True, null=True, on_delete=models.SET_NULL)
-    object_id = models.PositiveIntegerField(blank=True, null=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
     is_fully_paid = models.BooleanField(default=False)
 
     def __str__(self):
@@ -350,10 +349,11 @@ class Receivable(models.Model):
 
 
 class Debt(models.Model):
-    purchase = models.ForeignKey('Purchase', on_delete=models.CASCADE)
+    purchase = models.OneToOneField('Purchase', on_delete=models.CASCADE)
     initiator = models.ForeignKey(
         CustomUser, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE, db_index=True)
+    store = models.ForeignKey(
+        Store, default=1, on_delete=models.CASCADE, db_index=True)
     supplier = models.ForeignKey(
         Supplier, on_delete=models.CASCADE, db_index=True)
     amount = models.IntegerField(default=0)
@@ -361,10 +361,6 @@ class Debt(models.Model):
     description = models.CharField(max_length=500, blank=True, null=True)
     due_date = models.DateField(blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
-    content_type = models.ForeignKey(
-        ContentType, blank=True, null=True, on_delete=models.SET_NULL)
-    object_id = models.PositiveIntegerField(blank=True, null=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
     is_fully_paid = models.BooleanField(default=False)
 
     def __str__(self):
@@ -406,7 +402,8 @@ class Category(models.Model):
 class Family(models.Model):
     category = models.ForeignKey(
         Category, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
-    name = models.CharField(max_length=255, default='', null=True, blank=True, db_index=True)
+    name = models.CharField(max_length=255, default='',
+                            null=True, blank=True, db_index=True)
 
     def __str__(self):
         return self.name
@@ -422,10 +419,31 @@ class Family(models.Model):
         return reverse('prod_family_details', kwargs={'pk': self.pk})
 
 
+class Unit(models.Model):
+    name = models.CharField(max_length=255, default='',
+                            null=True, blank=True, db_index=True)
+    abbreviation = models.CharField(
+        max_length=255, default='', null=True, blank=True, db_index=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_hashid(self):
+        return h_encode(self.id)
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
+    def get_absolute_url(self):
+        return reverse('prod_unit_details', kwargs={'pk': self.pk})
+
+
 class Lot(models.Model):
     store = models.ForeignKey(
         Store, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
-    name = models.CharField(max_length=255, default='', null=True, blank=True, db_index=True)
+    name = models.CharField(max_length=255, default='',
+                            null=True, blank=True, db_index=True)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
     def __str__(self):
@@ -442,22 +460,17 @@ class Lot(models.Model):
         return reverse('prod_lot_details', kwargs={'pk': self.pk})
 
 
-unit_types = (
-    ('Kg', "Kilos"),
-    ('L', "Litres"),
-    ('Ut', "Unités"),
-)
-
-
 class Product(models.Model):
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE, db_index=True)
+    store = models.ForeignKey(
+        Store, default=1, on_delete=models.CASCADE, db_index=True)
     name = models.CharField(max_length=256)
     brand = models.CharField(max_length=256, default='Générique')
     category = models.ForeignKey(
         Category, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
     family = models.ForeignKey(
         Family, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
-    unit = models.CharField(max_length=50, choices=unit_types)
+    unit = models.ForeignKey(
+        Unit, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
     description = models.CharField(max_length=500, blank=True, null=True)
     is_favorite = models.BooleanField(default=False)
     is_new = models.BooleanField(default=True)
@@ -531,9 +544,12 @@ payment_statuses = (
 class Sale(models.Model):
     store = models.ForeignKey(
         Store, default=1, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
-    initiator = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_index=True)
-    client = models.ForeignKey(Client, default=1, on_delete=models.CASCADE, db_index=True)
-    product_stocks = models.ManyToManyField(ProductStock, through='SaleItem', db_index=True)
+    initiator = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, db_index=True)
+    client = models.ForeignKey(
+        Client, default=1, on_delete=models.CASCADE, db_index=True)
+    product_stocks = models.ManyToManyField(
+        ProductStock, through='SaleItem', db_index=True)
     cashdesk = models.ForeignKey(
         Cashdesk, default=1, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
     audit = models.CharField(
@@ -553,7 +569,6 @@ class Sale(models.Model):
     def total_due(self):
         return self.total - self.total_paid
 
-
     def calculate_total(self):
         self.total = sum(item.get_total for item in self.saleitem_set.all())
         self.items = self.saleitem_set.count()
@@ -565,13 +580,13 @@ class Sale(models.Model):
     @property
     def model_name(self):
         return self.__class__.__name__
-    
-    
+
+
 class SaleItem(models.Model):
     sale = models.ForeignKey(
-        Sale, on_delete=models.SET_NULL, null=True, db_index=True)
+        Sale, on_delete=models.CASCADE, db_index=True)
     product_stock = models.ForeignKey(
-        ProductStock, on_delete=models.SET_NULL, null=True)
+        ProductStock, on_delete=models.CASCADE, db_index=True)
     quantity = models.PositiveIntegerField(default=0)
 
     @property
@@ -580,7 +595,7 @@ class SaleItem(models.Model):
         return total
 
     def __str__(self):
-        return f'Vente de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
+        return f'Vente de {self.quantity} {self.product_stock.product.unit.abbreviation} de {self.product_stock.product.name}'
 
     def get_hashid(self):
         return h_encode(self.id)
@@ -600,8 +615,10 @@ purchase_types = (
 
 
 class Purchase(models.Model):
-    initiator = models.ForeignKey(CustomUser, on_delete=models.CASCADE, db_index=True)
-    store = models.ForeignKey(Store, default=1, on_delete=models.CASCADE, db_index=True)
+    initiator = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, db_index=True)
+    store = models.ForeignKey(
+        Store, default=1, on_delete=models.CASCADE, db_index=True)
     supplier = models.ForeignKey(
         Supplier, default=1, blank=True, null=True, on_delete=models.SET_NULL, db_index=True)
     cashdesk = models.ForeignKey(
@@ -645,7 +662,7 @@ class PurchaseItem(models.Model):
     purchase = models.ForeignKey(
         Purchase, on_delete=models.CASCADE, db_index=True)
     product_stock = models.ForeignKey(
-        ProductStock, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+        ProductStock, on_delete=models.CASCADE, db_index=True)
     quantity = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField(default=0)
 
@@ -655,7 +672,7 @@ class PurchaseItem(models.Model):
         return total
 
     def __str__(self):
-        return f'Achat de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
+        return f'Achat de {self.quantity} {self.product_stock.product.unit.abbreviation} de {self.product_stock.product.name}'
 
     def get_hashid(self):
         return h_encode(self.id)
@@ -663,6 +680,7 @@ class PurchaseItem(models.Model):
     @property
     def model_name(self):
         return self.__class__.__name__
+
 
 # ----------------------------------- Stock -----------------------------------
 operation_types = (
@@ -719,8 +737,9 @@ class StockOperation(models.Model):
 
 class StockOperationItem(models.Model):
     stock_operation = models.ForeignKey(
-        StockOperation, on_delete=models.SET_NULL, blank=True, null=True, db_index=True)
-    product_stock = models.ForeignKey(ProductStock, on_delete=models.CASCADE)
+        StockOperation, on_delete=models.CASCADE, db_index=True)
+    product_stock = models.ForeignKey(
+        ProductStock, on_delete=models.CASCADE, db_index=True)
     quantity = models.PositiveIntegerField(default=0)
 
     @property
@@ -729,7 +748,7 @@ class StockOperationItem(models.Model):
         return total
 
     def __str__(self):
-        return f'{self.stock_operation} de {self.quantity} {self.product_stock.product.unit} de {self.product_stock.product.name}'
+        return f'{self.stock_operation} de {self.quantity} {self.product_stock.product.unit.abbreviation} de {self.product_stock.product.name}'
 
     def get_hashid(self):
         return h_encode(self.id)
@@ -739,6 +758,7 @@ class StockOperationItem(models.Model):
         return self.__class__.__name__
 
 # ----------------------------------- Inventory -----------------------------------
+
 
 class Inventory(models.Model):
     store = models.ForeignKey(

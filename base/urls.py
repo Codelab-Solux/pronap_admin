@@ -25,8 +25,12 @@ urlpatterns = [
     path('products/<hashid:pk>/edit/', edit_product, name='edit_product'),
     # ----------------------------------------------------------------------------
     path('entities/types/list/', entity_types_list, name='entity_types_list'),
-    path('entities/types/createv', create_entity_type, name='create_entity_type'),
+    path('entities/types/create/', create_entity_type, name='create_entity_type'),
     path('entities/types/<hashid:pk>/edit/', edit_entity_type, name='edit_entity_type'),
+    # ----------------------------------------------------------------------------
+    path('units/list/', units_list, name='units_list'),
+    path('units/create/', create_unit, name='create_unit'),
+    path('units/<hashid:pk>/edit/', edit_unit, name='edit_unit'),
     # ----------------------------------------------------------------------------
     path('stock/', stock, name='stock'),
     # ----------------
@@ -38,7 +42,7 @@ urlpatterns = [
     # ----------------
     path('stock/products/list/', prod_stock_list, name='prod_stock_list'),
     path('stock/products/create/', create_prod_stock, name='create_prod_stock'),
-    path('stock/products/filter/', filter_prod_stock, name='filter_prod_stock'),
+    path('stock/products/filter/<str:pk>/', filter_prod_stock, name='filter_prod_stock'),
     path('stock/products/<hashid:pk>/',
          prod_stock_details, name='prod_stock_details'),
     path('stock/products/<hashid:pk>/edit/',
@@ -71,6 +75,7 @@ urlpatterns = [
     path('sales/pos/', sale_point, name='sale_point'),
     path('sales/pos/grid/', sale_point_grid, name='sale_point_grid'),
     path('sales/checkout/', checkout, name='checkout'),
+    path('sales/stock/filter/', filter_sale_stock, name='filter_sale_stock'),
     # ----------------------------------------------------------------------------
     path('sales/create/', create_sale, name='create_sale'),
     path('sales/<hashid:pk>/', sale_details, name='sale_details'),

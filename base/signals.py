@@ -399,7 +399,7 @@ def create_or_update_stockops_from_sale(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=SaleItem)
-@receiver(post_delete, sender=SaleItem)
+# @receiver(post_delete, sender=SaleItem)
 def update_prodstock_from_sale_item(sender, instance, created, **kwargs):
     sale = instance.sale
     print(f"Signal triggered for sale ID: {sale.id}")

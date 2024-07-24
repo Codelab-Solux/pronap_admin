@@ -20,7 +20,7 @@
       <th class="px-3 py-4 text-sm">Encaissements</th>
       <th class="px-3 py-4 text-sm">Décaissements</th>
       <th class="px-3 py-4 text-sm">Solde</th>
-      <th class="px-3 py-4 text-sm text-center">Actions</th>
+      <th class="px-3 py-4 text-sm text-center">Action</th>
     </tr>
   </thead>
 
@@ -36,7 +36,7 @@
       <td class="px-3 py-1">{{obj.phone}}</td>
       <td class="px-3 py-1">{{obj.acc_number}}</td>
       <td class="px-3 py-1">{{obj.credits}} CFA</td>
-      <td class="px-3 py-1">{{ obj.debits }} CFA</td>      
+      <td class="px-3 py-1">{{ obj.debits }} CFA</td>
       {% if obj.credits >= obj.debits %}
       <td
         class="px-3 py-1 text-center text-black bg-lime-100 border border-lime-300"

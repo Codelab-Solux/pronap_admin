@@ -2,7 +2,7 @@
 <div
   class="bg-gray-300 text-black w-[60px] md:w-20 p-2 md:p-4 xl:w-[300px] min-h-screen fixed overflow-y-auto"
 >
-  <a class="mb-4 flex items-center" href="{% url 'home' %}" hx-boost="false">
+  <a class="mb-4 flex items-center" href="{% url 'home' %}">
     <img
       class="h-6 xl:h-10 mx-auto xl:mx-0 xl:mr-2"
       src="{% static 'imgs/logo.png' %}"
@@ -168,7 +168,7 @@
           </a>
           <a
             hx-confirm="Voulez vous vraiment vous deconnecter?"
-            hx-boost="true"
+            hx-boost="false"
             href="{% url 'logout' %}"
             class="px-3 py-2 flex text-sm text-red-700 hover:bg-red-700 hover:text-white xl:rounded w-full"
           >

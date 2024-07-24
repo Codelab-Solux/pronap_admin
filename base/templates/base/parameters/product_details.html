@@ -1,15 +1,12 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="w-full max-w-7xl mx-auto flex flex-col gap-4">
-  <div
-    class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4"
-  >
-      <a
-        id="back-button"
-        class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
-        href="#"
-        >&larr;</a
-      >
-
+  <div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
+    <a
+      id="back-button"
+      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
+      href="#"
+      >&larr;</a
+    >
 
     <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
       <div class="flex flex-col gap-4">
@@ -32,7 +29,7 @@
 
       <div class="w-full flex flex-col gap-2">
         <div class="flex items-center gap-2">
-          <h2 class="text-4xl font-bold text-black">{{curr_obj.name}}  <i class="font-light text-xl text-green-700">_{{ curr_obj.brand }}_</i></h2>
+          <h2 class="text-4xl font-bold text-black">{{curr_obj.name}}</h2>
           <button
             onclick="closeModal()"
             hx-target="#basic_dialog"
@@ -42,9 +39,10 @@
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
+        <p>Marque : <b> {{ curr_obj.brand }}</b></p>
         <p>Catégorie : <b> {{curr_obj.category }}</b></p>
         <p>Famille : <b> {{curr_obj.family }}</b></p>
-        <p>Unité de mesure : <b> {{curr_obj.get_unit_display }}</b></p>
+        <p>Unité de mesure : <b> {{curr_obj.unit }}</b></p>
         <p>Quantité vendue : <b> {{curr_obj.get_total_sold }} 0</b></p>
         <p>Recette : <b> {{curr_obj.get_total_sold }} 0 CFA</b></p>
         {% if is_favorite %}

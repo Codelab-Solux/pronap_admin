@@ -31,14 +31,16 @@
     <option value="{{obj.id}}">{{obj.name}} (tel:{{obj.phone}})</option>
     {% endfor %}
   </select>
-  <input name="sale_payment" id="sale_payment" type="number" hidden>
+  <input name="sale_payment" id="sale_payment" type="number" hidden />
 </form>
 <div
   id="cart_items"
   class="h-full bg-white border border-lime-400 rounded overflow-y-auto"
 >
   {% for item in cart_items %}
-  <article class="p-2 border-b border-lime-400 flex justify-between items-center">
+  <article
+    class="p-2 border-b border-lime-400 flex justify-between items-center"
+  >
     <span>{{item.product.product.name}}</span>
     <div class="flex items-center gap-2 text-xs">
       <button
@@ -61,7 +63,7 @@
     </div>
     <span class="text-black">{{item.total_price}}</span>
     <span class="text-black"
-      >{{item.product.price}}/{{item.product.product.unit}}</span
+      >{{item.product.price}}/{{item.product.product.unit.abbreviation}}</span
     >
     <button
       hx-post="{% url 'clear_item' %}"

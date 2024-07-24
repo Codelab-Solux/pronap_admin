@@ -17,6 +17,7 @@ admin.site.register(Receivable)
 admin.site.register(Lot)
 admin.site.register(Category)
 admin.site.register(Family)
+admin.site.register(Unit)
 admin.site.register(Product)
 admin.site.register(ProductStock)
 # sales

@@ -13,47 +13,59 @@
       >
 
       <form
-        action="{% url 'sale_point' %}"
-        method="get"
-        class="w-full flex justify-between items-center gap-1 text-sm"
+        id="filter"
+        hx-post="{% url 'filter_sale_stock' %}"
+        hx-target=".stocks_div"
+        class="p-1 w-full max-w-4xl flex justify-between items-center gap-1 text-sm"
       >
-        <!-- name field -->
-        <input
-          placeholder="Article"
-          name="name"
-          type="text"
-          class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500 w-full cursor-pointer"
-        />
-        <!-- brand field -->
-        <input
-          placeholder="Marque"
-          name="brand"
-          type="text"
-          class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500 w-full cursor-pointer"
-        />
-        <select
-          name="category"
-          class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500 w-full cursor-pointer"
-        >
-          <option value="" selected="true" disabled="disabled">
-            Catégories
-          </option>
-          {% for obj in categories %}
-          <option value="{{obj.id}}">{{obj.name}}</option>
-          {% endfor %}
-        </select>
-        <select
-          name="family"
-          class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-green-500 w-full cursor-pointer"
-        >
-          <option value="" selected="true" disabled="disabled">Famille</option>
-          {% for obj in families %}
-          <option value="{{obj.id}}">{{obj.name}}</option>
-          {% endfor %}
-        </select>
-        <!--  -->
-        {% include 'base/components/store_filter.html' %}
-        <!--  -->
+        {% csrf_token %}
+        <section class="w-full flex justify-between items-center gap-1 text-xs">
+          <!-- name field -->
+          <input
+            hx-post="{% url 'filter_sale_stock' %}"
+            hx-target=".stocks_div"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Article"
+            name="name"
+            type="text"
+            class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          />
+          <!-- brand field -->
+          <input
+            hx-post="{% url 'filter_sale_stock' %}"
+            hx-target=".stocks_div"
+            hx-trigger="keyup changed delay:500ms"
+            placeholder="Marque"
+            name="brand"
+            type="text"
+            class="px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          />
+          <!-- categories and subcategories -->
+          <select
+            name="category"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Catégories
+            </option>
+            {% for obj in categories %}
+            <option value="{{obj.id}}">{{obj.name}}</option>
+            {% endfor %}
+          </select>
+          <select
+            name="family"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Famille
+            </option>
+            {% for obj in families %}
+            <option value="{{obj.id}}">{{obj.name}}</option>
+            {% endfor %}
+          </select>
+          {% include 'base/components/store_filter.html' %}
+        </section>
+
         <button
           class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded transition duration-200 ease-in"
           type="submit"
@@ -89,7 +101,7 @@
       class="overflow-y-auto border bg-gray-100 w-full h-full min-h-80 rounded flex flex-col"
     >
       <div
-        class="sale_point_grid h-full w-full"
+        class="stocks_div h-full w-full"
         hx-get="{% url 'sale_point_grid' %}"
         hx-trigger="load, db_changed from:body"
         hx-target="this"

@@ -24,11 +24,11 @@
     <p>Catégorie : <b> {{ curr_obj.product.category }}</b></p>
     <p>Famille : <b> {{ curr_obj.product.family }}</b></p>
     <p>Quantité en stock : <b> {{curr_obj.quantity }}</b></p>
-    <p>Unité de mesure : <b> {{curr_obj.product.get_unit_display }}</b></p>
+    <p>Unité de mesure : <b> {{curr_obj.product.unit.abbreviation }}</b></p>
     <p>
       Prix unitaire :
       <b> {{curr_obj.price }} CFA / </b>
-      {{curr_obj.product.get_unit_display }}
+      {{curr_obj.product.unit.abbreviation }}
     </p>
     <p>Lot N° : <b> {{curr_obj.lot }}</b></p>
     <p>Fournisseur : <b> {{curr_obj.supplier.name }}</b></p>

@@ -7,7 +7,12 @@
     >
       <div class="flex justify-between text-xl text-black">
         <div class="flex items-center gap-2">
-          <img width="40" height="40" src="{% static 'imgs/logo.png' %}" alt="logo" />
+          <img
+            width="40"
+            height="40"
+            src="{% static 'imgs/logo.png' %}"
+            alt="logo"
+          />
           <div class="grid">
             <span>{{curr_obj.store.name}}</span>
             <span class="text-xs">Tel : {{curr_obj.store.phone}}</span>
@@ -38,7 +43,7 @@
           <span
             >{{obj.product_stock.price}} CFA /
             <!--  -->
-            {{obj.product_stock.product.unit}}
+            {{obj.product_stock.product.unit.abbreviation}}
           </span>
           <span>{{obj.get_total}} CFA</span>
         </article>

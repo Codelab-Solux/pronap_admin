@@ -37,9 +37,15 @@
     <h3 class="font-bold text-black text-sm">{{ obj.product.name }}</h3>
     <p class="text-xs">{{ obj.product.brand }}</p>
     {% if obj.is_promoted %}
-    <p>{{ obj.promo_price }} CFA</p>
+    <p>{{ obj.promo_price }} CFA / 
+      <!--  -->
+      {{obj.product.unit.abbreviation}}
+    </p>
     {% else %}
-    <p>{{ obj.price }} CFA</p>
+    <p>{{ obj.price }} CFA / 
+      <!--  -->
+      {{obj.product.unit.abbreviation}}
+    </p>
     {% endif %}
     <!--  -->
     {% if obj.quantity < 1 %}

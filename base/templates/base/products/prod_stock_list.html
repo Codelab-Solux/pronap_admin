@@ -15,7 +15,7 @@
       <th class="px-3 py-4 text-sm">Unité de mesure</th>
       <th class="px-3 py-4 text-sm">Categorie</th>
       <th class="px-3 py-4 text-sm">Famille</th>
-      <th class="px-3 py-4 text-sm text-center">Actions</th>
+      <th class="px-3 py-4 text-sm text-center">Action</th>
     </tr>
   </thead>
 
@@ -29,7 +29,7 @@
       <td class="px-3 py-1">{{obj.product.brand}}</td>
       <td class="px-3 py-1">{{obj.price}} CFA</td>
       <td class="px-3 py-1 text-center">{{obj.quantity}}</td>
-      <td class="px-3 py-1">{{obj.product.get_unit_display}}</td>
+      <td class="px-3 py-1">{{obj.product.unit.abbreviation}}</td>
       <td class="px-3 py-1">{{ obj.product.category }}</td>
       <td class="px-3 py-1">{{obj.product.family}}</td>
       <td class="px-3 py-1 relative text-center">

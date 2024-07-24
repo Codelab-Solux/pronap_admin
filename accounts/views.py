@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models import Sum
-
+from django.views.decorators.cache import cache_page
 from base.cart import *
 from base.models import *
 from .forms import *
@@ -43,6 +43,7 @@ def logoutUser(req):
     return redirect('home')
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def signupView(req):
     if req.user.is_authenticated:
@@ -70,6 +71,7 @@ def signupView(req):
 
 # ------------------------------------------------- Staff -------------------------------------------------
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def staff(req):
     user = req.user
@@ -84,6 +86,7 @@ def staff(req):
     return render(req, 'accounts/staff.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def staff_list(req):
     staff = CustomUser.objects.all().order_by('last_name')
@@ -93,6 +96,7 @@ def staff_list(req):
     return render(req, 'accounts/staff_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def staff_grid(req):
     personel = CustomUser.objects.all().order_by('last_name')
@@ -102,6 +106,7 @@ def staff_grid(req):
     return render(req, 'accounts/staff_grid.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def staff_details(req, pk):
     user = req.user
@@ -133,6 +138,7 @@ def staff_details(req, pk):
     return render(req, 'accounts/staff_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_staff(req):
     user = req.user
@@ -151,6 +157,7 @@ def create_staff(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau  membre du personnel'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_staff(req, pk):
     user = req.user
@@ -171,6 +178,7 @@ def edit_staff(req, pk):
     return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier ce membre du personnel'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_staff_profile(req, pk):
     user = req.user
@@ -191,6 +199,7 @@ def edit_staff_profile(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier ce profile'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_staff_wallet(req, pk):
     user = req.user
