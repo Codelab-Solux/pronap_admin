@@ -13,8 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3$$v4pm96x49eyovw7ja2c%+4_a!m9zrs6c(&e8ij8dopa#s3t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 
 def get_env_variable(var_name):
