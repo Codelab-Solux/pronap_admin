@@ -17,8 +17,9 @@
       <th class="px-3 py-4 text-sm">Boutique</th>
       <th class="px-3 py-4 text-sm">Telephone</th>
       <th class="px-3 py-4 text-sm">Compte</th>
-      <th class="px-3 py-4 text-sm">Debits</th>
-      <th class="px-3 py-4 text-sm">Credits</th>
+      <th class="px-3 py-4 text-sm">Encaissements</th>
+      <th class="px-3 py-4 text-sm">Décaissements</th>
+      <th class="px-3 py-4 text-sm">Solde</th>
       <th class="px-3 py-4 text-sm text-center">Actions</th>
     </tr>
   </thead>
@@ -34,8 +35,21 @@
       <td class="px-3 py-1">{{obj.store.name}}</td>
       <td class="px-3 py-1">{{obj.phone}}</td>
       <td class="px-3 py-1">{{obj.acc_number}}</td>
-      <td class="px-3 py-1">{{ obj.debits }} CFA</td>
       <td class="px-3 py-1">{{obj.credits}} CFA</td>
+      <td class="px-3 py-1">{{ obj.debits }} CFA</td>      
+      {% if obj.credits >= obj.debits %}
+      <td
+        class="px-3 py-1 text-center text-black bg-lime-100 border border-lime-300"
+      >
+        {{ obj.credits|subtract:obj.debits }} CFA
+      </td>
+      {% else %}
+      <td
+        class="px-3 py-1 text-center text-black bg-orange-100 border border-orange-300"
+      >
+        {{ obj.credits|subtract:obj.debits }} CFA
+      </td>
+      {% endif %}
       <td class="px-3 py-1 relative text-center">
         <div class="w-fit text-gray-700 mx-auto">
           <a

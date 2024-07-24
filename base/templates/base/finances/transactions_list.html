@@ -1,8 +1,5 @@
 {% if not transactions %}
 <div class="flex flex-col items-center gap-2 my-20 mx-auto">
-  <!-- <i
-    class="fa-solid fa-up-right-and-down-left-from-center text-green-700 text-9xl"
-  ></i> -->
   <i class="fa-solid fa-scroll text-green-700 text-9xl"></i>
   <span>Aucune transaction trouvée</span>
 </div>
@@ -13,9 +10,12 @@
       <th class="px-3 py-4 text-sm">Réf.</th>
       <th class="px-3 py-4 text-sm">Date</th>
       <th class="px-3 py-4 text-sm">Heure</th>
+      {% if user.role.sec_level >= 2 %}
+      <th class="px-3 py-4 text-sm">Boutique</th>
+      {% endif %}
       <th class="px-3 py-4 text-sm">Initiateur</th>
-      <th class="px-3 py-4 text-sm text-center">Libelé</th>
-      <th class="px-3 py-4 text-sm text-center">Montant</th>
+      <th class="px-3 py-4 text-sm">Libelé</th>
+      <th class="px-3 py-4 text-sm">Montant</th>
       <th class="px-3 py-4 text-sm text-center">Type</th>
       <th class="px-3 py-4 text-sm text-center">Actions</th>
     </tr>
@@ -29,15 +29,22 @@
       <td class="px-3 py-1">Trs-000-{{obj.id}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
       <td class="px-3 py-1">{{obj.timestamp.time}}</td>
+      {% if user.role.sec_level >= 2 %}
+      <td class="px-3 py-1">{{obj.store.name}}</td>
+      {% endif %}
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
-      <td class="px-3 py-1 text-center">{{obj.label}}</td>
-      <td class="px-3 py-1 text-center">{{obj.amount}} CFA</td>
+      <td class="px-3 py-1">{{obj.label}}</td>
+      <td class="px-3 py-1">{{obj.amount}} CFA</td>
       {% if obj.type == 'credit' %}
-      <td class="px-3 py-1 text-center text-black  bg-lime-100 border border-lime-300">
+      <td
+        class="px-3 py-1 text-center text-black bg-lime-100 border border-lime-300"
+      >
         {{obj.get_type_display}}
       </td>
       {% else %}
-      <td class="px-3 py-1 text-center text-black bg-orange-100 border border-orange-300">
+      <td
+        class="px-3 py-1 text-center text-black bg-orange-100 border border-orange-300"
+      >
         {{obj.get_type_display}}
       </td>
       {% endif %}

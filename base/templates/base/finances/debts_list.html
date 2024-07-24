@@ -10,6 +10,9 @@
       <th class="px-3 py-4 text-sm">Réf.</th>
       <th class="px-3 py-4 text-sm">Date</th>
       <th class="px-3 py-4 text-sm">Heure</th>
+      {% if user.role.sec_level >= 2 %}
+      <th class="px-3 py-4 text-sm">Boutique</th>
+      {% endif %}
       <th class="px-3 py-4 text-sm">Initiateur</th>
       <th class="px-3 py-4 text-sm">Fournisseur</th>
       <th class="px-3 py-4 text-sm text-center">Libelé</th>
@@ -28,6 +31,9 @@
       <td class="px-3 py-1">Det-000-{{obj.id}}</td>
       <td class="px-3 py-1">{{obj.timestamp.date}}</td>
       <td class="px-3 py-1">{{obj.timestamp.time}}</td>
+      {% if user.role.sec_level >= 2 %}
+      <td class="px-3 py-1">{{obj.store.name}}</td>
+      {% endif %}
       <td class="px-3 py-1">{{obj.initiator.get_full_name}}</td>
       <td class="px-3 py-1">{{obj.supplier.name}}</td>
       <td class="px-3 py-1 text-center">{{obj.label}}</td>

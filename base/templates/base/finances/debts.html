@@ -1,0 +1,67 @@
+{% extends 'main.html' %} {% load static %} {% block content %}
+<div class="w-full max-w-7xl mx-auto flex flex-col justify-between gap-4">
+  <div class="flex items-center gap-2">
+    <button
+      onclick="goBack()"
+      class="w-fit px-3 py-2 text-white bg-green-700 hover:bg-green-900 rounded transition-all duration-300"
+    >
+      &larr;
+    </button>
+
+    <div class="w-full flex items-center justify-between text-black">
+      <h3 class="font-bold text-lg">Dettes</h3>
+      <form
+        id="filter"
+        class="p-1 w-full max-w-5xl flex justify-between items-center gap-1 text-sm"
+      >
+        {% csrf_token %}
+        <section class="w-full flex justify-between items-center gap-1 text-xs">
+          {% include 'base/components/date_margins.html' %}
+          <!--  -->
+          {% include 'base/components/store_filter.html' %}
+          <!-- transaction initiator -->
+          <select
+            name="initiator"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">
+              Initiateurs
+            </option>
+            {% for obj in initiators %}
+            <option value="{{obj.id}}">{{obj.get_full_name}}</option>
+            {% endfor %}
+          </select>
+          <!-- transaction status -->
+          <select
+            name="status"
+            class="hidden sm:flex px-3 py-2 rounded border focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-lime-400 w-full cursor-pointer"
+          >
+            <option value="" selected="true" disabled="disabled">Status de paiement</option>
+            <option value="unpaid">Non payé</option>
+            <option value="partial">Payé en partie</option>
+            <option value="compete">Payé en totalité</option>
+          </select>
+        </section>
+
+        <button
+          class="px-3 py-2 bg-green-700 hover:bg-green-900 text-white rounded transition duration-200 ease-in"
+          type="submit"
+        >
+          <i class="fa-solid fa-filter"></i>
+        </button>
+        <button
+          class="px-3 py-2 bg-lime-200 hover:bg-lime-400 hover:text-black rounded transition duration-200 ease-in"
+          hx-on:click="clearForm('filter')"
+          type="submit"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  <!--  -->
+  <section class="flex flex-col gap-4">
+    {% include 'base/finances/debts_list.html' %}
+  </section>
+</div>
+{% endblock %}

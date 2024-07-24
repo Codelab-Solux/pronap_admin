@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 from django.db.models import Sum
 from django.template.loader import render_to_string
-
+from django.views.decorators.cache import cache_page
 from .models import *
 from .forms import *
 from .views import *
@@ -16,6 +16,7 @@ from .cart import Cart
 
 logger = logging.getLogger(__name__) 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def home(req):
     context = {
@@ -28,6 +29,7 @@ def home(req):
 
 # ------------------------------------------------- Entity Types -------------------------------------------------
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_entity_type(req):
     user = req.user
@@ -48,6 +50,7 @@ def create_entity_type(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau type'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_entity_type(req, pk):
     user = req.user
@@ -67,6 +70,8 @@ def edit_entity_type(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier ce type'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def entity_types_list(req):
     user = req.user
     if not user.is_staff:
@@ -84,6 +89,7 @@ def entity_types_list(req):
 
 # ------------------------------------------------- Stores -------------------------------------------------
 # stores parameters ---------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def stores_list(req):
     stores = Store.objects.all().order_by('name')
@@ -94,6 +100,7 @@ def stores_list(req):
 
 
 # stores views ---------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def stores(req):
     user = req.user
@@ -111,6 +118,7 @@ def stores(req):
     return render(req, 'base/stores/index.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def store_details(req, pk):
     staff = CustomUser.objects.all()
@@ -168,6 +176,7 @@ def store_details(req, pk):
     return render(req, 'base/stores/store_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_store(req):
     user = req.user
@@ -186,6 +195,7 @@ def create_store(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Créer un produit', })
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_store(req, pk):
     user = req.user
@@ -207,6 +217,8 @@ def edit_store(req, pk):
 
 # ------------------------------------------------- Lots -------------------------------------------------
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def lots_list(req):
     user = req.user
     if not user.is_staff:
@@ -221,6 +233,8 @@ def lots_list(req):
     return render(req, 'base/parameters/lots_list.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def lot_details(req, pk):
     user = req.user
     if not user.is_staff:
@@ -240,6 +254,7 @@ def lot_details(req, pk):
     return render(req, 'base/parameters/lot_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_lot(req):
     user = req.user
@@ -260,6 +275,7 @@ def create_lot(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau lot'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_lot(req, pk):
     user = req.user
@@ -281,6 +297,7 @@ def edit_lot(req, pk):
 
 
 # ------------------------------------------------- Products -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def products(req):
     user = req.user
@@ -303,6 +320,7 @@ def products(req):
     return render(req, 'base/products/index.html', context)
 
 # products parameters-----------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def product_details(req, pk):
     curr_obj = Product.objects.get(id=pk)
@@ -313,6 +331,7 @@ def product_details(req, pk):
     }
     return render(req, 'base/parameters/product_details.html', context)
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_product(req):
     user = req.user
@@ -330,6 +349,7 @@ def create_product(req):
     else:
         return render(req, 'form.html', context={'form': form, 'form_title': 'Créer un produit', })
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_product(req, pk):
     user = req.user
@@ -349,6 +369,7 @@ def edit_product(req, pk):
     else:
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier ce produit'})
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def products_list(req):
     products = Product.objects.all().order_by('name')
@@ -357,6 +378,7 @@ def products_list(req):
     }
     return render(req, 'base/parameters/products_list.html', context)
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def products_grid(req):
     products = Product.objects.all().order_by('name')
@@ -365,6 +387,7 @@ def products_grid(req):
     }
     return render(req, 'base/parameters/products_grid.html', context)
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_products(req):
     name_query = req.POST.get('name')
@@ -401,6 +424,7 @@ def filter_products(req):
 
 # products stocks-----------------------------
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def product_stocks(req):
     user = req.user
@@ -421,6 +445,7 @@ def product_stocks(req):
     return render(req, 'base/products/stocks.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def prod_stock_list(req):
     products = ProductStock.objects.all().order_by('product__name')
@@ -430,6 +455,7 @@ def prod_stock_list(req):
     return render(req, 'base/products/prod_stock_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def prod_stocks(req, pk):
     products = ProductStock.objects.filter(
@@ -440,6 +466,7 @@ def prod_stocks(req, pk):
     return render(req, 'base/products/prod_stocks.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def prod_stock_details(req, pk):
     user = req.user
@@ -454,6 +481,7 @@ def prod_stock_details(req, pk):
     return render(req, 'base/products/prod_stock_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_prod_stock(req):
     user = req.user
@@ -472,6 +500,7 @@ def create_prod_stock(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Ajouter un stock'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_prod_stock(req, pk):
     user = req.user
@@ -492,6 +521,7 @@ def edit_prod_stock(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier ce stock'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_prod_stock(req):
     name_query = req.POST.get('name')
@@ -527,6 +557,7 @@ def filter_prod_stock(req):
 
 
 # ------------------------------------------------- Cart views -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def cart(req):
     user = req.user
@@ -557,6 +588,7 @@ def cart(req):
     return render(req, 'base/cart/index.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def add_to_cart(req):
     user = req.user
@@ -590,6 +622,7 @@ def add_to_cart(req):
     return render(req, 'base/cart/index.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def remove_from_cart(req):
     user = req.user
@@ -623,6 +656,7 @@ def remove_from_cart(req):
     return render(req, 'base/cart/index.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def clear_item(req):
     user = req.user
@@ -656,6 +690,7 @@ def clear_item(req):
     return render(req, 'base/cart/index.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def clear_cart(req):
     cart = Cart(req)
@@ -669,6 +704,7 @@ def clear_cart(req):
 
 
 # --------------------------Checkout--------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def checkout(req):
     user = req.user
@@ -731,6 +767,7 @@ def checkout(req):
 
 
 # ------------------------------------------------- Sales -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def sale_point(req):
     user = req.user
@@ -789,6 +826,7 @@ def sale_point(req):
     }
     return render(req, 'base/sales/sale_point.html', context)
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def sale_point_grid(req):
     user = req.user
@@ -815,6 +853,7 @@ def sale_point_grid(req):
     }
     return render(req, 'base/sales/sale_point_grid.html', context)
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def sales(req):
     user = req.user
@@ -843,6 +882,7 @@ def sales(req):
     }
     return render(req, 'base/sales/index.html', context)
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def sales_table(req):
     user = req.user
@@ -861,6 +901,7 @@ def sales_table(req):
     return render(req, 'base/sales/sales_table.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def sale_details(req, pk):
     user = req.user
@@ -880,6 +921,7 @@ def sale_details(req, pk):
     return render(req, 'base/sales/sale_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_sale(req):
     user = req.user
@@ -899,6 +941,7 @@ def create_sale(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Modifier cette vente'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_sale(req, pk):
     user = req.user
@@ -918,6 +961,8 @@ def edit_sale(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier cette vente'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def sale_info(req, pk):
     curr_obj = get_object_or_404(Sale, id=pk)
     sale_content_type = ContentType.objects.get_for_model(Sale)
@@ -937,6 +982,7 @@ def sale_info(req, pk):
     return render(req, 'base/sales/sale_info.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_sale_transaction(req, pk):
     user = req.user
@@ -966,6 +1012,8 @@ def create_sale_transaction(req, pk):
 
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def sale_items(req, pk):
     sale = get_object_or_404(Sale, id=pk)
     sale_items = SaleItem.objects.filter(sale=sale)
@@ -976,6 +1024,8 @@ def sale_items(req, pk):
 
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def create_sale_item(req, pk):
     user = req.user
     if not user.is_staff:
@@ -997,6 +1047,7 @@ def create_sale_item(req, pk):
 
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_sale_item(req, pk):
     user = req.user
@@ -1017,6 +1068,7 @@ def edit_sale_item(req, pk):
 
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_sales(req):
     user = req.user
@@ -1060,6 +1112,7 @@ def filter_sales(req):
 
 
 # ------------------------------------------------- Purchases -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def purchases(req):
     user = req.user
@@ -1074,6 +1127,8 @@ def purchases(req):
     return render(req, 'base/purchases/index.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def purchase_details(req, pk):
     curr_obj = get_object_or_404(Purchase, id=pk)
     purchase_items = PurchaseItem.objects.filter(purchase=curr_obj)
@@ -1089,6 +1144,8 @@ def purchase_details(req, pk):
     return render(req, 'base/purchases/purchase_details.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def purchase_info(req, pk):
     curr_obj = get_object_or_404(Purchase, id=pk)
     amount_due = curr_obj.total - curr_obj.total_paid
@@ -1109,6 +1166,7 @@ def purchase_info(req, pk):
     return render(req, 'base/purchases/purchase_info.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_purchase(req, pk):
     user = req.user
@@ -1129,6 +1187,7 @@ def create_purchase(req, pk):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvel achat'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_purchase(req, pk):
     user = req.user
@@ -1148,6 +1207,7 @@ def edit_purchase(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier cet achat'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def purchases_list(req, pk):
     user = req.user
@@ -1174,6 +1234,8 @@ def purchases_list(req, pk):
 
 # Purchase items -----------------
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def purchase_items(req, pk):
     purchase = get_object_or_404(Purchase, id=pk)
     purchase_items = PurchaseItem.objects.filter(purchase=purchase)
@@ -1182,6 +1244,8 @@ def purchase_items(req, pk):
     }
     return render(req, 'base/purchases/purchase_items.html', context)
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def create_purchase_item(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1201,6 +1265,7 @@ def create_purchase_item(req, pk):
     else:
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvel achat de produit'})
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_purchase_item(req, pk):
     user = req.user
@@ -1221,6 +1286,7 @@ def edit_purchase_item(req, pk):
 
 
 # --------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_purchase_transaction(req, pk):
     user = req.user
@@ -1253,6 +1319,7 @@ def create_purchase_transaction(req, pk):
 
 
 # ------------------------------------------------- Clients -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def clients(req):
     user = req.user
@@ -1267,6 +1334,7 @@ def clients(req):
     return render(req, 'base/entities/clients.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def client_details(req, pk):
     user = req.user
@@ -1288,6 +1356,7 @@ def client_details(req, pk):
     return render(req, 'base/entities/client_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def client_purchases(req, pk):
     curr_obj = get_object_or_404(Client, id=pk)
@@ -1300,6 +1369,7 @@ def client_purchases(req, pk):
     return render(req, 'base/purchases/client_purchases.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_client_purchases(req, pk):
     curr_obj = get_object_or_404(Client, id=pk)
@@ -1330,6 +1400,7 @@ def filter_client_purchases(req, pk):
     return render(req, 'base/entities/client_purchases.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def clients_list(req):
     clients = Client.objects.all().order_by('name')
@@ -1339,6 +1410,7 @@ def clients_list(req):
     return render(req, 'base/entities/clients_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_client(req):
     user = req.user
@@ -1357,6 +1429,7 @@ def create_client(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau client'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_client(req, pk):
     user = req.user
@@ -1375,6 +1448,7 @@ def edit_client(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier ce client'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_clients(req):
     user = req.user
@@ -1405,6 +1479,7 @@ def filter_clients(req):
 
 
 # ------------------------------------------------- Suppliers -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def suppliers(req):
     user = req.user
@@ -1419,6 +1494,7 @@ def suppliers(req):
     return render(req, 'base/entities/suppliers.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def supplier_details(req, pk):
     user = req.user
@@ -1444,6 +1520,7 @@ def supplier_details(req, pk):
     return render(req, 'base/entities/supplier_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def suppliers_list(req):
     suppliers = Supplier.objects.all().order_by('name')
@@ -1453,6 +1530,7 @@ def suppliers_list(req):
     return render(req, 'base/entities/suppliers_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_supplier(req):
     user = req.user
@@ -1471,6 +1549,7 @@ def create_supplier(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau fournisseur'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_supplier(req, pk):
     user = req.user
@@ -1491,6 +1570,7 @@ def edit_supplier(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier ce fournisseur'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_suppliers(req):
     user = req.user
@@ -1524,6 +1604,7 @@ def filter_suppliers(req):
 
 
 # ------------------------------------------------- Parameters -------------------------------------------------
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def parameters(req):
     user = req.user
@@ -1538,6 +1619,7 @@ def parameters(req):
     return render(req, 'base/parameters/index.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def categories_list(req):
     categories = Category.objects.all().order_by('name')
@@ -1547,6 +1629,7 @@ def categories_list(req):
     return render(req, 'base/parameters/categories_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_category(req):
     user = req.user
@@ -1565,6 +1648,7 @@ def create_category(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle catégorie'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_category(req, pk):
     user = req.user
@@ -1585,6 +1669,7 @@ def edit_category(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier cette catégorie'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def families_list(req):
     families = Family.objects.all().order_by('name')
@@ -1595,6 +1680,7 @@ def families_list(req):
     return render(req, 'base/parameters/families_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_family(req):
     user = req.user
@@ -1613,6 +1699,7 @@ def create_family(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle famille'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_family(req, pk):
     user = req.user
@@ -1633,6 +1720,8 @@ def edit_family(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier cette famille'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def load_families(req):
     category_id = req.GET.get('category')
     families = Family.objects.filter(category_id=category_id).all()
@@ -1640,6 +1729,8 @@ def load_families(req):
 
 
 # ------------------------------------------------- Stock views -------------------------------------------------
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def stock(req):
     user = req.user
     if not user.is_staff:
@@ -1653,6 +1744,8 @@ def stock(req):
     return render(req, 'base/stock/index.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def stock_overview(req):
     user = req.user
     if not user.is_staff:
@@ -1679,6 +1772,8 @@ def stock_overview(req):
     return render(req, 'base/stock/overview.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def store_stock(req, pk):
     inputs = StockOperation.objects.filter(type='input',store__id=pk).order_by('-timestamp')
     outputs = StockOperation.objects.filter(type='output',store__id=pk).order_by('-timestamp')
@@ -1692,6 +1787,8 @@ def store_stock(req, pk):
     return render(req, 'base/stock/overview.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def stock_ops(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1729,6 +1826,8 @@ def stock_ops(req, pk):
         return render(req, 'base/stock/ops_output.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def create_stock_ops(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1750,6 +1849,8 @@ def create_stock_ops(req, pk):
             return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle sortie de stock'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def edit_stock_ops(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1772,6 +1873,8 @@ def edit_stock_ops(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier cette operation de stock'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def stock_ops_details(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1789,6 +1892,8 @@ def stock_ops_details(req, pk):
     return render(req, 'base/stock/ops_details.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def stock_ops_info(req, pk):
     curr_obj = get_object_or_404(StockOperation, id=pk)
     context = {
@@ -1797,6 +1902,8 @@ def stock_ops_info(req, pk):
     return render(req, 'base/stock/ops_info.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def stock_ops_items(req, pk):
     stock_operation = get_object_or_404(StockOperation, id=pk)
     items = StockOperationItem.objects.filter(stock_operation=stock_operation)
@@ -1806,6 +1913,8 @@ def stock_ops_items(req, pk):
     return render(req, 'base/stock/ops_items.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def create_stock_ops_item(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1825,6 +1934,7 @@ def create_stock_ops_item(req, pk):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau produit compté'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_stock_ops_item(req, pk):
     user = req.user
@@ -1844,6 +1954,8 @@ def edit_stock_ops_item(req, pk):
 
 
 # ------------------------------------------------- Stock inventories -------------------------------------------------
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def inventories(req):
     inventories = Inventory.objects.all().order_by('-date')
     context = {
@@ -1852,6 +1964,8 @@ def inventories(req):
     return render(req, 'base/stock/inventories.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def inventory_details(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1888,6 +2002,7 @@ def inventory_details(req, pk):
     return render(req, 'base/stock/inventory_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_inventory(req):
     user = req.user
@@ -1909,6 +2024,8 @@ def create_inventory(req):
     return redirect('inventory_details', pk=new_inventory.id)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def edit_inventory(req, pk):    
     user = req.user
     if not user.is_staff:
@@ -1926,6 +2043,8 @@ def edit_inventory(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier cet inventaire"})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def correct_inventory(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1963,6 +2082,8 @@ def correct_inventory(req, pk):
 
 
 # ------------------------------------------------- Cashdesk Closing -------------------------------------------------
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def desk_closings_list(req, pk):
     user = req.user
     if not user.is_staff:
@@ -1982,6 +2103,8 @@ def desk_closings_list(req, pk):
 
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def desk_closing_details(req, pk):
     curr_obj = get_object_or_404(CashdeskClosing, id=pk)
     closing_receipts = ClosingCashReceipt.objects.filter(cashdesk_closing=curr_obj).order_by('-cash_receipt__value')
@@ -2014,6 +2137,7 @@ def desk_closing_details(req, pk):
     return render(req, 'base/closings/desk_closing_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_closing_receipt(req, pk):
     cashdesk_closing = get_object_or_404(CashdeskClosing, id=pk)
@@ -2030,6 +2154,7 @@ def create_closing_receipt(req, pk):
     return render(req, 'create_closing_receipt.html', {'form': form})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_desk_closing(req, pk):
     user = req.user
@@ -2057,6 +2182,7 @@ def create_desk_closing(req, pk):
     return redirect('desk_closing_details', pk=new_closing.id)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_desk_closing(req, pk):
     user = req.user
@@ -2078,6 +2204,8 @@ def edit_desk_closing(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': "Modifier l'arrêté de caisse"})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def correct_desk_closing(request, pk):
     user = request.user
     if not user.is_staff:
@@ -2124,6 +2252,8 @@ def correct_desk_closing(request, pk):
     return redirect('desk_closing_details', pk=curr_obj.id)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def desk_closing_info(req, pk):
     curr_obj = get_object_or_404(CashdeskClosing, id=pk)
     context = {
@@ -2136,6 +2266,8 @@ def desk_closing_info(req, pk):
 
 # ------------------------------------------------- Finances views -------------------------------------------------
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def finances(req):
     user = req.user
     if not user.is_staff:
@@ -2199,6 +2331,8 @@ def finances(req):
     return render(req, 'base/finances/index.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def credits_list(req):
     user = req.user
     if not user.is_staff:
@@ -2217,6 +2351,8 @@ def credits_list(req):
     return render(req, 'base/finances/credits_list.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def debits_list(req):
     user = req.user
     if not user.is_staff:
@@ -2235,6 +2371,8 @@ def debits_list(req):
     return render(req, 'base/finances/debits_list.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def reports(req):
     context = {
         "finances": "active",
@@ -2243,6 +2381,8 @@ def reports(req):
     return render(req, 'base/reports.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def treasury(req):
     context = {
         "finances": "active",
@@ -2251,6 +2391,8 @@ def treasury(req):
     return render(req, 'base/treasury.html', context)
 
 # Cashdesks -------------------------------------------------
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def cashdesks_list(req):
     user = req.user
     if user.role.sec_level <= 2:
@@ -2264,6 +2406,7 @@ def cashdesks_list(req):
     return render(req, 'base/parameters/cashdesks_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_cashdesk(req):
     user = req.user
@@ -2281,6 +2424,7 @@ def create_cashdesk(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle caisse'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_cashdesk(req, pk):
     user = req.user
@@ -2298,6 +2442,7 @@ def edit_cashdesk(req, pk):
         return render(req, 'form.html', context={'curr_obj':curr_obj ,'form': form, 'form_title': 'Modifier cette caisse'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def cashdesk_details(req, pk):
     user = req.user
@@ -2332,6 +2477,34 @@ def cashdesk_details(req, pk):
 
 # Transactions -------------------------------------------------
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def transactions(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    if not user.is_superuser:
+        transactions = Transaction.objects.filter(store=user.profile.store).order_by('-timestamp')
+    else:
+        transactions = Transaction.objects.all().order_by('-timestamp')
+
+    stores = Store.objects.all().order_by('name')
+    initiators = CustomUser.objects.all().order_by('last_name')
+        
+    context = {
+        "title": "Transactions",
+        "finances": "active",
+        'transactions': transactions,
+        'stores': stores,
+        'initiators': initiators,
+    }
+    return render(req, 'base/finances/transactions.html', context)
+
+
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def transactions_list(req):
     user = req.user
     if not user.is_staff:
@@ -2349,6 +2522,7 @@ def transactions_list(req):
     return render(req, 'base/finances/transactions_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def transaction_details(req, pk):
     user = req.user
@@ -2364,6 +2538,7 @@ def transaction_details(req, pk):
     return render(req, 'base/finances/transaction_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def filter_transactions(req):
     user = req.user
@@ -2406,6 +2581,7 @@ def filter_transactions(req):
     return render(req, 'base/finances/transactions_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_transaction(req):
     user = req.user
@@ -2425,6 +2601,7 @@ def create_transaction(req):
     else:
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau paiement'})
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_desk_transaction(req,pk):
     user = req.user
@@ -2447,6 +2624,7 @@ def create_desk_transaction(req,pk):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouveau paiement'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_transaction(req, pk):
     user = req.user
@@ -2466,6 +2644,8 @@ def edit_transaction(req, pk):
         return render(req, 'form.html', context={'curr_obj': curr_obj, 'form': form, 'form_title': 'Modifier ce paiement'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def transactions_list(req):
     user = req.user
     if not user.is_staff:
@@ -2484,6 +2664,8 @@ def transactions_list(req):
     return render(req, 'base/finances/transactions_list.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def store_transactions(req, pk):
     user = req.user
     if not user.is_staff:
@@ -2498,6 +2680,8 @@ def store_transactions(req, pk):
     return render(req, 'base/finances/transactions_list.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def desk_transactions(req, pk):
     user = req.user
     if not user.is_staff:
@@ -2512,6 +2696,7 @@ def desk_transactions(req, pk):
     return render(req, 'base/finances/transactions_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def transaction_details(req, pk):
     user = req.user
@@ -2529,6 +2714,7 @@ def transaction_details(req, pk):
 
 # Credits and Debits -------------------------------------------------
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_credit(req):
     user = req.user
@@ -2550,6 +2736,7 @@ def create_credit(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvel encaissement'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_debit(req):
     user = req.user
@@ -2574,6 +2761,34 @@ def create_debit(req):
 
 # ------------------------------------------------- Debts -------------------------------------------------
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def debts(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
+
+    if not user.is_superuser:
+        debts = Debt.objects.filter(store=user.profile.store).order_by('-timestamp')
+    else:
+        debts = Debt.objects.all().order_by('-timestamp')
+
+    stores = Store.objects.all().order_by('name')
+    initiators = CustomUser.objects.all().order_by('last_name')
+        
+    context = {
+        "title": "Dettes",
+        "finances": "active",
+        'debts': debts,
+        'stores': stores,
+        'initiators': initiators,
+    }
+    return render(req, 'base/finances/debts.html', context)
+
+
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def debts_list(req):
     user = req.user
     if not user.is_staff:
@@ -2591,6 +2806,8 @@ def debts_list(req):
     }
     return render(req, 'base/finances/debts_list.html', context)
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def store_debts(req, pk):
     user = req.user
     if not user.is_staff:
@@ -2605,6 +2822,7 @@ def store_debts(req, pk):
     return render(req, 'base/finances/debts_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def debt_details(req, pk):
     user = req.user
@@ -2620,6 +2838,7 @@ def debt_details(req, pk):
     return render(req, 'base/finances/debt_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_debt(req):
     user = req.user
@@ -2639,6 +2858,7 @@ def create_debt(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle dette'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_debt(req, pk):
     user = req.user
@@ -2659,7 +2879,33 @@ def edit_debt(req, pk):
 
 
 # ------------------------------------------------- Receivables -------------------------------------------------
+@cache_page(60 * 15)
+@login_required(login_url='login')
+def receivables(req):
+    user = req.user
+    if not user.is_staff:
+        messages.info(req, "Access denied!!!")
+        return redirect('home')
 
+    if not user.is_superuser:
+        receivables = Receivable.objects.filter(store=user.profile.store).order_by('-timestamp')
+    else:
+        receivables = Receivable.objects.all().order_by('-timestamp')
+
+    stores = Store.objects.all().order_by('name')
+    initiators = CustomUser.objects.all().order_by('last_name')
+        
+    context = {
+        "title": "Créances",
+        "finances": "active",
+        'receivables': receivables,
+        'stores': stores,
+        'initiators': initiators,
+    }
+    return render(req, 'base/finances/receivables.html', context)
+
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def receivables_list(req):
     user = req.user
     if not user.is_staff:
@@ -2678,6 +2924,8 @@ def receivables_list(req):
     return render(req, 'base/finances/receivables_list.html', context)
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def store_receivables(req, pk):
     user = req.user
     if not user.is_staff:
@@ -2694,6 +2942,7 @@ def store_receivables(req, pk):
     return render(req, 'base/finances/receivables_list.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def receivable_details(req, pk):
     user = req.user
@@ -2709,6 +2958,7 @@ def receivable_details(req, pk):
     return render(req, 'base/finances/receivable_details.html', context)
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def create_receivable(req):
     user = req.user
@@ -2728,6 +2978,7 @@ def create_receivable(req):
         return render(req, 'form.html', context={'form': form, 'form_title': 'Nouvelle créance'})
 
 
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def edit_receivable(req, pk):
     user = req.user
@@ -2749,6 +3000,7 @@ def edit_receivable(req, pk):
 
 # ------------------------------------------------- Delete and 404 routes -------------------------------------------------
 @require_http_methods(['DELETE'])
+@cache_page(60 * 15)
 @login_required(login_url='login')
 def delete_base_object(req, pk, model_name):
     user = req.user
@@ -2778,6 +3030,8 @@ def delete_base_object(req, pk, model_name):
     return HttpResponse(status=204, headers={'HX-Trigger': 'db_changed'})
 
 
+@cache_page(60 * 15)
+@login_required(login_url='login')
 def not_found(req, exception):
     context = {
         "not_found_page": "active",

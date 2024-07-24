@@ -168,6 +168,7 @@ urlpatterns = [
     path('finances/debits/list/', debits_list, name='debits_list'),
     path('finances/debits/create/', create_debit, name='create_debit'),
     # --------------------------
+    path('finances/receivables/', receivables, name='receivables'),
     path('finances/receivables/list/', receivables_list, name='receivables_list'),
     path('finances/receivables/create/',
          create_receivable, name='create_receivable'),
@@ -178,12 +179,15 @@ urlpatterns = [
     path('finances/receivables/<hashid:pk>/edit/',
          edit_receivable, name='edit_receivable'),
     # --------------------------
+    path('finances/debts/', debts, name='debts'),
     path('finances/debts/list/', debts_list, name='debts_list'),
     path('finances/debts/create/', create_debt, name='create_debt'),
     path('finances/debts/<hashid:pk>/', debt_details, name='debt_details'),
     path('finances/debts/store/<hashid:pk>/', store_debts, name='store_debts'),
     path('finances/debts/<hashid:pk>/edit/', edit_debt, name='edit_debt'),
     # --------------------------
+    path('finances/transactions/',
+         transactions, name='transactions'),
     path('finances/transactions/list/',
          transactions_list, name='transactions_list'),
     path('finances/transactions/filter/',

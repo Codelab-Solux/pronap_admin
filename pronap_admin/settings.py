@@ -13,7 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3$$v4pm96x49eyovw7ja2c%+4_a!m9zrs6c(&e8ij8dopa#s3t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
 
 def get_env_variable(var_name):
@@ -25,6 +26,7 @@ def get_env_variable(var_name):
 
 # Ensure the correct hosts are in ALLOWED_HOSTS
 ALLOWED_HOSTS = [
+    "*",
     '127.0.0.1',
     '62.72.19.182',
     'administration23wer21.pronap.store',
@@ -34,10 +36,12 @@ ALLOWED_HOSTS = [
 ALLOWED_HOSTS += os.getenv('ALLOWED_HOSTS', '').split(',')
 
 CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8040',
     'http://62.72.19.182:8040',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8040',
     'http://62.72.19.182:8040',
 ]
 
@@ -163,3 +167,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 AUTH_USER_MODEL = "accounts.CustomUser"  # !!! very important !!!
+
+
+# Perfomance logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'app.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
